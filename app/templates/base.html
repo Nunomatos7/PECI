@@ -32,13 +32,13 @@ body, html {
 
 /* Second image (Portfolio) */
 .bgimg-2 {
-  background-image: url("/w3images/parallax3.jpg");
+  background-image: url({% static 'peixe2.jpg' %});
   min-height: 400px;
 }
 
 /* Third image (Contact) */
 .bgimg-3 {
-  background-image: url("/w3images/parallax3.jpg");
+  background-image: url({% static 'peixe3.jpg' %});
   min-height: 400px;
 }
 
@@ -53,30 +53,33 @@ body, html {
   }
 }
 
-#canvas-container {
-  width: 100%;
-  text-align:center;
-}
-canvas {
-  display: inline;
-}
-
+  .sl{
+    /background-color: black;/
+    height: 40px;
+    width: 120px;
+    font-size: 20px;
+    font-family: Arial;
+  /*  border-radius: 5px;
+    border: 2px solid cyan;
+    color: cyan;
+    padding-left: 10px;*/
+  }
 
 </style>
 </head>
 <body>
   
-<!-- Navbar (sit on top)  ///border: 1px solid red; border-radius: 12px; border-color:#000000; padding: 0.5em;-->
+<!-- Navbar (sit on top) -->
 <div class="w3-top">
-  <div class="w3-bar" id="myNavbar">
-    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+  <div class="w3-bar w3-card w3-animate-top w3-white" id="myNavbar">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" >
       <i class="fa fa-bars"></i>
     </a>
-    <a href="#home" class="w3-bar-item w3-button" style="color: black; ">INÍCIO</a>
-    <a href="#about" class="w3-bar-item w3-button w3-hide-small" style="color: black"; ><i class="fa fa-user" style="color: black" ;></i> DASHBOARD</a>
-    <a href="#portfolio" class="w3-bar-item w3-button w3-hide-small" style="color: black";><i class="fa fa-th" style="color: black";></i> INSERIR</a>
-    <a href="#contact" class="w3-bar-item w3-button w3-hide-small" style="color: black";><i class="fa fa-envelope style="color: black";"></i> CONTACTOS</a>
-    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-black" style="color: black";>
+    <a href="#home" class="w3-bar-item w3-button" style="color: black">INÍCIO</a>
+    <a href="#about" class="w3-bar-item w3-button w3-hide-small" style="color: black"><i class="fa fa-user" style="color: black" ;></i> DASHBOARD</a>
+    <a href="#portfolio" class="w3-bar-item w3-button w3-hide-small" style="color: black; ";><i class="fa fa-th" style="color: black";></i> INSERIR</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-envelope" style="color: black";></i> CONTACTOS</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-black" style="color: black; ";>
       <i class="fa fa-search" ></i>
     </a>
   </div>
@@ -93,32 +96,72 @@ canvas {
 <!-- First Parallax Image with Logo Text -->
 <div class="bgimg-1 w3-display-container w3-opacity-min" id="home">
   <div class="w3-display-middle" style="white-space:nowrap;">
-    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style= "margin-left: 110px"> Sistemas de Suporte à </span>
+    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style= "margin-left: 110px"><b> Sistemas de Suporte à </b></span>
     <p>
-    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">Decisão Aplicados à Aquacultura</span>
+    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity"><b>Decisão Aplicados à Aquacultura</b></span>
   </div>
 </div>
 
 <!-- Container (About Section) -->
-  <script>
-    var chartContainer = document.createElement('div');
-    chartContainer.style.width = '100%';
-    chartContainer.style.height = '100%';
-    chartContainer.classList.add('chart-container');
-    controller.element.appendChild(chartContainer);
-  </script>
-
-  
 <div class="w3-content w3-container w3-padding-64" id="about" >
-  <h3 class="w3-center" style="color:black; background-Color:lightblue">DASHBOARD</h3>
+  <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">DASHBOARD</h3>
   <h6 class="w3-center" style="color:white;" >DASHBOARD</h3>
   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <div id="canvas-container">
       <canvas id="myChart1" style="width:100;max-width:950px;"></canvas>
-      <h6 class="w3-center" style="color:white;" >DASHBOARD</h3>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <select class="sl"onchange="function()">
+        <option selected disabled="">Ano</option>
+        <option value="">1992</option>
+        <option value="">1993</option>
+        <option value="">1994</option>
+        <option value="">1995</option>
+        <option value="">1996</option>
+        <option value="">1997</option>
+        <option value="">1998</option>
+        <option value="">1999</option>
+        <option value="">2000</option>
+        <option value="">2001</option>
+        <option value="">2002</option>
+        <option value="">2003</option>
+        <option value="">2004</option>
+        <option value="">2005</option>
+        <option value="">2006</option>
+        <option value="">2007</option>
+        <option value="">2008</option>
+        <option value="">2009</option>
+        <option value="">2010</option>
+        </select>
+
+      <h1 class="w3-center" style="color:white;" >DASHBOARD</h1>
+      
       
       <canvas id="myChart2" style="width:100;max-width:950px;"></canvas>
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <select class="sl"onchange="function()">
+        <option selected disabled="">Ano</option>
+        <option value="">1992</option>
+        <option value="">1993</option>
+        <option value="">1994</option>
+        <option value="">1995</option>
+        <option value="">1996</option>
+        <option value="">1997</option>
+        <option value="">1998</option>
+        <option value="">1999</option>
+        <option value="">2000</option>
+        <option value="">2001</option>
+        <option value="">2002</option>
+        <option value="">2003</option>
+        <option value="">2004</option>
+        <option value="">2005</option>
+        <option value="">2006</option>
+        <option value="">2007</option>
+        <option value="">2008</option>
+        <option value="">2009</option>
+        <option value="">2010</option>
+        </select>
 
       <script>
       var temperatura = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","set","Out","Nov","Dez"];
@@ -129,13 +172,14 @@ canvas {
           labels: temperatura,
           datasets: [{ 
             data: [19.4,20.5,21,19.1,23.2,22.4,20.3,25.6,24.2,27,24.3,22],
-            borderColor: "red",
+            borderColor: "lightblue",
             fill: false
           }]
         },
         options: {
           legend: {display: false},
           title: {
+            fontSize: 20,
             display: true,
             text: 'Temperatura da Água / Mês'
           }
@@ -146,7 +190,7 @@ canvas {
       <script>
       var meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","set","Out","Nov","Dez"];
       var peixes = [30000, 29000, 28000, 27000, 26000, 25000, 24000, 23000, 22000, 21000, 20000, 19000];
-      var barColors = ["red", "green","blue","orange","brown", "purple", "yellow", "black", "grey", "pink", "cyan", "magenta"];
+      var barColors = ["lightblue", "lightblue","lightblue","lightblue","lightblue", "lightblue", "lightblue", "lightblue", "lightblue", "lightblue", "lightblue", "lightblue"];
 
       new Chart("myChart2", {
         type: "bar",
@@ -160,6 +204,7 @@ canvas {
         options: {
           legend: {display: false},
           title: {
+            fontSize: 20,
             display: true,
             text: "Quantidade de Peixes / Mês"
           }
@@ -172,99 +217,58 @@ canvas {
   <p class="w3-large w3-center w3-padding-16">Previsões para o próximo mês:</p>
   <p class="w3-wide"><i class="fa fa-camera"></i>Temperatura Média(º)</p>
   <div class="w3-light-grey">
-    <div class="w3-container w3-padding-small w3-dark-grey w3-center" style="width:80%">23º</div>
+    <div class="w3-container w3-padding-small w3-light-blue w3-center" style="width:80%">23º</div>
   </div>
   <p class="w3-wide"><i class="fa fa-laptop"></i>Alimentação(%)</p>
   <div class="w3-light-grey">
-    <div class="w3-container w3-padding-small w3-dark-grey w3-center" style="width:65%">65%</div>
+    <div class="w3-container w3-padding-small w3-light-blue w3-center" style="width:65%">65%</div>
   </div>
   <p class="w3-wide"><i class="fa fa-photo"></i>Crescimento(%)</p>
   <div class="w3-light-grey">
-    <div class="w3-container w3-padding-small w3-dark-grey w3-center" style="width:4%">4%</div>
+    <div class="w3-container w3-padding-small w3-light-blue w3-center" style="width:4%">4%</div>
   </div>
 </div>
 
-<div class="w3-row w3-center w3-dark-grey w3-padding-16">
+<div class="w3-row w3-center w3-light-blue w3-padding-16">
   <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">14+</span><br>
-    Dados
+    <span class="w3-xlarge">20+</span><br>
+    Anos de Dados
   </div>
   <div class="w3-quarter w3-section">
     <span class="w3-xlarge">55+</span><br>
-    Projects Done
+    
   </div>
   <div class="w3-quarter w3-section">
     <span class="w3-xlarge">89+</span><br>
-    Happy Clients
+
   </div>
   <div class="w3-quarter w3-section">
     <span class="w3-xlarge">150+</span><br>
-    Meetings
+    
   </div>
 </div>
-
+<h6  class="w3-center" style="color:white;" >DASHBOARD</h3>
 <!-- Second Parallax Image with Portfolio Text -->
 <div class="bgimg-2 w3-display-container w3-opacity-min">
   <div class="w3-display-middle">
-    <span class="w3-xxlarge w3-text-white w3-wide">INSERIR\</span>
+    <span class="w3-xxlarge w3-text-white w3-wide" ><b>INSERIR DADOS</b></span>
   </div>
 </div>
 
 <!-- Container (Portfolio Section) -->
 <div class="w3-content w3-container w3-padding-64" id="portfolio">
-  <h3 class="w3-center">MY WORK</h3>
-  <p class="w3-center"><em>Here are some of my latest lorem work ipsum tipsum.<br> Click on the images to make them bigger</em></p><br>
-
+  <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">Introduzir ficheiro Excel</h3>
   <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
-  <div class="w3-row-padding w3-center">
-    <div class="w3-col m3">
-      <img src="/w3images/p1.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="The mist over the mountains">
-    </div>
-
-    <div class="w3-col m3">
-      <img src="/w3images/p2.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Coffee beans">
-    </div>
-
-    <div class="w3-col m3">
-      <img src="/w3images/p3.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Bear closeup">
-    </div>
-
-    <div class="w3-col m3">
-      <img src="/w3images/p4.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Quiet ocean">
-    </div>
-  </div>
-
-  <div class="w3-row-padding w3-center w3-section">
-    <div class="w3-col m3">
-      <img src="/w3images/p5.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="The mist">
-    </div>
-
-    <div class="w3-col m3">
-      <img src="/w3images/p6.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="My beloved typewriter">
-    </div>
-
-    <div class="w3-col m3">
-      <img src="/w3images/p7.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Empty ghost train">
-    </div>
-
-    <div class="w3-col m3">
-      <img src="/w3images/p8.jpg" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Sailing">
-    </div>
-    <button class="w3-button w3-padding-large w3-light-grey" style="margin-top:64px">LOAD MORE</button>
-  </div>
-</div>
-
-<!-- Modal for full size images on click-->
-<div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
-  <span class="w3-button w3-large w3-black w3-display-topright" title="Close Modal Image"><i class="fa fa-remove"></i></span>
-  <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-    <img id="img01" class="w3-image">
-    <p id="caption" class="w3-opacity w3-large"></p>
+  <h3 class="w3-center" style="color:white">Inserir ficheiro Excel</h3>
+  <form style="text-align:center" action="">
+    <input type="file" id="myFile" name="filename">
+    <input type="submit">
+  </form>
   </div>
 </div>
 
 <!-- Third Parallax Image with Portfolio Text -->
-<div class="bgimg-3 w3-display-container w3-opacity-min">
+<div class="bgimg-3 w3-display-container w3-opacity-min ">
   <div class="w3-display-middle">
      <span class="w3-xxlarge w3-text-white w3-wide">CONTACTOS</span>
   </div>
@@ -272,32 +276,30 @@ canvas {
 
 <!-- Container (Contact Section) -->
 <div class="w3-content w3-container w3-padding-64" id="contact">
-  <h3 class="w3-center">CONTACTOS</h3>
+  
   <!--<p class="w3-center"><em>I'd love your feedback!</em></p>-->
 
-  <div class="w3-row w3-padding-32 w3-section">
-    <div class="w3-col m4 w3-container">
-      <img src="" class="w3-image w3-round" style="width:100%">
-    </div>
+  <div class="w3-row w3-padding-32 w3-section" style="margin: 180px; width: 100%;">
+    
     <div class="w3-col m8 w3-panel">
       <div class="w3-large w3-margin-bottom">
         <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Serra do Gerês, Braga<br>
-        <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Telemóvel: +00 151515<br>
+        <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Telemóvel: +351 999999999<br>
         <i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: mail@mail.com<br>
       </div>
       
       <form action="/action_page.php" target="_blank">
         <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
           <div class="w3-half">
-            <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
+            <input class="w3-input w3-border" type="text" placeholder="Nome" required name="Name">
           </div>
           <div class="w3-half">
             <input class="w3-input w3-border" type="text" placeholder="Email" required name="Email">
           </div>
         </div>
-        <input class="w3-input w3-border" type="text" placeholder="Message" required name="Message">
+        <input class="w3-input w3-border" type="text" placeholder="Messagem" required name="Message">
         <button class="w3-button w3-black w3-right w3-section" type="submit">
-          <i class="fa fa-paper-plane"></i> SEND MESSAGE
+          <i class="fa fa-paper-plane"></i> ENVIAR MENSAGEM
         </button>
       </form>
     </div>
@@ -308,12 +310,6 @@ canvas {
 <footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
   <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
   <div class="w3-xlarge w3-section">
-    <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
   </div>
   <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
 </footer>
@@ -327,16 +323,7 @@ function onClick(element) {
   captionText.innerHTML = element.alt;
 }
 
-// Change style of navbar on scroll
-window.onscroll = function() {myFunction()};
-function myFunction() {
-    var navbar = document.getElementById("myNavbar");
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        navbar.className = "w3-bar" + " w3-card" + " w3-animate-top" + " w3-white";
-    } else {
-        navbar.className = navbar.className.replace(" w3-card w3-animate-top w3-white", "");
-    }
-}
+
 
 // Used to toggle the menu on small screens when clicking on the menu button
 function toggleFunction() {
