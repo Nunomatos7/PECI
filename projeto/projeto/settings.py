@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE' : 'django.db.backends.mysql',
         'NAME' : 'proj_db',
         'USER' : 'root',
-        'PASSWORD' : 'Lineage2!',
+        'PASSWORD' : 'user',
         'HOST' : 'localhost',
         'PORT' : '3306',
         'OPTIONS': {
@@ -131,4 +131,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost','192.168.46.215','127.0.0.1']
