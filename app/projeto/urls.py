@@ -16,9 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from personal.views import home_screen_view 
+from personal.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', home_screen_view),
+    url(r'^$', home_screen_view, name='home'),
+    url(r'^dashboard/', dashboard_view, name='dashboard'),
+    url(r'^insert/', insert_view, name='insert'),
+    url(r'^contacts/', contacts_view, name='contacts'),
 ]

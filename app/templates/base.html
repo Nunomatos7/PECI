@@ -16,7 +16,7 @@ body, html {
 }
 
 /* Create a Parallax Effect */
-.bgimg-1, .bgimg-2, .bgimg-3 {
+.bgimg-1 {
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -30,24 +30,12 @@ body, html {
   min-height: 100%;
 }
 
-/* Second image (Portfolio) */
-.bgimg-2 {
-  background-image: url({% static 'peixe2.jpg' %});
-  min-height: 400px;
-}
-
-/* Third image (Contact) */
-.bgimg-3 {
-  background-image: url({% static 'peixe3.jpg' %});
-  min-height: 400px;
-}
-
 .w3-wide {letter-spacing: 10px;}
 .w3-hover-opacity {cursor: pointer;}
 
 /* Turn off parallax scrolling for tablets and phones */
 @media only screen and (max-device-width: 1600px) {
-  .bgimg-1, .bgimg-2, .bgimg-3 {
+  .bgimg-1 {
     background-attachment: scroll;
     min-height: 400px;
   }
@@ -65,6 +53,50 @@ body, html {
     padding-left: 10px;*/
   }
 
+  body {
+    font-family: Arial, sans-serif;
+  }
+  h1 {
+    color: #006699;
+    text-align: center;
+  }
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+  }
+  .logo {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+  }
+  .about-section {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .about-section .image {
+    flex: 1;
+    margin-right: 20px;
+  }
+  .about-section .text {
+    flex: 2;
+  }
+  @media (max-width: 600px) {
+    .about-section {
+      flex-direction: column;
+    }
+    .about-section .image {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -75,20 +107,20 @@ body, html {
     <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" >
       <i class="fa fa-bars"></i>
     </a>
-    <a href="#home" class="w3-bar-item w3-button" style="color: black">INÍCIO</a>
-    <a href="#about" class="w3-bar-item w3-button w3-hide-small" style="color: black"><i class="fa fa-user" style="color: black" ;></i> DASHBOARD</a>
-    <a href="#portfolio" class="w3-bar-item w3-button w3-hide-small" style="color: black; ";><i class="fa fa-th" style="color: black";></i> INSERIR</a>
-    <a href="#contact" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-envelope" style="color: black";></i> CONTACTOS</a>
+    <a href="" class="w3-bar-item w3-button" style="color: black">INÍCIO</a>
+    <a href="{% url 'dashboard' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black"><i class="fa fa-user" style="color: black" ;></i> DASHBOARD</a>
+    <a href="{% url 'insert' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black; ";><i class="fa fa-th" style="color: black";></i> INSERIR</a>
+    <a href="{% url 'contacts' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-envelope" style="color: black";></i> CONTACTOS</a>
     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-black" style="color: black; ";>
       <i class="fa fa-search" ></i>
     </a>
-  </div>
+  </div>  
 
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
-    <a href="#about" class="w3-bar-item w3-button" onclick="toggleFunction()">DASHBOARD</a>
-    <a href="#portfolio" class="w3-bar-item w3-button" onclick="toggleFunction()">INSERIR</a>
-    <a href="#contact" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACTOS</a>
+    <a href="{% url 'dashboard' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">DASHBOARD</a>
+    <a href="{% url 'insert' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">INSERIR</a>
+    <a href="{% url 'contacts' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACTOS</a>
     <a href="#" class="w3-bar-item w3-button">PESQUISA</a>
   </div>
 </div>
@@ -102,213 +134,30 @@ body, html {
   </div>
 </div>
 
-<!-- Container (About Section) -->
-<div class="w3-content w3-container w3-padding-64" id="about" >
-  <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">DASHBOARD</h3>
-  <h6 class="w3-center" style="color:white;" >DASHBOARD</h3>
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <div id="canvas-container">
-      <canvas id="myChart1" style="width:100;max-width:950px;"></canvas>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <select class="sl"onchange="function()">
-        <option selected disabled="">Ano</option>
-        <option value="">1992</option>
-        <option value="">1993</option>
-        <option value="">1994</option>
-        <option value="">1995</option>
-        <option value="">1996</option>
-        <option value="">1997</option>
-        <option value="">1998</option>
-        <option value="">1999</option>
-        <option value="">2000</option>
-        <option value="">2001</option>
-        <option value="">2002</option>
-        <option value="">2003</option>
-        <option value="">2004</option>
-        <option value="">2005</option>
-        <option value="">2006</option>
-        <option value="">2007</option>
-        <option value="">2008</option>
-        <option value="">2009</option>
-        <option value="">2010</option>
-        </select>
-
-      <h1 class="w3-center" style="color:white;" >DASHBOARD</h1>
-      
-      
-      <canvas id="myChart2" style="width:100;max-width:950px;"></canvas>
-
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <select class="sl"onchange="function()">
-        <option selected disabled="">Ano</option>
-        <option value="">1992</option>
-        <option value="">1993</option>
-        <option value="">1994</option>
-        <option value="">1995</option>
-        <option value="">1996</option>
-        <option value="">1997</option>
-        <option value="">1998</option>
-        <option value="">1999</option>
-        <option value="">2000</option>
-        <option value="">2001</option>
-        <option value="">2002</option>
-        <option value="">2003</option>
-        <option value="">2004</option>
-        <option value="">2005</option>
-        <option value="">2006</option>
-        <option value="">2007</option>
-        <option value="">2008</option>
-        <option value="">2009</option>
-        <option value="">2010</option>
-        </select>
-
-      <script>
-      var temperatura = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","set","Out","Nov","Dez"];
-
-      new Chart("myChart1", {
-        type: "line",
-        data: {
-          labels: temperatura,
-          datasets: [{ 
-            data: [19.4,20.5,21,19.1,23.2,22.4,20.3,25.6,24.2,27,24.3,22],
-            borderColor: "lightblue",
-            fill: false
-          }]
-        },
-        options: {
-          legend: {display: false},
-          title: {
-            fontSize: 20,
-            display: true,
-            text: 'Temperatura da Água / Mês'
-          }
-        }
-      });
-      </script>
-
-      <script>
-      var meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","set","Out","Nov","Dez"];
-      var peixes = [30000, 29000, 28000, 27000, 26000, 25000, 24000, 23000, 22000, 21000, 20000, 19000];
-      var barColors = ["lightblue", "lightblue","lightblue","lightblue","lightblue", "lightblue", "lightblue", "lightblue", "lightblue", "lightblue", "lightblue", "lightblue"];
-
-      new Chart("myChart2", {
-        type: "bar",
-        data: {
-          labels: meses,
-          datasets: [{
-            backgroundColor: barColors,
-            data: peixes
-          }]
-        },
-        options: {
-          legend: {display: false},
-          title: {
-            fontSize: 20,
-            display: true,
-            text: "Quantidade de Peixes / Mês"
-          }
-        }
-      });
-      </script>
-    </div>
-
-    <h1 class="w3-center" style="color:white;" >DASHBOARD</h3>
-  <p class="w3-large w3-center w3-padding-16">Previsões para o próximo mês:</p>
-  <p class="w3-wide"><i class="fa fa-camera"></i>Temperatura Média(º)</p>
-  <div class="w3-light-grey">
-    <div class="w3-container w3-padding-small w3-light-blue w3-center" style="width:80%">23º</div>
-  </div>
-  <p class="w3-wide"><i class="fa fa-laptop"></i>Alimentação(%)</p>
-  <div class="w3-light-grey">
-    <div class="w3-container w3-padding-small w3-light-blue w3-center" style="width:65%">65%</div>
-  </div>
-  <p class="w3-wide"><i class="fa fa-photo"></i>Crescimento(%)</p>
-  <div class="w3-light-grey">
-    <div class="w3-container w3-padding-small w3-light-blue w3-center" style="width:4%">4%</div>
-  </div>
-</div>
-
-<div class="w3-row w3-center w3-light-blue w3-padding-16">
-  <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">20+</span><br>
-    Anos de Dados
-  </div>
-  <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">55+</span><br>
-    
-  </div>
-  <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">89+</span><br>
-
-  </div>
-  <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">150+</span><br>
-    
-  </div>
-</div>
-<h6  class="w3-center" style="color:white;" >DASHBOARD</h3>
-<!-- Second Parallax Image with Portfolio Text -->
-<div class="bgimg-2 w3-display-container w3-opacity-min">
-  <div class="w3-display-middle">
-    <span class="w3-xxlarge w3-text-white w3-wide" ><b>INSERIR DADOS</b></span>
-  </div>
-</div>
-
 <!-- Container (Portfolio Section) -->
 <div class="w3-content w3-container w3-padding-64" id="portfolio">
-  <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">Introduzir ficheiro Excel</h3>
-  <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
-  <h3 class="w3-center" style="color:white">Inserir ficheiro Excel</h3>
-  <form style="text-align:center" action="">
-    <input type="file" id="myFile" name="filename">
-    <input type="submit">
-  </form>
-  </div>
-</div>
-
-<!-- Third Parallax Image with Portfolio Text -->
-<div class="bgimg-3 w3-display-container w3-opacity-min ">
-  <div class="w3-display-middle">
-     <span class="w3-xxlarge w3-text-white w3-wide">CONTACTOS</span>
-  </div>
-</div>
-
-<!-- Container (Contact Section) -->
-<div class="w3-content w3-container w3-padding-64" id="contact">
+  <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">Sobre</h3>
   
-  <!--<p class="w3-center"><em>I'd love your feedback!</em></p>-->
-
-  <div class="w3-row w3-padding-32 w3-section" style="margin: 180px; width: 100%;">
-    
-    <div class="w3-col m8 w3-panel">
-      <div class="w3-large w3-margin-bottom">
-        <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Serra do Gerês, Braga<br>
-        <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Telemóvel: +351 999999999<br>
-        <i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: mail@mail.com<br>
+  
+  <div class="container">
+    <div class="about-section">
+      <img class="image" src="static/logo1.png" width="300" height="250" alt="Company Logo">
+      <div class="text">
+        <p>Our company was founded in 2012 with the goal of providing top-quality products and services to our customers. Since then, we have grown to become a leader in our industry, serving a diverse range of clients across the globe.</p>
+        <p>We are committed to sustainability and operate with the highest level of integrity in all that we do. Our team is made up of dedicated professionals who are passionate about what they do and strive to exceed our customers' expectations every day.</p>
       </div>
-      
-      <form action="/action_page.php" target="_blank">
-        <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
-          <div class="w3-half">
-            <input class="w3-input w3-border" type="text" placeholder="Nome" required name="Name">
-          </div>
-          <div class="w3-half">
-            <input class="w3-input w3-border" type="text" placeholder="Email" required name="Email">
-          </div>
-        </div>
-        <input class="w3-input w3-border" type="text" placeholder="Messagem" required name="Message">
-        <button class="w3-button w3-black w3-right w3-section" type="submit">
-          <i class="fa fa-paper-plane"></i> ENVIAR MENSAGEM
-        </button>
-      </form>
     </div>
+    <p>Thank you for considering our company. We look forward to working with you and helping you achieve your goals.</p>
+  </div>
+
+
   </div>
 </div>
+
 
 <!-- Footer -->
 <footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
-  <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+  <a href="" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
   <div class="w3-xlarge w3-section">
   </div>
   <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
