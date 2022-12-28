@@ -7,3 +7,4 @@ from .models import *
 admin.site.register(Temperatura)
 admin.site.register(Jaula)
 admin.site.register(Desova)
+admin.site.register(DadosJaula)

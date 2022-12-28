@@ -8,31 +8,34 @@ class Temperatura (models.Model):
     temperatura = models.FloatField
 
 class Desova (models.Model):
-    data = models.DateField(primary_key=True)
-    femeas = models.IntegerField
-    desovados = models.IntegerField
-    embrionados = models.IntegerField
+    data = models.DateField(primary_key=True,default=None)
+    femeas = models.IntegerField(default=None)
+    desovados = models.IntegerField(default=None)
+    embrionados = models.IntegerField(default=None)
 
 class Jaula (models.Model):
-    id = models.PositiveSmallIntegerField
-    num_peixes = models.PositiveIntegerField
+    num_peixes = models.PositiveIntegerField(default=None)
     data = models.DateField(primary_key=True)
-    PM = models.FloatField
-    Blom = models.FloatField
-    percentagem_alimentacao = models.FloatField
-    peso = models.FloatField
-    sacos_racao = models.FloatField
-    FC = models.FloatField
-    peso_medio = models.FloatField
-    alimentacao_teorica = models.FloatField
-    alimentacao_real = models.FloatField
-    PM_teorico = models.FloatField
-    PM_real = models.FloatField
-    percentagem_mortalidade_teorica = models.FloatField
-    num_mortos_teorico = models.FloatField
-    percentagem_mortalidade_real = models.FloatField
-    num_mortos_real = models.FloatField
-    retirados = models.PositiveSmallIntegerField
-    colocados = models.PositiveSmallIntegerField
-    FC_real = models.FloatField
+    PM = models.FloatField(default=None)
+    Blom = models.FloatField(default=None)
+    percentagem_alimentacao = models.FloatField(default=None)
+    peso = models.FloatField(default=None)
+    sacos_racao = models.FloatField(default=None)
+    FC = models.FloatField(default=None)
+    peso_medio = models.FloatField(default=None)
+    alimentacao_teorica = models.FloatField(default=None)
+    alimentacao_real = models.FloatField(default=None)
+    PM_teorico = models.FloatField(default=None)
+    PM_real = models.FloatField(default=None)
+    percentagem_mortalidade_teorica = models.FloatField(default=None)
+    num_mortos_teorico = models.FloatField(default=None)
+    percentagem_mortalidade_real = models.FloatField(default=None)
+    num_mortos_real = models.FloatField(default=None)
+    retirados = models.PositiveSmallIntegerField(default=None)
+    colocados = models.PositiveSmallIntegerField(default=None)
+    FC_real = models.FloatField(default=None)
 
+class DadosJaula (models.Model):
+    id = models.PositiveSmallIntegerField(primary_key=True)
+    volume = models.FloatField(default=None)
+    jaula = models.ForeignKey("Jaula",on_delete=models.CASCADE)
