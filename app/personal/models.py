@@ -4,11 +4,11 @@ from __future__ import unicode_literals
 from django.db import models
 
 class Temperatura (models.Model):
-    data = models.DateField
+    data = models.DateField(primary_key=True)
     temperatura = models.FloatField
 
 class Desova (models.Model):
-    data = models.DateField
+    data = models.DateField(primary_key=True)
     femeas = models.IntegerField
     desovados = models.IntegerField
     embrionados = models.IntegerField
@@ -16,7 +16,7 @@ class Desova (models.Model):
 class Jaula (models.Model):
     id = models.PositiveSmallIntegerField
     num_peixes = models.PositiveIntegerField
-    data = models.DateField
+    data = models.DateField(primary_key=True)
     PM = models.FloatField
     Blom = models.FloatField
     percentagem_alimentacao = models.FloatField
