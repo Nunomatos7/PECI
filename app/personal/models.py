@@ -5,7 +5,7 @@ from django.db import models
 
 class Temperatura (models.Model):
     data = models.DateField(primary_key=True)
-    temperatura = models.FloatField
+    temperatura = models.FloatField(default=None)
 
 class Desova (models.Model):
     data = models.DateField(primary_key=True,default=None)
