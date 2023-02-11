@@ -19,7 +19,7 @@ from django.contrib import admin
 from personal.views import *
 
 urlpatterns = [
-    path('admin', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', home,name="home"),
     path('dashboard/', dashboard_view, name='dashboard'),
     path('insert/', insert_view, name='insert'),
