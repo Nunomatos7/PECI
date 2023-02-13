@@ -1,9 +1,9 @@
 from django import forms
 from models import *
 
-class TemperaturaForma(forms.ModelForm):
+class DesovaForm(forms.ModelForm):
     class Meta :
-        model = Temperatura
-        fields = ['temperatura', 'data' ]
+        model = Desova
+        fields = ['femeas', 'data', 'embrionados', 'desovados' ]
 
 #depois fazer restantes
