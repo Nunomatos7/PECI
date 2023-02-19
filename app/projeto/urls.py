@@ -22,8 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home,name="home"),
     path('dashboard/', dashboard_view, name='dashboard'),
-    path('insert/', insert_view, name='insert'),
+    #path('insert/', insert_view, name='insert'),
     path('contacts/', contacts_view, name='contacts'),
+    path('insert_data/', insert_data, name='add'),
+    path('add/addrecord/', InsD_temperatura, name='InsD_temperatura'),
     path('auth/', include("django.contrib.auth.urls"), name='auth'),
 ]
 """

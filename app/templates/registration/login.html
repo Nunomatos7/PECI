@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,97 +8,8 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;}
-body, html {
-  height: 100%;
-  color: #777;
-  line-height: 1.8;
-}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
 
-/* Create a Parallax Effect */
-.bgimg-1 {
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-/* First image (Logo. Full height) */
-.bgimg-1 {
-  {% load static %}
-  background-image: url({% static 'peixe1.jpg' %});
-  min-height: 100%;
-}
-
-.w3-wide {letter-spacing: 10px;}
-.w3-hover-opacity {cursor: pointer;}
-
-/* Turn off parallax scrolling for tablets and phones */
-@media only screen and (max-device-width: 1600px) {
-  .bgimg-1 {
-    background-attachment: scroll;
-    min-height: 400px;
-  }
-}
-
-  .sl{
-    /background-color: black;/
-    height: 40px;
-    width: 120px;
-    font-size: 20px;
-    font-family: Arial;
-  /*  border-radius: 5px;
-    border: 2px solid cyan;
-    color: cyan;
-    padding-left: 10px;*/
-  }
-
-  body {
-    font-family: Arial, sans-serif;
-  }
-  h1 {
-    color: #006699;
-    text-align: center;
-  }
-  p {
-    font-size: 16px;
-    line-height: 1.5;
-  }
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-  }
-  .logo {
-    display: block;
-    margin: 0 auto;
-    width: 200px;
-  }
-  .about-section {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .about-section .image {
-    flex: 1;
-    margin-right: 20px;
-  }
-  .about-section .text {
-    flex: 2;
-  }
-  @media (max-width: 600px) {
-    .about-section {
-      flex-direction: column;
-    }
-    .about-section .image {
-      margin-right: 0;
-      margin-bottom: 20px;
-    }
-  }
-
-</style>
 </head>
 <body>
   
@@ -118,7 +30,7 @@ body, html {
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
     <a href="{% url 'dashboard' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">DASHBOARD</a>
-    <a href="{% url 'insert' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">INSERIR</a>
+    <a href="{% url 'add' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">INSERIR</a>
     <a href="{% url 'contacts' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACTOS</a>
     <a href="#" class="w3-bar-item w3-button">PESQUISA</a>
   </div>
