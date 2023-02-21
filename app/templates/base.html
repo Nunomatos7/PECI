@@ -8,7 +8,11 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -23,7 +27,7 @@
     {% block content %}
     {% if user.is_authenticated %}
     <a href="{% url 'dashboard' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black"><i class="fa fa-user" style="color: black" ;></i> DASHBOARD</a>
-    <a href="{% url 'add' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black; ";><i class="fa fa-th" style="color: black";></i> INSERIR</a>
+    <a href="{% url 'insert' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black; ";><i class="fa fa-th" style="color: black";></i> INSERIR</a>
     <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-black" style="color: black; ">Log Out</a>
     {% else %}
     <a href="{% url 'login' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-user" style="color: black";></i> LOGIN</a>
@@ -38,12 +42,13 @@
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
     <a href="{% url 'dashboard' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">DASHBOARD</a>
-    <a href="{% url 'add' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">INSERIR</a>
+    <a href="{% url 'insert' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">INSERIR</a>
     <a href="{% url 'contacts' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACTOS</a>
     <a href="#" class="w3-bar-item w3-button">PESQUISA</a>
   </div>
 </div>
-    {% block base %}{% endblock base%}
+
+    {% block base %}{% endblock base %}
 
 
 <!-- Footer -->
