@@ -36,7 +36,7 @@
   {% endif %}
 </div>
 
-  <form method="POST" action="{% url 'insert' %}">
+  <form method="POST" action="{% url 'insert_temp' %}">
     {% csrf_token %}
 
     <div class="form-group">
@@ -45,18 +45,8 @@
     </div>
     
     <div class="form-group">
-      <label >Femeas</label>
-      <input type="text" id="femeas" name="femeas"><br><br>
-    </div>
-    
-    <div class="form-group">
-      <label>Desovados</label>
-      <input type="text" id="desovados" name="desovados"><br><br>
-    </div>
-    
-    <div class="form-group">
-      <label>Embrionados</label>
-      <input type="text" id="embrionados" name="embrionados"><br><br>
+      <label>Temperatura</label>
+      <input type="number" step="0.1" id="temperatura" name="temperatura"><br><br>
     </div>
     
     <input type="submit">

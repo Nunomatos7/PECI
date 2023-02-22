@@ -20,20 +20,20 @@ def dashboard_view(request):
     return render(request, "dashboard.html", {})
 
 @login_required
-def insert_view(request):
+def insert_desovas(request):
     if request.method == 'POST':
         form = DesovaForm(request.POST or None)
         #verificar se form é valido
         if form.is_valid():
             form.save()
             messages.success(request,('Dados Desova adicionado!'))
-            return redirect('insert')
+            return redirect('insert_desovas')
         else:
             messages.success(request,('DADOS INCORRETOS!'))
-
+    """
     form = DesovaForm()
     Desovas = Desova.objects.all()
-    """
+    
     IN HTML TO PRINT INFO: {{ Desovas }}
     PRINT ALL FROM DESOVAS:
         {% for x in Desovas %}
@@ -42,8 +42,21 @@ def insert_view(request):
 
     para apresentar especifico: x.data, x.femeas,...
     """
-    
-    return render(request,'insert.html',{'form':form, 'Desovas':Desovas})
+    return render(request,'insert_desovas.html',{})
+
+@login_required
+def insert_temp(request):
+    if request.method == 'POST':
+        form = TemperaturaForm(request.POST or None)
+        #verificar se form é valido
+        if form.is_valid():
+            form.save()
+            messages.success(request,('Dados Temperatura adicionado!'))
+            return redirect('insert_temp')
+        else:
+            messages.success(request,('DADOS INCORRETOS!'))
+
+    return render(request,'insert_temp.html',{})
 
 def contacts_view(request):
     return render(request, "contacts.html", {})
