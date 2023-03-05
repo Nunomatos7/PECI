@@ -6,6 +6,7 @@ from datetime import datetime
 from openpyxl import load_workbook
 import calendar
 import xlrd
+from django.db.utils import IntegrityError
 class Command(BaseCommand):
     help = 'import booms'
 
@@ -18,21 +19,34 @@ class Command(BaseCommand):
             if file.endswith("xls") or file.endswith("xlsx"):
                 df = pd.read_excel("Ficheiros PECI/"+file)
                 df2 = df.fillna(0)
+            
             if file.startswith("Desovas"):
-                for DATA, FEMEAS, DESOVADOS, EMBRIONADOS in zip(df2.Data,df2.Fêmeas,df2.Desovados,df2.Embrionados):
-                    if (DATA and FEMEAS and DESOVADOS and EMBRIONADOS ) != 0 :
-                        DATA = dataFormat(DATA)
-                        if not dataIsValid(DATA) or not (str(FEMEAS).isdigit() or str(DESOVADOS).isdigit() or str(EMBRIONADOS).isdigit()):
-                            continue
-                        models = Desova(data = str(DATA), femeas = FEMEAS, desovados = DESOVADOS, embrionados = EMBRIONADOS)
-                        models.save()
+                flag = False
+                wb = xlrd.open_workbook("Ficheiros PECI/"+file)
+                worksheet = wb.sheet_by_index(0)
+                for row_index in range(worksheet.nrows):
+                    cell = worksheet.cell(row_index,0)
+                    if cell.ctype == xlrd.XL_CELL_DATE:
+                        flag = True
+                    if ( not cell.ctype == xlrd.XL_CELL_DATE and flag):
+                        break
+                    if flag:
+                        date = xlrd.xldate_as_datetime(cell.value, wb.datemode)
+                        date = str(date).split(" ")[0]
+                        try:
+                            models = Data.objects.get(data=date)
+                        except Data.DoesNotExist:
+                            models = Data(date)
+                            models.save()
+                        models1 = Desova(data=models,femeas = toNone(worksheet.cell(row_index,1).value),desovados = toNone(worksheet.cell(row_index,2).value),embrionados = toNone(worksheet.cell(row_index,3).value))
+                        models1.save()
+
             if file.startswith("Temperaturas"):
                 print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
                 ## por agora não há médias
                 ano = file[13:17]
                 ws = wb.sheet_by_name(str(ano))
-                print(ano)
                 mes =1
                 for row_index in range(ws.nrows):
                     row = ws.row(row_index)
@@ -49,16 +63,28 @@ class Command(BaseCommand):
                             dia = "0"+str(dia)
                         if len (str(row[index].value)) ==0 or (str(mes) == "02" and (dia =="30" or dia =="31")):
                             continue
-                        models = Temperatura(data = str(ano)+"-"+str(mes)+"-"+str(dia),temperatura=row[index].value )
-                        models.save()
-                ### ultima tabela aqui
+                        #print(str(ano)+"-"+str(mes)+"-"+str(dia))
+                        try:
+                            data_models = Data.objects.get(data=date)
+                        except Data.DoesNotExist:
+                            data_models = Data(data = str(ano)+"-"+str(mes)+"-"+str(dia))
+                            data_models.save()
+                        models1 = Temperatura(data = data_models,temperatura=row[index].value )
+                        models1.save()
+                ### jaula e dados
+                
             if file.startswith("Cópia de Dados"):
-                print("Ficheiros PECI/"+file) 
+                print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
                 ## Eventrualmente generalizer com base no nome do ficheiro
                 worksheet = wb.sheet_by_index(1)
                 table_start = False
                 ano = 0
+                try:
+                    models = Jaula.objects.get(id = int(worksheet.name.split(" ")[1]))
+                except Jaula.DoesNotExist:
+                    models = Jaula(id = int(worksheet.name.split(" ")[1]),volume = 0, massa_volumica = 0)
+                    models.save()
                 for row_index in range(worksheet.nrows):
                     cell = worksheet.cell(row_index, 1)
                     if cell.ctype == xlrd.XL_CELL_DATE or isMonth(cell.value):
@@ -70,14 +96,18 @@ class Command(BaseCommand):
                         if cell.ctype == xlrd.XL_CELL_DATE:
                             date = xlrd.xldate_as_datetime(cell.value, wb.datemode)
                             date = str(date).split(" ")[0]
-                            print(date)
                             ano = date.split("-")[0]
                         else :
                             mes = month_to_number(cell.value)
                             if len(str(mes))!=2:
                                 mes = "0"+str(mes)
                             date = str(ano)+"-"+str(mes)+"-"+str(15)
-                        models = Jaula(data = date, num_peixes = worksheet.cell(row_index,2).value,
+                        try:
+                            data_models = Data.objects.get(data=date)
+                        except Data.DoesNotExist:
+                            data_models = Data(date)
+                            data_models.save()
+                        models2 = Dados(id_jaula = models, data = data_models, num_peixes = worksheet.cell(row_index,2).value,
                         PM = worksheet.cell(row_index,3).value, Biom = worksheet.cell(row_index,4).value,
                         percentagem_alimentacao = worksheet.cell(row_index,5).value, peso =worksheet.cell(row_index,6).value,
                         sacos_racao = worksheet.cell(row_index,7).value, FC = worksheet.cell(row_index,9).value,
@@ -85,12 +115,73 @@ class Command(BaseCommand):
                         alimentacao_real = worksheet.cell(row_index,14).value, PM_teorico = worksheet.cell(row_index,15).value,
                         PM_real = worksheet.cell(row_index,16).value, percentagem_mortalidade_teorica  = worksheet.cell(row_index,18).value,
                         num_mortos_teorico = worksheet.cell(row_index,19).value, percentagem_mortalidade_real = worksheet.cell(row_index,20).value,
-                        num_mortos_real = worksheet.cell(row_index,21).value, FC_real = toNone(worksheet.cell(row_index,25).value),
-                        retirados = 0, volume = 0 , colocados = 0, id = int(worksheet.name.split(" ")[1]))
-                        models.save()
+                        num_mortos_real = worksheet.cell(row_index,21).value, FC_real = toNone(worksheet.cell(row_index,25).value))
+                        models2.save()
+                ##vacina e movimentos
+                #falta inserir data
+                flag = False
+                for row_index in range(worksheet.nrows):
+                    if worksheet.cell(row_index,1).value is not None and "vacina" in str(worksheet.cell(row_index,1).value).lower() and not flag:
+                        flag = True
+                        continue
+                    if str(worksheet.cell(row_index,1).value) ==""  and flag:
+                        flag = False
+                        break
+                    if flag:
+                        cell = worksheet.cell(row_index,2).value
+                        date = xlrd.xldate_as_datetime(cell ,wb.datemode)
+                        date = str(date).split(" ")[0]
+                        try:
+                            data_models = Data.objects.get(data=date)
+                        except Data.DoesNotExist:
+                            data_models = Data(data = str(ano)+"-"+str(mes)+"-"+str(dia))
+                            data_models.save()
+                        models1 = Vacina(data = data_models,id_jaula = models,num = worksheet.cell(row_index,4).value,PM = worksheet.cell(row_index,5).value)
+                        models1.save()
+                
+                
+                for row_index in range(worksheet.nrows):
+                    #jaula_inicio = Jaula()
+                    #jaula_fim = Jaula()
+                    cell = worksheet.cell(row_index,1)
+                    if worksheet.cell(row_index,1).value is not None and "tabela de entrada e saida de peixe" in str(worksheet.cell(row_index,1).value).lower():
+                        flag = True
+                        continue
+                    if flag :
+                        cell = worksheet.cell(row_index+1,1)
+                        if not (cell.ctype == xlrd.XL_CELL_DATE):
+                            break
+                        if cell.ctype == xlrd.XL_CELL_DATE:
+                            date = xlrd.xldate_as_datetime(cell.value, wb.datemode)
+                            date = str(date).split(" ")[0] 
+                        
+                        try:
+                            data_models = Data.objects.get(data=date)
+                        except Data.DoesNotExist:
+                            data_models = Data(date)
+                            data_models.save()
+                        print(date)
+                    
+                        print(worksheet.cell(row_index+1,6).value)
+                        try:
+                            j_id = toNone(worksheet.cell(row_index+1,5).value)
+                            jaula_inicio = Jaula.objects.get(id=j_id)
+                        except Jaula.DoesNotExist:
+                            jaula_inicio = Jaula(id=j_id,volume = 0, massa_volumica = 0)
+                            jaula_inicio.save()
+                        try:
+                            j_id = toNone(worksheet.cell(row_index+1,6).value)
+                            jaula_fim = Jaula.objects.get(id=j_id)
+                        except Jaula.DoesNotExist:
+                            jaula_fim = Jaula(id= j_id ,volume = 0, massa_volumica = 0)
+                            jaula_fim.save()
+                        mov = Movimento(data = data_models,num = worksheet.cell(row_index+1,3).value,jaula_inicio=jaula_inicio,jaula_fim=jaula_fim)
+                        mov.save()
+                        print("oi")
+                    
 
                         
-        
+     
 
 
 
@@ -122,6 +213,6 @@ def isMonth(month_name):
     return month_name in month_names
 
 def toNone(string):
-    if str(string) == '':
+    if str(string) == '' or str(string)=='?':
         return 0
     return string
