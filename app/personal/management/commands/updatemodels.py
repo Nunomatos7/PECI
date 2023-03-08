@@ -19,7 +19,7 @@ class Command(BaseCommand):
             if file.endswith("xls") or file.endswith("xlsx"):
                 df = pd.read_excel("Ficheiros PECI/"+file)
                 df2 = df.fillna(0)
-            
+            """
             if file.startswith("Desovas"):
                 flag = False
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -40,7 +40,7 @@ class Command(BaseCommand):
                             models.save()
                         models1 = Desova(data=models,femeas = toNone(worksheet.cell(row_index,1).value),desovados = toNone(worksheet.cell(row_index,2).value),embrionados = toNone(worksheet.cell(row_index,3).value))
                         models1.save()
-
+"""
             if file.startswith("Temperaturas"):
                 print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -65,14 +65,14 @@ class Command(BaseCommand):
                             continue
                         #print(str(ano)+"-"+str(mes)+"-"+str(dia))
                         try:
-                            data_models = Data.objects.get(data=date)
+                            data_models = Data.objects.get(data = str(ano)+"-"+str(mes)+"-"+str(dia))
                         except Data.DoesNotExist:
                             data_models = Data(data = str(ano)+"-"+str(mes)+"-"+str(dia))
                             data_models.save()
                         models1 = Temperatura(data = data_models,temperatura=row[index].value )
                         models1.save()
                 ### jaula e dados
-                
+        """     
             if file.startswith("Cópia de Dados"):
                 print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -132,9 +132,9 @@ class Command(BaseCommand):
                         date = xlrd.xldate_as_datetime(cell ,wb.datemode)
                         date = str(date).split(" ")[0]
                         try:
-                            data_models = Data.objects.get(data=date)
+                            data_models = Data.objects.get(date)
                         except Data.DoesNotExist:
-                            data_models = Data(data = str(ano)+"-"+str(mes)+"-"+str(dia))
+                            data_models = Data(date)
                             data_models.save()
                         models1 = Vacina(data = data_models,id_jaula = models,num = worksheet.cell(row_index,4).value,PM = worksheet.cell(row_index,5).value)
                         models1.save()
@@ -179,7 +179,7 @@ class Command(BaseCommand):
                         mov.save()
                         print("oi")
                     
-
+        """
                         
      
 
