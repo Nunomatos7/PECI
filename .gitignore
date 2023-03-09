@@ -1,1 +1,4 @@
 venv
+app\personal\__pycache__
+app\personal\migrations\__pycache__
+app\projeto\__pycache__
