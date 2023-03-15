@@ -39,27 +39,12 @@
   <form method="POST" action="{% url 'insert_desovas' %}">
     {% csrf_token %}
 
-    <div class="form-group">
-      <label>Data</label>
-      <input type="date" id="data" name="data"><br><br>
-    </div>
-    
-    <div class="form-group">
-      <label >Femeas</label>
-      <input type="text" id="femeas" name="femeas"><br><br>
-    </div>
-    
-    <div class="form-group">
-      <label>Desovados</label>
-      <input type="text" id="desovados" name="desovados"><br><br>
-    </div>
-    
-    <div class="form-group">
-      <label>Embrionados</label>
-      <input type="text" id="embrionados" name="embrionados"><br><br>
-    </div>
+    {{ data_form.as_p }}
+
+    {{ desova_form.as_p }}
     
     <input type="submit">
+
   </form>
 
 

@@ -22,11 +22,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home,name="home"),
     path('dashboard/', dashboard_view, name='dashboard'),
-    path('insert_desovas/', insert_desovas, name='insert_desovas'),
-    path('insert_temp/', insert_temp, name='insert_temp'),
     path('contacts/', contacts_view, name='contacts'),
+    path('insert_temp/', insert_temp, name='insert_temp'),
+    path('delete_temp/', delete_temp, name='delete_temp'),
+    path('insert_desovas/', insert_desovas, name='insert_desovas'),
+    path('delete_desova/', delete_desova, name='delete_desova'),
     #path('teste/', teste, name='teste'),
-    #path('add/addrecord/', InsD_temperatura, name='InsD_temperatura'),
     path('auth/', include("django.contrib.auth.urls"), name='auth'),
 ]
 """

@@ -35,17 +35,21 @@
     
   {% endif %}
 </div>
-
-  <form method="POST" action="{% url 'insert_temp' %}">
-    {% csrf_token %}
-
-    {{ data_form.as_p }}
-
-    {{ temp_form.as_p }}
-    
-    <input type="submit">
-  </form>
-
+    <!--
+    <form method="POST" action="{% url 'delete_temp' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_data">Data:</label>
+          <input type="date" name="data" class="form-control" id="id_data" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+      -->
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
 
 
   <style>
