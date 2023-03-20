@@ -1,6 +1,6 @@
 from django import forms
 from .models import *
-
+"""
 class DataForm(forms.ModelForm):
     data = forms.DateField(widget=forms.TextInput(attrs={'type': 'date'}))
     
@@ -25,7 +25,7 @@ class DataForm(forms.ModelForm):
         widgets = {
             'data': forms.DateInput(attrs={'type': 'date'})
         }
-"""
+
 
 class DesovaForm(forms.ModelForm):
     class Meta :

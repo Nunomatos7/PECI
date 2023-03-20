@@ -185,7 +185,7 @@
   {% endif %}
 </div>
 
-<form method="POST" action="{% url 'insert_desovas' %}">
+<form method="POST" action="{% url 'insert_temp' %}">
   {% csrf_token %}
 
   {{ data_form.as_p }}

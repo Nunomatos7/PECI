@@ -55,20 +55,24 @@ def insert_temp(request):
         data_form = DataForm(request.POST)
 
         if temp_form.is_valid() and data_form.is_valid():
-            # Check if a Data instance with the same data already exists
             data_data = data_form.cleaned_data['data']
-            data, created = Data.objects.get_or_create(data=data_data)
+            try:
+                # Check if a Data instance with the same data already exists
+                data = Data.objects.get(data=data_data)
+            except Data.DoesNotExist:
+                # If it doesn't exist, create a new Data instance
+                data = data_form.save()
 
             # Create a new Temperatura instance with the Data instance as the foreign key
             temp = temp_form.save(commit=False)
             temp.data = data
             temp.save()
-            messages.success(request,('Dados Temperatura adicionado!'))
+            messages.success(request, 'Dados Temperatura adicionado!')
             # redirect to success page or show success message
         else:
             print(temp_form.errors)
             print(data_form.errors)
-            messages.success(request,('Erro!'))
+            messages.success(request, 'Erro!')
     else:
         temp_form = TemperaturaForm()
         data_form = DataForm()
