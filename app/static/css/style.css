@@ -1,3 +1,6 @@
+/* Navbar container */
+
+
 body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;}
 body, html {
   height: 100%;
@@ -17,6 +20,7 @@ body, html {
 .bgimg-1 {
   background-image: url('../images/peixe1.jpg');
   min-height: 100%;
+  z-index: -999;
 }
 
 /* Second image (Portfolio) */
@@ -49,7 +53,7 @@ body, html {
 }
 
   .sl{
-    /background-color: black;/
+    background-color: black;
     height: 40px;
     width: 120px;
     font-size: 20px;

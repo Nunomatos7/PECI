@@ -27,6 +27,8 @@ urlpatterns = [
     path('delete_temp/', delete_temp, name='delete_temp'),
     path('insert_desovas/', insert_desovas, name='insert_desovas'),
     path('delete_desova/', delete_desova, name='delete_desova'),
+    path('ins_excel_desovas/', ins_excel_desovas, name='ins_excel_desovas'),
+    path('ins_excel_temp/', ins_excel_temp, name='ins_excel_temp'),
     #path('teste/', teste, name='teste'),
     path('auth/', include("django.contrib.auth.urls"), name='auth'),
 ]
