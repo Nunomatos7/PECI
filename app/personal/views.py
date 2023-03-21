@@ -118,11 +118,64 @@ def delete_desova(request):
     
 @login_required
 def ins_excel_temp(request):
-    return render(request, 'ins_excel_temp.html', {})
+    if request.method == 'POST':
+        temp_form = TemperaturaForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        if temp_form.is_valid():
+            try:
+                if data_form.is_valid():
+                    data = data_form.save()
+                
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+            except:
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+        else:
+            messages.success(request, 'Erro!')
+    else:
+        temp_form = TemperaturaForm()
+        data_form = DataForm()
+    return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form})
     
 @login_required
 def ins_excel_desovas(request):
-    return render(request, 'ins_excel_desovas.html', {})
+    if request.method == 'POST':
+        desova_form = DesovaForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        if desova_form.is_valid():
+            try:
+                #case there is no data
+                if data_form.is_valid():
+                    data = data_form.save()
+
+                desova = desova_form.save(commit=False)
+                desova.data = data
+                desova.save()
+                messages.success(request, 'Dados Desova adicionado!')
+            except:
+                #case already exists data
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                desova = desova_form.save(commit=False)
+                desova.data = data
+                desova.save()
+                messages.success(request, 'Dados Desova adicionado!')
+
+        else:
+            messages.success(request,('Erro!'))
+    else:
+        desova_form = DesovaForm()
+        data_form = DataForm()
+    return render(request, 'ins_excel_desovas.html', {'desova_form': desova_form, 'data_form': data_form})
 
 @login_required
 def teste(request):
