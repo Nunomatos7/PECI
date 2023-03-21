@@ -30,6 +30,11 @@
     <div id="buttons"></div>
 
     <form method="POST" action="{% url 'insert_desovas' %}">
+      {% csrf_token %}
+
+      {{ data_form.as_p }}
+  
+      {{ temp_form.as_p }}
         <button type="button" value="Select" onclick="select('id_femeas')" style="margin-left: 25%;">Selecionar fêmeas</button><br>
         <button type="button" value="Select" onclick="select('id_desovados')" style="margin-left: 25%;">Selecionar desovados</button><br>
         <button type="button" value="Select" onclick="select('id_embrionados')" style="margin-left: 25%;">Selecionar embrionados</button>

@@ -179,6 +179,11 @@
 </div>
 
 <form method="POST" action="{% url 'insert_temp' %}">
+  {% csrf_token %}
+
+    {{ data_form.as_p }}
+
+    {{ temp_form.as_p }}
   <button type="button" value="Select" onclick="select('id_temperatura')" style="margin-left: 25%;">Selecionar temperatura</button>
 </form>
 
