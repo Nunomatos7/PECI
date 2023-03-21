@@ -118,11 +118,11 @@ def delete_desova(request):
     
 @login_required
 def ins_excel_temp(request):
-    return render(request, 'ins_excel_temp.html')
+    return render(request, 'ins_excel_temp.html', {})
     
 @login_required
 def ins_excel_desovas(request):
-    return render(request, 'ins_excel_desovas.html',)
+    return render(request, 'ins_excel_desovas.html', {})
 
 @login_required
 def teste(request):
