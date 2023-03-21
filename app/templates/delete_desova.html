@@ -1,39 +1,7 @@
 {% extends "base.html" %}
 {% block base %}
 
-<!-- Second Parallax Image with Portfolio Text -->
-<div class="bgimg-2 w3-display-container w3-opacity-min">
-    <div class="w3-display-middle">
-      <span class="w3-xxlarge w3-text-white w3-wide" ><b>INSERIR DADOS</b></span>
-    </div>
-  </div>
-  
-  <!-- Container (Portfolio Section) -->
-  <div class="w3-content w3-container w3-padding-64" id="portfolio">
-    <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">Introduzir ficheiro Excel</h3>
-    <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
-    <h3 class="w3-center" style="color:white">Inserir ficheiro Excel</h3>
-    <form style="text-align:center" action="">
-      <input type="file" id="myFile" name="filename">
-      <input type="submit">
-    </form>
-    </div>
-  </div>
-  
-  <div class="Container">
-  {% if messages %}
 
-      {% for message in messages %}
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      {% endfor %}
-    
-  {% endif %}
 </div>
     <!--
     <form method="POST" action="{% url 'delete_temp' %}">
@@ -45,10 +13,12 @@
         <button type="submit" class="btn btn-danger">Delete</button>
       </form>
       -->
-      <form method="POST">
+      <form method="POST" style="padding-top: 150px; padding-bottom: 50px;"">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <div style="text-align: right;">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
       </form>
 
 
@@ -61,7 +31,7 @@ form {
 }
 
 label {
-  margin-left: 450px;
+  margin-left: 50px;
   font-weight: bold;
   margin-right: 10px;
 }
