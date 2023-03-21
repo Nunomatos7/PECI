@@ -3,6 +3,21 @@
 
 
   <form method="POST" action="{% url 'insert_desovas' %}" style="padding-top: 150px; padding-bottom: 100px;">
+    <div class="Container">
+      {% if messages %}
+  
+          {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+  
+          {% endfor %}
+        
+      {% endif %}
+    </div>
 
     <h3 class="w3-center" style="color:white">Inserir ficheiro Excel</h3>
     <input style = "margin-left: 50px;"  type="file" id="myFile">
