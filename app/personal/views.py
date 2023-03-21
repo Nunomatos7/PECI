@@ -28,20 +28,26 @@ def insert_desovas(request):
         desova_form = DesovaForm(request.POST)
         data_form = DataForm(request.POST)
 
-        if desova_form.is_valid() and data_form.is_valid():
-            # Check if a Data instance with the same data already exists
-            data_data = data_form.cleaned_data['data']
-            data, created = Data.objects.get_or_create(data=data_data)
+        if desova_form.is_valid():
+            try:
+                #case there is no data
+                if data_form.is_valid():
+                    data = data_form.save()
 
-            # Create a new Desova instance with the Data instance as the foreign key
-            desova = desova_form.save(commit=False)
-            desova.data = data
-            desova.save()
-            messages.success(request,('Dados Desova adicionado!'))
-            # redirect to success page or show success message
+                desova = desova_form.save(commit=False)
+                desova.data = data
+                desova.save()
+                messages.success(request, 'Dados Desova adicionado!')
+            except:
+                #case already exists data
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                desova = desova_form.save(commit=False)
+                desova.data = data
+                desova.save()
+                messages.success(request, 'Dados Desova adicionado!')
+
         else:
-            print(desova_form.errors)
-            print(data_form.errors)
             messages.success(request,('Erro!'))
     else:
         desova_form = DesovaForm()
@@ -54,24 +60,23 @@ def insert_temp(request):
         temp_form = TemperaturaForm(request.POST)
         data_form = DataForm(request.POST)
 
-        if temp_form.is_valid() and data_form.is_valid():
-            data_data = data_form.cleaned_data['data']
+        if temp_form.is_valid():
             try:
-                # Check if a Data instance with the same data already exists
+                if data_form.is_valid():
+                    data = data_form.save()
+                
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+            except:
+                data_data = data_form.data['data']
                 data = Data.objects.get(data=data_data)
-            except Data.DoesNotExist:
-                # If it doesn't exist, create a new Data instance
-                data = data_form.save()
-
-            # Create a new Temperatura instance with the Data instance as the foreign key
-            temp = temp_form.save(commit=False)
-            temp.data = data
-            temp.save()
-            messages.success(request, 'Dados Temperatura adicionado!')
-            # redirect to success page or show success message
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
         else:
-            print(temp_form.errors)
-            print(data_form.errors)
             messages.success(request, 'Erro!')
     else:
         temp_form = TemperaturaForm()
