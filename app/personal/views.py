@@ -92,7 +92,7 @@ def delete_temp(request):
         temperatura = Temperatura.objects.filter(data__data=data).first()
         if temperatura:
             temperatura.delete()
-            messages.success(request,('Dados Temperatura eleminado!'))
+            messages.success(request,('Dados Temperatura eliminado!'))
             return render(request, 'delete_temp.html', {'form': form})
         else:
             messages.success(request,('Erro!'))
@@ -108,7 +108,7 @@ def delete_desova(request):
         desova = Desova.objects.filter(data__data=data).first()
         if desova:
             desova.delete()
-            messages.success(request,('Dados Desova eleminado!'))
+            messages.success(request,('Dados Desova eliminado!'))
             return render(request, 'delete_temp.html', {'form': form})
         else:
             messages.success(request,('Erro!'))
