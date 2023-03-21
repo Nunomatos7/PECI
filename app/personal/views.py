@@ -110,6 +110,14 @@ def delete_desova(request):
             return render(request, 'delete_temp.html', {'form': form})
     else:
         return render(request, 'delete_desova.html', {'form': form})
+    
+@login_required
+def ins_excel_temp(request):
+    return render(request, 'ins_excel_temp.html')
+    
+@login_required
+def ins_excel_desovas(request):
+    return render(request, 'ins_excel_desovas.html',)
 
 @login_required
 def teste(request):
