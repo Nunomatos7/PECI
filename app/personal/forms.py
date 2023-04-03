@@ -39,3 +39,9 @@ class TemperaturaForm(forms.ModelForm):
         model = Temperatura
         exclude = ['data']
         widgets = {'temperatura': forms.NumberInput(attrs={'step': 0.1})}
+
+class TemperaturaArrayForm(forms.Form):
+    temperatura_array = forms.CharField(label='Temperaturas')
+
+class DesovasLineForm(forms.Form):
+    desovasLines = forms.CharField(label='Desovas')

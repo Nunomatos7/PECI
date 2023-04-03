@@ -1,15 +1,8 @@
 {% extends "base.html" %}
 {% block base %}
-
-  <script>
-    function testResults (form) {
-        var inputValue = form.inputbox.value;
-        alert ("You typed: " + inputValue);
-    }
-  </script>
   
   <!-- Container (Portfolio Section) -->
-  <div class="w3-content w3-container w3-padding-64" id="portfolio">
+  <div class="w3-container w3-padding-64" id="portfolio">
     <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">Introduzir ficheiro Excel</h3>
     <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
     <h3 class="w3-center" style="color:white">Inserir ficheiro Excel</h3>
@@ -24,6 +17,8 @@
         var make_buttons = function(sheetnames) {
           var buttons = document.getElementById('buttons');
           buttons.innerHTML = "";
+          label = document.createElement('p'); label.innerText = "Selecione a folha de calculo";
+          buttons.appendChild(label)
           sheetnames.forEach(function(s,idx) {
             var btn = document.createElement('button');
             btn.type = 'button';
@@ -43,6 +38,19 @@
           
           const file = e.target.files[0];
           const data = await file.arrayBuffer();
+          /* data is an ArrayBuffer */
+          const workbook = XLSX.read(data, {cellDates: true});
+          WorkB = workbook;
+          var wsnames = workbook.SheetNames;
+          make_buttons(wsnames);
+          showSheet(workbook,0)
+        }
+
+        async function handleDropAsync(e) {
+          e.stopPropagation(); e.preventDefault();
+          const f = e.dataTransfer.files[0];
+          /* f is a File */
+          const data = await f.arrayBuffer();
           /* data is an ArrayBuffer */
           const workbook = XLSX.read(data, {cellDates: true});
           WorkB = workbook;
@@ -71,18 +79,18 @@
 
         function selection(e){
           let rows = Object.keys(e.selectedData);
-          let text;
+          let text = "";
           // para selecionar varios valores separados por ;
-          // for (let j = 0; j < rows.length; j++){
-          //   array = ((e.selectedData)[rows[j]]);
-          //   for(let i=0; i<Object.values(array).length;i++){
-          //     value = Object.values(array)[i];
-          //     text += value.toString() + ";";
-          //   } 
-          // }
-          text = Object.values(e.selectedData)[0];
-          text = Object.values(text)[0];
-          text = parseFloat(text.replaceAll(',', ''))
+          for (let j = 0; j < rows.length; j++){
+            array = ((e.selectedData)[rows[j]]);
+            for(let i=0; i<Object.values(array).length;i++){
+              value = Object.values(array)[i];
+              console.log(value)
+              if(value != undefined)text += value.toString() + ";";
+            } 
+          }
+          text = text.slice(0, -1);
+          text = text.replace(/\s/g, '');
           document.getElementById(element).value = text;
         }
 
@@ -134,8 +142,9 @@
           .indexOf(Math.max(...Arrays.map(a=>a.length)));
           const lengths = Arrays.map(a=>a.length);
           max_length = lengths.indexOf(Math.max(...lengths));
-          if (max_length > Arrays[0].length){
+          if (max_length > Arrays[0].length || max_length < 15){
             let target_length = max_length-Arrays[0].length;
+            if(target_length < 15) target_length = 15;
             for(i = 0; i < target_length; i++){
               Arrays[0].push("");
             }
@@ -144,6 +153,14 @@
           global_grid = grid;
         }
         input.addEventListener("change", handleFileAsync, false);
+        function handleDragover(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'copy';
+        }
+        document.addEventListener("drop", handleDropAsync, false);
+        document.addEventListener("dragover", handleDragover, false);
+        document.addEventListener("dragenter", handleDragover, false);
 
 
 
@@ -178,13 +195,15 @@
   {% endif %}
 </div>
 
-<form method="POST" action="{% url 'insert_temp' %}">
+<form method="POST" action="{% url 'ins_excel_temp' %}">
   {% csrf_token %}
-
     {{ data_form.as_p }}
+    {{ data_final_form.as_p }}
+    
 
-    {{ temp_form.as_p }}
-  <button type="button" value="Select" onclick="select('id_temperatura')" style="margin-left: 25%;">Selecionar temperatura</button>
+    {{ temp_form }}
+  <button type="button" value="Select" onclick="select('id_temperatura_array')" style="margin-left: 25%;">Selecionar temperatura</button>
+  <input type="submit">
 </form>
 
 
@@ -224,6 +243,7 @@ input[type="submit"]:hover {
   background-color: #3e8e41;
   margin-bottom: 100px;
 }
+
   </style>
 
 {% endblock base %}
