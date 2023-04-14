@@ -241,3 +241,149 @@ def teste(request):
     """
     
     return render(request,'teste.html',{'form':form, 'Desovas':Desovas})
+
+@login_required
+def transicoes(request):
+    if request.method == 'POST':
+        temp_form = TemperaturaForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        if temp_form.is_valid():
+            try:
+                if data_form.is_valid():
+                    data = data_form.save()
+                
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+            except:
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+        else:
+            messages.success(request, 'Erro!')
+    else:
+        temp_form = TemperaturaForm()
+        data_form = DataForm()
+    return render(request, 'transicoes.html', {'temp_form': temp_form, 'data_form': data_form})
+
+
+@login_required
+def amostragens(request):
+    if request.method == 'POST':
+        temp_form = TemperaturaForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        if temp_form.is_valid():
+            try:
+                if data_form.is_valid():
+                    data = data_form.save()
+                
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+            except:
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+        else:
+            messages.success(request, 'Erro!')
+    else:
+        temp_form = TemperaturaForm()
+        data_form = DataForm()
+    return render(request, 'amostragens.html', {'temp_form': temp_form, 'data_form': data_form})
+
+@login_required
+def venda(request):
+    if request.method == 'POST':
+        temp_form = TemperaturaForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        if temp_form.is_valid():
+            try:
+                if data_form.is_valid():
+                    data = data_form.save()
+                
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+            except:
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+        else:
+            messages.success(request, 'Erro!')
+    else:
+        temp_form = TemperaturaForm()
+        data_form = DataForm()
+    return render(request, 'venda.html', {'temp_form': temp_form, 'data_form': data_form})
+
+@login_required
+def comida(request):
+    if request.method == 'POST':
+        temp_form = TemperaturaForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        if temp_form.is_valid():
+            try:
+                if data_form.is_valid():
+                    data = data_form.save()
+                
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+            except:
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+        else:
+            messages.success(request, 'Erro!')
+    else:
+        temp_form = TemperaturaForm()
+        data_form = DataForm()
+    return render(request, 'comida.html', {'temp_form': temp_form, 'data_form': data_form})
+
+@login_required
+def setup_jaula(request):
+    if request.method == 'POST':
+        temp_form = TemperaturaForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        if temp_form.is_valid():
+            try:
+                if data_form.is_valid():
+                    data = data_form.save()
+                
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+            except:
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                temp = temp_form.save(commit=False)
+                temp.data = data
+                temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+        else:
+            messages.success(request, 'Erro!')
+    else:
+        temp_form = TemperaturaForm()
+        data_form = DataForm()
+    return render(request, 'setup_jaula.html', {'temp_form': temp_form, 'data_form': data_form})

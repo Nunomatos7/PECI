@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block base %}
+  <div class="container" style="padding-top: 100px;">
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+    {% endif %}
+    <form method="POST" action="{% url 'insert_temp' %}">
+      {% csrf_token %}
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <div class="w3-dropdown-hover">
+            <button class="w3-button" style="background-color: #f2f2f2; border: 1px solid gray; border-radius: 10px; padding: 10px;">Jaula Inicial</button>
+            <div class="w3-dropdown-content w3-bar-block w3-border" style="border-radius: 10px;">
+              <a href="#" class="w3-bar-item w3-button">Jaula 1</a>
+              <a href="#" class="w3-bar-item w3-button">Jaula 2</a>
+              <a href="#" class="w3-bar-item w3-button">Jaula 3</a>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <div class="w3-dropdown-hover">
+            <button class="w3-button" style="background-color: #f2f2f2; border: 1px solid gray; border-radius: 10px; padding: 10px;">Jaula Final</button>
+            <div class="w3-dropdown-content w3-bar-block w3-border" style="border-radius: 10px;">
+              <a href="#" class="w3-bar-item w3-button">Jaula 1</a>
+              <a href="#" class="w3-bar-item w3-button">Jaula 2</a>
+              <a href="#" class="w3-bar-item w3-button">Jaula 3</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="num_peixes">Nº de Peixes:</label>
+          <input type="text" id="num_peixes" name="num_peixes" class="form-control" required>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="peso_medio">Peso Médio (kg):</label>
+          <input type="text" id="peso_medio" name="peso_medio" class="form-control" required>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="peso_total">Peso Total (kg):</label>
+          <input type="text" id="peso_total" name="peso_total" class="form-control" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submeter</button>
+      </div>
+    </form>
+  </div>
+
+  <style
+
+  <style>
+    form {
+      padding: 20px;
+      background-color: #f2f2f2;
+      border-radius: 10px;
+    }
+    label {
+      margin-left: 20px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid gray;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      float: right;
+      position: relative;
+    }
+    input[type="submit"]:hover {
+      background-color: #3e8e41;
+      margin-bottom: 100px;
+    }
+  </style>
+{% endblock base %}

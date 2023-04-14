@@ -31,6 +31,11 @@ urlpatterns = [
     path('ins_excel_temp/', ins_excel_temp, name='ins_excel_temp'),
     #path('teste/', teste, name='teste'),
     path('auth/', include("django.contrib.auth.urls"), name='auth'),
+    path('transicoes/', transicoes, name='transicoes'),
+    path('amostragens/', amostragens, name='amostragens'),
+    path('venda/', venda, name='venda'),
+    path('comida/', comida, name='comida'),
+    path('setup_jaula/', setup_jaula, name='setup_jaula'),
 ]
 """
 re_path(r'^admin/', admin.site.urls),

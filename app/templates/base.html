@@ -60,6 +60,15 @@
         <a href="{% url 'ins_excel_temp' %}" class="w3-bar-item w3-button">TEMPERATURAS</a>
       </div>
     </div>
+
+    <div class="w3-dropdown-hover" >
+      <button class="w3-button w3-bar-item w3-button w3-hide-small"  style="color: black; ";><i class="fa fa-th" style="color: black";></i> MOVIMENTOS</button>
+      <div class="w3-dropdown-content w3-bar-block w3-border" style="position: fixed; z-index: 9999;">
+        <a href="{% url 'transicoes' %}" class="w3-bar-item w3-button">TRANSIÇÕES</a>
+        <a href="{% url 'venda' %}" class="w3-bar-item w3-button">VENDA</a>
+      </div>
+    </div>
+
     <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-black" style="color: black; ">Log Out</a>
     {% else %}
     <a href="{% url 'login' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-user" style="color: black";></i> LOGIN</a>
@@ -67,6 +76,8 @@
     {% endblock %}
     <a href="{% url 'contacts' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-envelope" style="color: black";></i> CONTACTOS</a>
   </div>  
+
+  
 
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
