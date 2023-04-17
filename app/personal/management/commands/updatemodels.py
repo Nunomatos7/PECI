@@ -19,7 +19,7 @@ class Command(BaseCommand):
             if file.endswith("xls") or file.endswith("xlsx"):
                 df = pd.read_excel("Ficheiros PECI/"+file)
                 df2 = df.fillna(0)
-            """
+                 
             if file.startswith("Desovas"):
                 flag = False
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -40,7 +40,7 @@ class Command(BaseCommand):
                             models.save()
                         models1 = Desova(data=models,femeas = toNone(worksheet.cell(row_index,1).value),desovados = toNone(worksheet.cell(row_index,2).value),embrionados = toNone(worksheet.cell(row_index,3).value))
                         models1.save()
-"""
+    
             if file.startswith("Temperaturas"):
                 print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -71,8 +71,29 @@ class Command(BaseCommand):
                             data_models.save()
                         models1 = Temperatura(data = data_models,temperatura=row[index].value )
                         models1.save()
-                ### jaula e dados
-        """     
+                
+                    ### jaula e dados
+            if file.startswith("Tabela"):
+                print(file)
+                wb = xlrd.open_workbook("Ficheiros PECI/"+file)
+                ## Eventrualmente generalizer com base no nome do ficheiro
+                id_jaula = [k for k in range(20)]
+                for j_id in id_jaula:    
+                    worksheet = wb.sheet_by_index(0)
+                    temp = {1:6,2:8,3:10,4:12,5:14,6:16,7:18,8:20,9:22}
+                    peso = {5:(0,10),6:(10,15),7:(15,45),8:(45,250),9:(250,500),10:(500,None)}
+                    for row in [5,6,7,8,9,10]:
+                        for col in temp:
+                            cell = worksheet.cell(row,col)
+                            try:
+                                jaula_models = Jaula.objects.get(id=j_id)    
+                            except Jaula.DoesNotExist:
+                                jaula_models = Jaula(id=j_id,volume = 0, massa_volumica = 0)
+                                jaula_models.save()
+                            models = Alimentacao(valor =cell.value,temp=temp[col],peso_inicio=peso[row][0],peso_fim=peso[row][0],id_jaula=jaula_models )
+                            models.save()
+        
+                          
             if file.startswith("Cópia de Dados"):
                 print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -131,8 +152,9 @@ class Command(BaseCommand):
                         cell = worksheet.cell(row_index,2).value
                         date = xlrd.xldate_as_datetime(cell ,wb.datemode)
                         date = str(date).split(" ")[0]
+                        print(date)
                         try:
-                            data_models = Data.objects.get(date)
+                            data_models = Data.objects.get(data=date)
                         except Data.DoesNotExist:
                             data_models = Data(date)
                             data_models.save()
@@ -179,7 +201,7 @@ class Command(BaseCommand):
                         mov.save()
                         print("oi")
                     
-        """
+          
                         
      
 
