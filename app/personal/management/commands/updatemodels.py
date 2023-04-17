@@ -19,7 +19,7 @@ class Command(BaseCommand):
             if file.endswith("xls") or file.endswith("xlsx"):
                 df = pd.read_excel("Ficheiros PECI/"+file)
                 df2 = df.fillna(0)
-                 
+            """             
             if file.startswith("Desovas"):
                 flag = False
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -71,7 +71,7 @@ class Command(BaseCommand):
                             data_models.save()
                         models1 = Temperatura(data = data_models,temperatura=row[index].value )
                         models1.save()
-                
+            """            
                     ### jaula e dados
             if file.startswith("Tabela"):
                 print(file)
@@ -81,7 +81,7 @@ class Command(BaseCommand):
                 for j_id in id_jaula:    
                     worksheet = wb.sheet_by_index(0)
                     temp = {1:6,2:8,3:10,4:12,5:14,6:16,7:18,8:20,9:22}
-                    peso = {5:(0,10),6:(10,15),7:(15,45),8:(45,250),9:(250,500),10:(500,None)}
+                    peso = {5:(0,10),6:(10,15),7:(15,45),8:(45,250),9:(250,500),10:(500,2000)}
                     for row in [5,6,7,8,9,10]:
                         for col in temp:
                             cell = worksheet.cell(row,col)
@@ -90,10 +90,10 @@ class Command(BaseCommand):
                             except Jaula.DoesNotExist:
                                 jaula_models = Jaula(id=j_id,volume = 0, massa_volumica = 0)
                                 jaula_models.save()
-                            models = Alimentacao(valor =cell.value,temp=temp[col],peso_inicio=peso[row][0],peso_fim=peso[row][0],id_jaula=jaula_models )
+                            models = Alimentacao(valor =cell.value,temp=temp[col],peso_inicio=peso[row][0],peso_fim=peso[row][1],id_jaula=jaula_models )
                             models.save()
         
-                          
+        """                      
             if file.startswith("Cópia de Dados"):
                 print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -200,7 +200,7 @@ class Command(BaseCommand):
                         mov = Movimento(data = data_models,num = worksheet.cell(row_index+1,3).value,jaula_inicio=jaula_inicio,jaula_fim=jaula_fim)
                         mov.save()
                         print("oi")
-                    
+        """               
           
                         
      

@@ -1,4 +1,41 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_AQUACULTURA",
+      "label": "aquacultura",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mssql",
+      "pluginName": "Microsoft SQL Server"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.4.3"
+    },
+    {
+      "type": "datasource",
+      "id": "mssql",
+      "name": "Microsoft SQL Server",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -24,7 +61,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": null,
   "links": [
     {
       "asDropdown": false,
@@ -44,7 +81,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "yxoqeWaVz"
+        "uid": "${DS_AQUACULTURA}"
       },
       "fieldConfig": {
         "defaults": {
@@ -77,8 +114,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 15,
-        "x": 4,
+        "w": 14,
+        "x": 0,
         "y": 0
       },
       "id": 10,
@@ -99,7 +136,7 @@
         {
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
@@ -131,7 +168,94 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "yxoqeWaVz"
+        "uid": "${DS_AQUACULTURA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 10,
+        "x": 14,
+        "y": 0
+      },
+      "id": 23,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_AQUACULTURA}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT temp,peso_inicio,peso_fim,valor from aquacultura.dbo.personal_alimentacao ",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Alimentacao",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_AQUACULTURA}"
       },
       "fieldConfig": {
         "defaults": {
@@ -229,7 +353,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
@@ -264,7 +388,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "builder",
           "format": "table",
@@ -279,7 +403,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "yxoqeWaVz"
+        "uid": "${DS_AQUACULTURA}"
       },
       "fieldConfig": {
         "defaults": {
@@ -344,6 +468,35 @@
                   "fixedColor": "dark-red",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    0,
+                    20
+                  ],
+                  "fill": "dot"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 4
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Fator de crescimento(Teórico)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
               }
             ]
           }
@@ -374,12 +527,12 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  FC as 'Fator de crescimento',\r\n  data_id\r\nFROM\r\n  aquacultura.dbo.personal_dados\r\nWHERE \r\n  id_jaula_id IN ($jaula) ",
+          "rawSql": "SELECT\r\n  FC as 'Fator de crescimento(Teórico)',\r\n  FC_real as 'Fator de crescimento',\r\n  data_id\r\nFROM\r\n  aquacultura.dbo.personal_dados\r\nWHERE \r\n  id_jaula_id IN ($jaula) ",
           "refId": "A",
           "sql": {
             "columns": [
@@ -412,7 +565,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "yxoqeWaVz"
+        "uid": "${DS_AQUACULTURA}"
       },
       "fieldConfig": {
         "defaults": {
@@ -508,7 +661,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
@@ -546,7 +699,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "yxoqeWaVz"
+        "uid": "${DS_AQUACULTURA}"
       },
       "fieldConfig": {
         "defaults": {
@@ -613,6 +766,34 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Peixes mortos(Teórico)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    0,
+                    20
+                  ],
+                  "fill": "dot"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 4
+              }
+            ]
           }
         ]
       },
@@ -641,12 +822,12 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  num_mortos_real as 'Peixes mortos',\r\n  data_id\r\nFROM\r\n  aquacultura.dbo.personal_dados\r\nWHERE \r\n  id_jaula_id IN ($jaula) ",
+          "rawSql": "SELECT\r\n  num_mortos_real as 'Peixes mortos',\r\n  num_mortos_teorico as \"Peixes mortos(Teórico)\",\r\n  data_id\r\nFROM\r\n  aquacultura.dbo.personal_dados\r\nWHERE \r\n  id_jaula_id IN ($jaula) ",
           "refId": "A",
           "sql": {
             "columns": [
@@ -679,7 +860,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "yxoqeWaVz"
+        "uid": "${DS_AQUACULTURA}"
       },
       "fieldConfig": {
         "defaults": {
@@ -801,7 +982,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
@@ -835,7 +1016,7 @@
         {
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
@@ -868,7 +1049,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "yxoqeWaVz"
+        "uid": "${DS_AQUACULTURA}"
       },
       "fieldConfig": {
         "defaults": {
@@ -922,7 +1103,7 @@
         {
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
@@ -954,7 +1135,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "yxoqeWaVz"
+        "uid": "${DS_AQUACULTURA}"
       },
       "fieldConfig": {
         "defaults": {
@@ -962,7 +1143,7 @@
             "mode": "continuous-GrYlRd"
           },
           "custom": {
-            "align": "auto",
+            "align": "center",
             "cellOptions": {
               "type": "auto"
             },
@@ -1008,12 +1189,12 @@
         {
           "datasource": {
             "type": "mssql",
-            "uid": "yxoqeWaVz"
+            "uid": "${DS_AQUACULTURA}"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT * FROM aquacultura.dbo.personal_movimento WHERE (jaula_fim_id IN ($jaula) OR jaula_inicio_id IN ($jaula))",
+          "rawSql": "SELECT data_id as data,num as numero, jaula_inicio_id as \"jaula inicio\", jaula_fim_id as \"jaula fim\" FROM aquacultura.dbo.personal_movimento WHERE (jaula_fim_id IN ($jaula) OR jaula_inicio_id IN ($jaula))",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1036,9 +1217,267 @@
       ],
       "title": "Movimentos",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_AQUACULTURA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 59
+      },
+      "id": 25,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_AQUACULTURA}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select data_id as data, PM, id_jaula_id as jaula from aquacultura.dbo.personal_dados where PM >0.2",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Venda",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_AQUACULTURA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 59
+      },
+      "id": 27,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_AQUACULTURA}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select data_id as data, PM, id_jaula_id as jaula from aquacultura.dbo.personal_dados where PM <0.2 AND PM >0.02",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Vender no ano seguinte",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mssql",
+        "uid": "${DS_AQUACULTURA}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 59
+      },
+      "id": 28,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mssql",
+            "uid": "${DS_AQUACULTURA}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select num as numero, data_id as data from aquacultura.dbo.personal_movimento where venda = 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Vendas",
+      "type": "table"
     }
   ],
-  "refresh": "5m",
+  "refresh": false,
   "revision": 1,
   "schemaVersion": 38,
   "style": "dark",
@@ -1046,14 +1485,10 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "mssql",
-          "uid": "yxoqeWaVz"
+          "uid": "${DS_AQUACULTURA}"
         },
         "definition": "SELECT * FROM aquacultura.dbo.personal_jaula",
         "description": "Jaula id 0 não é mesmo uma jaula",
@@ -1072,7 +1507,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "dados",
           "value": "dados"
         },
@@ -1125,14 +1560,10 @@
       },
       {
         "allValue": "",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "mssql",
-          "uid": "yxoqeWaVz"
+          "uid": "${DS_AQUACULTURA}"
         },
         "definition": "SELECT name FROM sys.columns WHERE object_id = OBJECT_ID('dbo.personal_$tabelas')  ",
         "hide": 1,
@@ -1151,13 +1582,13 @@
     ]
   },
   "time": {
-    "from": "2002-01-01T00:00:00.000Z",
-    "to": "2023-01-01T23:59:59.000Z"
+    "from": "2021-12-25T20:16:58.843Z",
+    "to": "2023-01-20T19:21:52.476Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "aquacultura",
   "uid": "MzEOaNa4k",
-  "version": 17,
+  "version": 19,
   "weekStart": ""
 }
