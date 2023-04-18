@@ -1,23 +1,6 @@
 from django import forms
 from .models import *
-"""
-class DataForm(forms.ModelForm):
-    data = forms.DateField(widget=forms.TextInput(attrs={'type': 'date'}))
-    
-    class Meta:
-        model = Data
-        fields = ['data']
-        
-    def clean_data(self):
-        data = self.cleaned_data['data']
-        
-        try:
-            data_obj = Data.objects.get(data=data)
-        except Data.DoesNotExist:
-            return data
-        
-        return data_obj
-"""
+
 class DataForm(forms.ModelForm):
     class Meta:
         model = Data
@@ -25,6 +8,10 @@ class DataForm(forms.ModelForm):
         widgets = {
             'data': forms.DateInput(attrs={'type': 'date'})
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['data'].error_messages = {'unique': 'Data já existente, dado atualizado.'}
 
 
 class DesovaForm(forms.ModelForm):
@@ -40,8 +27,32 @@ class TemperaturaForm(forms.ModelForm):
         exclude = ['data']
         widgets = {'temperatura': forms.NumberInput(attrs={'step': 0.1})}
 
-class TemperaturaArrayForm(forms.Form):
+class TemperaturaArrayForm(forms.ModelForm):
     temperatura_array = forms.CharField(label='Temperaturas')
 
-class DesovasLineForm(forms.Form):
+class DesovasLineForm(forms.ModelForm):
     desovasLines = forms.CharField(label='Desovas')
+
+class SetupJaulaForm(forms.ModelForm):
+    class Meta:
+        model = Jaula
+        fields = ['id','massa_volumica','volume']
+
+class VacinadosForm(forms.ModelForm):
+    class Meta:
+        model = Vacina
+        fields = ['id_jaula','num','PM']
+    
+
+class Alimentacao(forms.ModelForm):
+    class Meta:
+        model = Alimentacao
+        fields = ['valor','peso_inicio','peso_fim','temp','id_jaula']
+
+class DadosJaulaForm(forms.ModelForm):
+    class Meta:
+        model = Dados
+        fields = ['data','id_jaula','num_peixes','PM','Biom','percentagem_alimentacao','peso',
+                  'sacos_racao','FC','PM_teorica_alim_real','alimentacao_real','PM_teorico',
+                  'PM_real','percentagem_mortalidade_teorica','num_mortos_teorico',
+                  'percentagem_mortalidade_real','num_mortos_real','peso_medio','FC_real']

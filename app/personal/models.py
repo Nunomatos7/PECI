@@ -41,6 +41,7 @@ class Dados (models.Model):
     num_mortos_real = models.FloatField(default=None)
     peso_medio = models.FloatField(default=None)
     FC_real = models.FloatField(default=None)
+
 class Alimentacao(models.Model):
     valor = models.FloatField(default=None)
     peso_inicio = models.FloatField()
@@ -59,6 +60,7 @@ class Vacina (models.Model):
     data = models.ForeignKey(Data,primary_key=True,on_delete=models.CASCADE)
     num = models.IntegerField(default=None)
     PM = models.FloatField(default=None)
+
 class Movimento(models.Model):
     num = models.IntegerField(default=None)   
     data = models.ForeignKey(Data,on_delete=models.CASCADE)

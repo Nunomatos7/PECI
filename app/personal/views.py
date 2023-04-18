@@ -60,12 +60,10 @@ def insert_temp(request):
     if request.method == 'POST':
         temp_form = TemperaturaForm(request.POST)
         data_form = DataForm(request.POST)
-
         if temp_form.is_valid():
             try:
                 if data_form.is_valid():
                     data = data_form.save()
-                
                 temp = temp_form.save(commit=False)
                 temp.data = data
                 temp.save()
@@ -210,6 +208,80 @@ def ins_excel_desovas(request):
     else:
         desova_form = DesovasLineForm()
     return render(request, 'ins_excel_desovas.html', {'desova_form': desova_form})
+
+
+@login_required
+def setup_jaula(request):
+    if request.method == 'POST':
+        setupjaula_form = SetupJaulaForm(request.POST)
+         
+        if setupjaula_form.is_valid():
+            setupjaula_form.save()
+            messages.success(request, 'Jaula Nova Adicionada!')
+        elif(setupjaula_form.data['id']):
+            jaula = Jaula.objects.get(id=setupjaula_form.data['id'])
+            jaula.massa_volumica = setupjaula_form.data['massa_volumica']
+            jaula.volume = setupjaula_form.data['volume']
+            jaula.save()
+            messages.success(request, 'Jaula Atualizada!')
+        else:
+            messages.success(request, 'DADOS INCORRETOS!')
+    else:
+        setupjaula_form = SetupJaulaForm()
+    return render(request, 'setup_jaula.html', {'setupjaula_form': setupjaula_form})
+
+@login_required
+def vacinados(request):
+    if request.method == 'POST':
+        vacinados_form = VacinadosForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        if vacinados_form.is_valid():
+            try:
+                #case there is no data
+                if data_form.is_valid():
+                    data = data_form.save()
+
+                vacinados = vacinados_form.save(commit=False)
+                vacinados.data = data
+                vacinados.save()
+                messages.success(request, 'Dados Vacinados Atualizado!')
+            except:
+                #case already exists data
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+                vacinados = vacinados_form.save(commit=False)
+                vacinados.data = data
+                vacinados.save()
+                messages.success(request, 'Dados Vacinados Atualizado!')
+
+        else:
+            messages.success(request,('Erro!'))
+    else:
+        vacinados_form = VacinadosForm()
+        data_form = DataForm()
+    return render(request, 'vacinados.html', {'vacinados_form': vacinados_form, 'data_form': data_form})
+
+@login_required
+def dados_jaula(request):
+    if request.method == 'POST':
+        dadosjaula_form = DadosJaulaForm(request.POST)
+        data_form = DataForm(request.POST)
+
+        try:    #if data NOT exists
+            if data_form.is_valid():
+                data = data_form.save()
+
+            num_peixes = dadosjaula_form.data['num_peixes']
+            
+        except: #if data exists
+            messages.success(request,('Erro!'))
+    else:
+            vacinados_form = VacinadosForm()
+            data_form = DataForm()
+    return render(request, 'dados_jaula.html', {'vacinados_form': vacinados_form, 'data_form': data_form})
+
+
 
 @login_required
 def teste(request):
@@ -358,32 +430,3 @@ def comida(request):
         temp_form = TemperaturaForm()
         data_form = DataForm()
     return render(request, 'comida.html', {'temp_form': temp_form, 'data_form': data_form})
-
-@login_required
-def setup_jaula(request):
-    if request.method == 'POST':
-        temp_form = TemperaturaForm(request.POST)
-        data_form = DataForm(request.POST)
-
-        if temp_form.is_valid():
-            try:
-                if data_form.is_valid():
-                    data = data_form.save()
-                
-                temp = temp_form.save(commit=False)
-                temp.data = data
-                temp.save()
-                messages.success(request, 'Dados Temperatura adicionado!')
-            except:
-                data_data = data_form.data['data']
-                data = Data.objects.get(data=data_data)
-                temp = temp_form.save(commit=False)
-                temp.data = data
-                temp.save()
-                messages.success(request, 'Dados Temperatura adicionado!')
-        else:
-            messages.success(request, 'Erro!')
-    else:
-        temp_form = TemperaturaForm()
-        data_form = DataForm()
-    return render(request, 'setup_jaula.html', {'temp_form': temp_form, 'data_form': data_form})

@@ -12,12 +12,19 @@
       </div>
       {% endfor %}
     {% endif %}
-    <form method="POST" action="{% url 'setup_jaula' %}">
+    <form method="POST" action="{% url 'vacinados' %}">
       {% csrf_token %}
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="num_peixes">ID Jaula:</label>
-          {{ setupjaula_form.id }}
+          <!--
+          <select name="{{ form.id_jaula.name }}" class="form-control">
+            {% for choice in vacinados_form.id_jaula %}
+              <option value="{{ choice.id_jaula }}">{{ choice.id_jaula }}</option>
+            {% endfor %}
+          </select>
+            -->
+            {{ vacinados_form.id_jaula }}
         </div>
         <!--
         <div class="form-group col-md-6">
@@ -34,13 +41,16 @@
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
-          <label for="num_peixes">Nº de Peixes:</label>
-          {{ setupjaula_form.massa_volumica }}
+          {{ data_form.as_p }}
         </div>
         <div class="form-group col-md-4">
-          <label for="peso_medio">Volume:</label>
-          {{ setupjaula_form.volume }}
+          <label for="peso_medio">Nº de Vacinados:</label>
+          {{ vacinados_form.num }}
         </div>
+        <div class="form-group col-md-4">
+            <label for="num_peixes">PM:</label>
+            {{ vacinados_form.PM }}
+          </div>
         <!--
         <div class="form-group col-md-4">
           <label for="peso_total">Peso Total (kg):</label>
