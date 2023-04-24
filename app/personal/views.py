@@ -55,6 +55,8 @@ def insert_desovas(request):
         data_form = DataForm()
     return render(request, 'insert_desovas.html', {'desova_form': desova_form, 'data_form': data_form})
 
+
+
 @login_required
 def insert_temp(request):
     if request.method == 'POST':
@@ -81,6 +83,27 @@ def insert_temp(request):
         temp_form = TemperaturaForm()
         data_form = DataForm()
     return render(request, 'insert_temp.html', {'temp_form': temp_form, 'data_form': data_form})
+
+def alimentacao(request):
+    form = AlimentacaoForm()
+    if request.method == 'POST':
+        param = dict(request.POST)
+        print(param)
+        print(param['id_jaula'])
+        jaula = Jaula.objects.get(id=int(param['id_jaula'][0]))
+        print(jaula)
+        alimentacao =  Alimentacao.objects.filter(peso_inicio = int(param['peso_inicio'][0]),peso_fim=int(param['peso_fim'][0]), temp = int(param['temp'][0]), id_jaula = jaula).first()
+        print("alimentacao")
+        print(alimentacao)
+        if alimentacao:
+            print(param['valor'])
+            alimentacao.valor = int(param['valor'][0])
+            alimentacao.save()
+            messages.success(request,('Alimentacao atualizada'))
+            return render(request, 'alimentacao.html', {'form': form})
+        else:
+            messages.success(request,('Erro!'))
+    return render(request, 'alimentacao.html', {'form': form})
 
 
 @login_required

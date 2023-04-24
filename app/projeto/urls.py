@@ -38,6 +38,7 @@ urlpatterns = [
     path('setup_jaula/', setup_jaula, name='setup_jaula'),
     path('dados_jaula/', dados_jaula, name='dados_jaula'),
     path('vacinados/', vacinados, name='vacinados'),
+    path('alimentacao/', alimentacao, name='alimentacao'),
 ]
 """
 re_path(r'^admin/', admin.site.urls),

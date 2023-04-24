@@ -27,6 +27,7 @@ class TemperaturaForm(forms.ModelForm):
         exclude = ['data']
         widgets = {'temperatura': forms.NumberInput(attrs={'step': 0.1})}
 
+
 class TemperaturaArrayForm(forms.ModelForm):
     temperatura_array = forms.CharField(label='Temperaturas')
 
@@ -44,7 +45,7 @@ class VacinadosForm(forms.ModelForm):
         fields = ['id_jaula','num','PM']
     
 
-class Alimentacao(forms.ModelForm):
+class AlimentacaoForm(forms.ModelForm):
     class Meta:
         model = Alimentacao
         fields = ['valor','peso_inicio','peso_fim','temp','id_jaula']
