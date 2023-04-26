@@ -140,10 +140,10 @@ def delete_desova(request):
     
 @login_required
 def ins_excel_temp(request):
+    temp_form = TemperaturaArrayForm()
+    data_form = DataForm(prefix="inicial")
+    data_final_form = DataForm(prefix="final")
     if request.method == 'POST':
-        temp_form = TemperaturaArrayForm(request.POST)
-        data_form = DataForm(request.POST, prefix="inicial")
-        data_final_form = DataForm(request.POST, prefix="final")
         if temp_form.is_valid():
             try:
                 if data_form.is_valid():
@@ -155,6 +155,7 @@ def ins_excel_temp(request):
                 temp_array = (temp_form.data['temperatura_array']).split(';')
                 if num_days != len(temp_array):
                     messages.success(request, 'Erro!')
+                    return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
                 else:   
                     for t,d in zip(temp_array,range(num_days)):
                         current_date = data_i + timedelta(days=d)
@@ -164,9 +165,11 @@ def ins_excel_temp(request):
                         temp = Temperatura(temperatura=t,data=date)
                         temp.save()
                     messages.success(request, 'Dados Temperatura adicionado!')
+                    return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
             except Exception as e:
                 print(e)
                 print("not Valid")
+                return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
         #         data_data = data_form.data['data']
         #         data = Data.objects.get(data=data_data)
         #         temp = temp_form.save(commit=False)
@@ -176,10 +179,7 @@ def ins_excel_temp(request):
         # else:
         #     messages.success(request, 'Erro!')
     else:
-        temp_form = TemperaturaArrayForm()
-        data_form = DataForm(request.POST, prefix="inicial")
-        data_final_form = DataForm(request.POST, prefix="final")
-    return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
+        return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
     
 @login_required
 def ins_excel_desovas(request):
@@ -442,31 +442,39 @@ def teste(request):
 @login_required
 def transicoes(request):
     if request.method == 'POST':
-        temp_form = TemperaturaForm(request.POST)
+        transicoesJaula_form = TransicoesJaulaForm(request.POST)
         data_form = DataForm(request.POST)
 
-        if temp_form.is_valid():
+        if transicoesJaula_form.is_valid():
+            #jaulaInicio = transicoesJaula_form.data['jaula_inicio']
+            #jaulaFim = transicoesJaula_form.data['jaula_fim']
+            #models.Movimento.objects.get(id_jaula = jaulaInicio).update(num = models.Movimento.objects.get(id_jaula = jaulaInicio).num - transicoesJaula_form.data['num'])
+            #models.Movimento.objects.get(id_jaula = jaulaFim).update(num = models.Movimento.objects.get(id_jaula = jaulaFim).num + transicoesJaula_form.data['num'])
             try:
+                #case there is no data
                 if data_form.is_valid():
                     data = data_form.save()
-                
-                temp = temp_form.save(commit=False)
-                temp.data = data
-                temp.save()
-                messages.success(request, 'Dados Temperatura adicionado!')
+
+                transicao = transicoesJaula_form.save(commit=False)
+                transicao.data = data
+                transicao.save()
+                messages.success(request, 'Movimento Registado com Sucesso!')
             except:
+                #case already exists data
                 data_data = data_form.data['data']
                 data = Data.objects.get(data=data_data)
-                temp = temp_form.save(commit=False)
-                temp.data = data
-                temp.save()
-                messages.success(request, 'Dados Temperatura adicionado!')
+                transicao = transicoesJaula_form.save(commit=False)
+                transicao.data = data
+                transicao.save()
+                messages.success(request, 'Movimento Registado com Sucesso!')
+
         else:
-            messages.success(request, 'Erro!')
+            messages.success(request,('Erro!'))
     else:
-        temp_form = TemperaturaForm()
+        transicoesJaula_form = TransicoesJaulaForm()
         data_form = DataForm()
-    return render(request, 'transicoes.html', {'temp_form': temp_form, 'data_form': data_form})
+    return render(request, 'transicoes.html', {'TransicoesJaulaForm': transicoesJaula_form, 'data_form': data_form})
+
 
 
 @login_required
