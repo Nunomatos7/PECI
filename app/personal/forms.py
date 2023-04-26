@@ -28,10 +28,10 @@ class TemperaturaForm(forms.ModelForm):
         widgets = {'temperatura': forms.NumberInput(attrs={'step': 0.1})}
 
 
-class TemperaturaArrayForm(forms.ModelForm):
+class TemperaturaArrayForm(forms.Form):
     temperatura_array = forms.CharField(label='Temperaturas')
 
-class DesovasLineForm(forms.ModelForm):
+class DesovasLineForm(forms.Form):
     desovasLines = forms.CharField(label='Desovas')
 
 class SetupJaulaForm(forms.ModelForm):

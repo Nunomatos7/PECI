@@ -43,6 +43,7 @@
           WorkB = workbook;
           var wsnames = workbook.SheetNames;
           make_buttons(wsnames);
+          boot = true
           showSheet(workbook,0)
         }
 
@@ -56,6 +57,7 @@
           WorkB = workbook;
           var wsnames = workbook.SheetNames;
           make_buttons(wsnames);
+          boot = true
           showSheet(workbook,0)
         }
 
@@ -63,19 +65,6 @@
           e.preventDefault();
         }
 
-        var element;
-        var boo = true;
-        function select(elemento) {
-          if(!boo){
-            boo = !boo;
-            stopSelect();
-          } else {
-            boo = !boo;
-            let grid = global_grid;
-            element = elemento;
-            grid.addEventListener('selectionchanged', selection);
-          }
-        }
 
         function selection(e){
           let rows = Object.keys(e.selectedData);
@@ -91,17 +80,24 @@
           }
           text = text.slice(0, -1);
           text = text.replace(/\s/g, '');
-          document.getElementById(element).value = text;
+          document.getElementById('id_temperatura_array').value = text;
         }
 
-        function stopSelect() {
-          let grid = global_grid;
-          grid.removeEventListener('selectionchanged',selection);
-        }
-
+        var boot = true
         function showSheet(workbook,sheetidx){
           document.getElementById("grid").innerHTML = "";
           var sheet = workbook.SheetNames[sheetidx||0];
+
+          //check if empty
+          if(boot){
+            var num = 0;
+            console.log(Object.keys(workbook.Sheets[sheet]))
+            while(Object.keys(workbook.Sheets[sheet]).length<5){
+              sheet = workbook.SheetNames[num]
+              num++
+            }
+            boot = false
+          }
 
           /* DO SOMETHING WITH workbook HERE */
           var grid = canvasDatagrid({
@@ -114,6 +110,7 @@
           });
           grid.addEventListener('beforebeginedit', callDefault);
           grid.addEventListener('beforesortcolumn', callDefault);
+          grid.addEventListener('selectionchanged', selection);
 
           grid.style.height = "500px";
           grid.style.width = "100%";
@@ -179,7 +176,18 @@
     </div>
   </div>
   
-  <div class="Container">
+
+<form method="POST" action="{% url 'ins_excel_temp' %}">
+  {% csrf_token %}
+    {{ data_form.as_p }}
+    {{ data_final_form.as_p }}
+    
+
+    {{ temp_form }}
+  <input type="submit">
+</form>
+
+<div class="Container">
   {% if messages %}
 
       {% for message in messages %}
@@ -195,55 +203,5 @@
   {% endif %}
 </div>
 
-<form method="POST" action="{% url 'ins_excel_temp' %}">
-  {% csrf_token %}
-    {{ data_form.as_p }}
-    {{ data_final_form.as_p }}
-    
-
-    {{ temp_form }}
-  <button type="button" value="Select" onclick="select('id_temperatura_array')" style="margin-left: 25%;">Selecionar temperatura</button>
-  <input type="submit">
-</form>
-
-
-
-  <style>
-
-form {
-  padding: 20px;
-  background-color: #f2f2f2;
-  border-radius: 10px;
-}
-
-label {
-  margin-left: 450px;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-input[type="text"], input[type="date"] {
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  border: 1px solid gray;
-}
-
-input[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  float: right;
-}
-
-input[type="submit"]:hover {
-  background-color: #3e8e41;
-  margin-bottom: 100px;
-}
-
-  </style>
 
 {% endblock base %}

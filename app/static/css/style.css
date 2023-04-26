@@ -63,3 +63,37 @@ body, html {
     color: cyan;
     padding-left: 10px;*/
   }
+  
+  form {
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+  }
+  label {
+    margin-left: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  input[type="text"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid gray;
+  }
+  input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    float: right;
+    position: relative;
+  }
+  input[type="submit"]:hover {
+    background-color: #3e8e41;
+    margin-bottom: 100px;
+  }
+  .desovado {
+    float: right;
+  }
