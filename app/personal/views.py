@@ -340,31 +340,39 @@ def teste(request):
 @login_required
 def transicoes(request):
     if request.method == 'POST':
-        temp_form = TemperaturaForm(request.POST)
+        transicoesJaula_form = TransicoesJaulaForm(request.POST)
         data_form = DataForm(request.POST)
 
-        if temp_form.is_valid():
+        if transicoesJaula_form.is_valid():
+            #jaulaInicio = transicoesJaula_form.data['jaula_inicio']
+            #jaulaFim = transicoesJaula_form.data['jaula_fim']
+            #models.Movimento.objects.get(id_jaula = jaulaInicio).update(num = models.Movimento.objects.get(id_jaula = jaulaInicio).num - transicoesJaula_form.data['num'])
+            #models.Movimento.objects.get(id_jaula = jaulaFim).update(num = models.Movimento.objects.get(id_jaula = jaulaFim).num + transicoesJaula_form.data['num'])
             try:
+                #case there is no data
                 if data_form.is_valid():
                     data = data_form.save()
-                
-                temp = temp_form.save(commit=False)
-                temp.data = data
-                temp.save()
-                messages.success(request, 'Dados Temperatura adicionado!')
+
+                transicao = transicoesJaula_form.save(commit=False)
+                transicao.data = data
+                transicao.save()
+                messages.success(request, 'Movimento Registado com Sucesso!')
             except:
+                #case already exists data
                 data_data = data_form.data['data']
                 data = Data.objects.get(data=data_data)
-                temp = temp_form.save(commit=False)
-                temp.data = data
-                temp.save()
-                messages.success(request, 'Dados Temperatura adicionado!')
+                transicao = transicoesJaula_form.save(commit=False)
+                transicao.data = data
+                transicao.save()
+                messages.success(request, 'Movimento Registado com Sucesso!')
+
         else:
-            messages.success(request, 'Erro!')
+            messages.success(request,('Erro!'))
     else:
-        temp_form = TemperaturaForm()
+        transicoesJaula_form = TransicoesJaulaForm()
         data_form = DataForm()
-    return render(request, 'transicoes.html', {'temp_form': temp_form, 'data_form': data_form})
+    return render(request, 'transicoes.html', {'TransicoesJaulaForm': transicoesJaula_form, 'data_form': data_form})
+
 
 
 @login_required
