@@ -290,19 +290,121 @@ def dados_jaula(request):
     if request.method == 'POST':
         dadosjaula_form = DadosJaulaForm(request.POST)
         data_form = DataForm(request.POST)
+        
+        #try:    #if data NOT exists
+        
+        if data_form.is_valid():
+            data = data_form.save()
+        
+        dadosjaula = dadosjaula_form.save(commit=False)
+        dadosjaula.data = data
+        data_anterior = Dados.get_previous_date(dadosjaula.data)
+        
+        
+        if (dadosjaula_form.data['num_peixes'] == None):
+            dadosjaula.num_peixes = data_anterior.num_peixes - data_anterior.num_mortos_real
+        else:
+            dadosjaula.num_peixes = dadosjaula_form.data['num_peixes']
+        dadosjaula.Biom = dadosjaula.PM * dadosjaula.num_peixes
+        
+        dadosjaula.percentagem_alimentacao = dadosjaula_form.data['percentagem_alimentacao']
+        
+        dadosjaula.peso = data_anterior.Biom * dadosjaula.percentagem_alimentacao
+        
+        dadosjaula.sacos_racao = dadosjaula.peso * 25
+        
+        dadosjaula.FC = dadosjaula_form.data['FC']
+        
+        # perguntar sobre isto
+        if (dadosjaula_form.data['alimentacao_real'] == None):
+            dadosjaula.alimentacao_real = dadosjaula.peso * 30
+        else:
+            dadosjaula.alimentacao_real = dadosjaula_form.data['alimentacao_real']
+        dadosjaula.PM_teorica_alim_real = (dadosjaula.alimentacao_real / dadosjaula.FC + dadosjaula.Biom) / dadosjaula.num_peixes
+        #perguntar sobre isto
+        dadosjaula.PM_teorico = None
+        if (dadosjaula_form.data['PM_real'] == None):
+            dadosjaula.PM_real = dadosjaula.PM_teorico
+        else:
+            dadosjaula.PM_real = dadosjaula_form.data['PM_real']
+        dadosjaula.percentagem_mortalidade_teorica = dadosjaula.alimentacao_real
+        dadosjaula.num_mortos_teorico = dadosjaula.num_peixes * dadosjaula.percentagem_mortalidade_teorica
+        if (dadosjaula_form.data['num_mortos_real'] == None):
+            dadosjaula.num_mortos_real = dadosjaula.num_mortos_teorico
+        else:
+            dadosjaula.num_mortos_real = dadosjaula_form.data['num_mortos_real']
+        if (dadosjaula_form.data[''] == None):
+            dadosjaula.percentagem_mortalidade_real = dadosjaula.num_mortos_real / dadosjaula.num_peixes * 100
+        else:
+            dadosjaula.percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
+        dadosjaula.peso_medio = None
+        dadosjaula.FC_real = dadosjaula.alimentacao_real / ( (data_anterior.num_peixes * data_anterior.PM) - (dadosjaula.num_peixes * dadosjaula.PM) )
+        """
+        except: 
+            #if data exists
+            data_data = data_form.data['data']
+            data = Data.objects.get(data=data_data)
 
-        try:    #if data NOT exists
-            if data_form.is_valid():
-                data = data_form.save()
+            dadosjaula = dadosjaula_form.save(commit=False)
+            dadosjaula.data = data
+            data_anterior = Dados.get_previous_date(dadosjaula.data)
 
-            num_peixes = dadosjaula_form.data['num_peixes']
+
+            if (dadosjaula_form.data['num_peixes'] == None):
+                dadosjaula.num_peixes = data_anterior.num_peixes - data_anterior.num_mortos_real
+            else:
+                dadosjaula.num_peixes = dadosjaula_form.data['num_peixes']
+
+            dadosjaula.Biom = dadosjaula.PM * dadosjaula.num_peixes
             
-        except: #if data exists
-            messages.success(request,('Erro!'))
+            dadosjaula.percentagem_alimentacao = dadosjaula_form.data['percentagem_alimentacao']
+            
+            dadosjaula.peso = data_anterior.Biom * dadosjaula.percentagem_alimentacao
+            
+            dadosjaula.sacos_racao = dadosjaula.peso * 25
+            
+            dadosjaula.FC = dadosjaula_form.data['FC']
+            
+            # perguntar sobre isto
+            if (dadosjaula_form.data['alimentacao_real'] == None):
+                dadosjaula.alimentacao_real = dadosjaula.peso * 30
+            else:
+                dadosjaula.alimentacao_real = dadosjaula_form.data['alimentacao_real']
+
+            dadosjaula.PM_teorica_alim_real = (dadosjaula.alimentacao_real / dadosjaula.FC + dadosjaula.Biom) / dadosjaula.num_peixes
+
+            #perguntar sobre isto
+            dadosjaula.PM_teorico = None
+
+            if (dadosjaula_form.data['PM_real'] == None):
+                dadosjaula.PM_real = dadosjaula.PM_teorico
+            else:
+                dadosjaula.PM_real = dadosjaula_form.data['PM_real']
+
+            dadosjaula.percentagem_mortalidade_teorica = dadosjaula.alimentacao_real
+
+            dadosjaula.num_mortos_teorico = dadosjaula.num_peixes * dadosjaula.percentagem_mortalidade_teorica
+
+            if (dadosjaula_form.data['num_mortos_real'] == None):
+                dadosjaula.num_mortos_real = dadosjaula.num_mortos_teorico
+            else:
+                dadosjaula.num_mortos_real = dadosjaula_form.data['num_mortos_real']
+
+            if (dadosjaula_form.data[''] == None):
+                dadosjaula.percentagem_mortalidade_real = dadosjaula.num_mortos_real / dadosjaula.num_peixes * 100
+            else:
+                dadosjaula.percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
+
+            dadosjaula.peso_medio = None
+
+            dadosjaula.FC_real = dadosjaula.alimentacao_real / ( (data_anterior.num_peixes * data_anterior.PM) - (dadosjaula.num_peixes * dadosjaula.PM) )
+
+            """
+        
     else:
-            vacinados_form = VacinadosForm()
+            dadosjaula_form = DadosJaulaForm()
             data_form = DataForm()
-    return render(request, 'dados_jaula.html', {'vacinados_form': vacinados_form, 'data_form': data_form})
+    return render(request, 'dados_jaula.html', {'dadosjaula_form': dadosjaula_form, 'data_form': data_form})
 
 
 

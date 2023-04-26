@@ -11,46 +11,57 @@
         </button>
       </div>
       {% endfor %}
-    {% endif %}
     <form method="POST" action="{% url 'dados_jaula' %}">
       {% csrf_token %}
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="num_peixes">ID Jaula:</label>
-          <!--
-          <select name="{{ form.id_jaula.name }}" class="form-control">
-            {% for choice in vacinados_form.id_jaula %}
-              <option value="{{ choice.id_jaula }}">{{ choice.id_jaula }}</option>
-            {% endfor %}
-          </select>
-            -->
-            {{ vacinados_form.id_jaula }}
+            {{ dadosjaula_form.id_jaula }}
         </div>
-        <!--
-        <div class="form-group col-md-6">
-          <div class="w3-dropdown-hover">
-            <button class="w3-button" style="background-color: #f2f2f2; border: 1px solid gray; border-radius: 10px; padding: 10px;">Número da Jaula</button>
-            <div class="w3-dropdown-content w3-bar-block w3-border" style="border-radius: 10px;">
-              <a href="#" class="w3-bar-item w3-button">Jaula 1</a>
-              <a href="#" class="w3-bar-item w3-button">Jaula 2</a>
-              <a href="#" class="w3-bar-item w3-button">Jaula 3</a>
-            </div>
-          </div>
-        </div>
-        -->
       </div>
+
       <div class="form-row">
         <div class="form-group col-md-4">
           {{ data_form.as_p }}
         </div>
         <div class="form-group col-md-4">
-          <label for="peso_medio">Nº de Vacinados:</label>
-          {{ vacinados_form.num }}
+          <label for="peso_medio">Numero de peixes:</label>
+          {{ dadosjaula_form.num_peixes }}
         </div>
-        <div class="form-group col-md-4">
-            <label for="num_peixes">PM:</label>
-            {{ vacinados_form.PM }}
+        
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="num_peixes">Percentagem de Alimentação:</label>
+            {{ dadosjaula_form.percentagem_alimentacao }}
           </div>
+          <div class="form-group col-md-4">
+            <label for="num_peixes">FC:</label>
+            {{ dadosjaula_form.FC }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="num_peixes">Alimentação Real:</label>
+            {{ dadosjaula_form.alimentacao_real }}
+          </div>
+          <div class="form-group col-md-4">
+            <label for="num_peixes">PM real:</label>
+            {{ dadosjaula_form.PM_real }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="num_peixes">Numero mortos real:</label>
+            {{ dadosjaula_form.num_mortos_real }}
+          </div>
+          <div class="form-group col-md-4">
+            <label for="num_peixes">Percentagem mortalidade real:</label>
+            {{ dadosjaula_form.percentagem_mortalidade_real }}
+          </div>
+        </div>
+        
         <!--
         <div class="form-group col-md-4">
           <label for="peso_total">Peso Total (kg):</label>

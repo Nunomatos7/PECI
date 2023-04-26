@@ -42,6 +42,13 @@ class Dados (models.Model):
     peso_medio = models.FloatField(default=None)
     FC_real = models.FloatField(default=None)
 
+    def get_previous_data(cls, date):
+        try:
+            previous_data = cls.objects.filter(data__lt=date).latest('data')
+        except cls.DoesNotExist:
+            previous_data = None
+        return previous_data
+
 class Alimentacao(models.Model):
     valor = models.FloatField(default=None)
     peso_inicio = models.FloatField()
