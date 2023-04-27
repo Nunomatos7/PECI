@@ -1,207 +1,261 @@
 {% extends "base.html" %}
 {% block base %}
   
-  <!-- Container (Portfolio Section) -->
-  <div class="w3-container w3-padding-64" id="portfolio">
-    <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">Introduzir ficheiro Excel</h3>
-    <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
-    <h3 class="w3-center" style="color:white">Inserir ficheiro Excel</h3>
-    <input type="file" id="myFile">
-    <table id="tbl-data"></table>
-    <div id="grid"></div>
-    <div id="buttons"></div>
-
-    <script>
-        var global_grid;
-
-        var make_buttons = function(sheetnames) {
-          var buttons = document.getElementById('buttons');
-          buttons.innerHTML = "";
-          label = document.createElement('p'); label.innerText = "Selecione a folha de calculo";
-          buttons.appendChild(label)
-          sheetnames.forEach(function(s,idx) {
-            var btn = document.createElement('button');
-            btn.type = 'button';
-            btn.name = 'btn' + idx;
-            btn.text = s;
-            var txt = document.createElement('h3'); txt.innerText = s; btn.appendChild(txt);
-            btn.addEventListener('click', function() { showSheet(WorkB,idx); });
-            buttons.appendChild(btn);
-            buttons.appendChild(document.createElement('br'));
-          });
-        };
-
-        var input = document.getElementById("myFile");
-        var WorkB;
-        
-        async function handleFileAsync(e) {
-          
-          const file = e.target.files[0];
-          const data = await file.arrayBuffer();
-          /* data is an ArrayBuffer */
-          const workbook = XLSX.read(data, {cellDates: true});
-          WorkB = workbook;
-          var wsnames = workbook.SheetNames;
-          make_buttons(wsnames);
-          boot = true
-          showSheet(workbook,0)
-        }
-
-        async function handleDropAsync(e) {
-          e.stopPropagation(); e.preventDefault();
-          const f = e.dataTransfer.files[0];
-          /* f is a File */
-          const data = await f.arrayBuffer();
-          /* data is an ArrayBuffer */
-          const workbook = XLSX.read(data, {cellDates: true});
-          WorkB = workbook;
-          var wsnames = workbook.SheetNames;
-          make_buttons(wsnames);
-          boot = true
-          showSheet(workbook,0)
-        }
-
-        function callDefault(e) {
-          e.preventDefault();
-        }
-
-
-        function selection(e){
-          let rows = Object.keys(e.selectedData);
-          let text = "";
-          // para selecionar varios valores separados por ;
-          for (let j = 0; j < rows.length; j++){
-            array = ((e.selectedData)[rows[j]]);
-            for(let i=0; i<Object.values(array).length;i++){
-              value = Object.values(array)[i];
-              console.log(value)
-              if(value != undefined)text += value.toString() + ";";
-            } 
-          }
-          text = text.slice(0, -1);
-          text = text.replace(/\s/g, '');
-          document.getElementById('id_temperatura_array').value = text;
-        }
-
-        var boot = true
-        function showSheet(workbook,sheetidx){
-          document.getElementById("grid").innerHTML = "";
-          var sheet = workbook.SheetNames[sheetidx||0];
-
-          //check if empty
-          if(boot){
-            var num = 0;
-            console.log(Object.keys(workbook.Sheets[sheet]))
-            while(Object.keys(workbook.Sheets[sheet]).length<5){
-              sheet = workbook.SheetNames[num]
-              num++
-            }
-            boot = false
-          }
-
-          /* DO SOMETHING WITH workbook HERE */
-          var grid = canvasDatagrid({
-            parentNode: document.getElementById('grid'),
-            name: "datagrid",
-            style: {
-              cellWidth: '125'
-            },
-            data: []
-          });
-          grid.addEventListener('beforebeginedit', callDefault);
-          grid.addEventListener('beforesortcolumn', callDefault);
-          grid.addEventListener('selectionchanged', selection);
-
-          grid.style.height = "500px";
-          grid.style.width = "100%";
-          
-          // grid.data = XLSX.utils.sheet_to_json(ws, {header:1});
-          // console.log(workbook.Sheets[sheet])
-          // console.log(Object.keys(workbook.Sheets[sheet]).length);
-          let i = 0;
-
-          while (i < Object.keys(workbook.Sheets[sheet]).length) {
-            let name = Object.keys(workbook.Sheets[sheet])[i];
-            if (workbook.Sheets[sheet][name].t == "d" || workbook.Sheets[sheet][name].t == "n" ) {
-              workbook.Sheets[sheet][name].v = workbook.Sheets[sheet][name].w
-            }
-            i++;
-          }
-          var Arrays = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {header:1})
-          i = 0;
-          let max_length = Arrays[0].length;
-          // while (i < Arrays.length){
-          //   if (Arrays[i].length > max_length) max_length = Arrays[i].length;
-          // }
-          console.log(max_length);
-          Arrays
-          .map(a=>a.length)
-          .indexOf(Math.max(...Arrays.map(a=>a.length)));
-          const lengths = Arrays.map(a=>a.length);
-          max_length = lengths.indexOf(Math.max(...lengths));
-          if (max_length > Arrays[0].length || max_length < 15){
-            let target_length = max_length-Arrays[0].length;
-            if(target_length < 15) target_length = 15;
-            for(i = 0; i < target_length; i++){
-              Arrays[0].push("");
-            }
-          }
-          grid.data = Arrays;
-          global_grid = grid;
-        }
-        input.addEventListener("change", handleFileAsync, false);
-        function handleDragover(e) {
-          e.stopPropagation();
-          e.preventDefault();
-          e.dataTransfer.dropEffect = 'copy';
-        }
-        document.addEventListener("drop", handleDropAsync, false);
-        document.addEventListener("dragover", handleDragover, false);
-        document.addEventListener("dragenter", handleDragover, false);
-
-
-
-
-
-        var to_json = function to_json(workbook) {
-        var result = {};
-        workbook.SheetNames.forEach(function(sheetName) {
-          var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header:1});
-          if(roa.length) result[sheetName] = roa;
-        });
-        return JSON.stringify(result, 2, 2);
-      }
-
-    </script>
-    </div>
-  </div>
-  
-
-<form method="POST" action="{% url 'ins_excel_temp' %}">
-  {% csrf_token %}
-    {{ data_form.as_p }}
-    {{ data_final_form.as_p }}
     
+  <div class="container" style="padding-top: 100px;">
 
-    {{ temp_form }}
-  <input type="submit">
-</form>
+    <div id="portfolio">
 
-<div class="Container">
-  {% if messages %}
-
+      <input type="button" id="loadFileXml" value="Escolher ficheiro Excel...." onclick="document.getElementById('myFile').click();" />
+      <input type="file" style="display:none;" id="myFile" name="myFile"/>
+      
+      <table id="tbl-data"></table>
+      <div id="grid"></div>
+      <div id="buttons" class="form-row"></div>
+    
+    </div>
+  
+    {% if messages %}
+  
       {% for message in messages %}
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
 
       {% endfor %}
+      
+    {% endif %}
+    <form method="POST" action="{% url 'ins_excel_temp' %}">
+      
+      {% csrf_token %}
+
+      <div style = "position:relative;right: 400px;top: 50px;">
+        {{ data_form.as_p }}
+      </div>
+
+      <div style = "position:relative;right: 400px;top: 50px;">
+        {{ data_final_form.as_p }}
+      </div>
+
+      <div style = "position:relative;right: 400px;top: 50px;">
+        {{ temp_form }}
+      </div>
+        
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
+      </div>
+
+    </form>
+  </div>
+
+  <style>
+
+    form {
+      padding: 20px;
+      background-color: #f2f2f2;
+      border-radius: 10px;
+    }
     
-  {% endif %}
-</div>
+    label {
+      margin-left: 450px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    
+    input[type="text"], input[type="date"] {
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid gray;
+    }
+    
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      float: right;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #3e8e41;
+      margin-bottom: 100px;
+    }
+
+
+  </style>
+
+<script>
+    var global_grid;
+
+    var make_buttons = function(sheetnames) {
+      var buttons = document.getElementById('buttons');
+      buttons.innerHTML = "";
+      label = document.createElement('p'); label.innerText = "Selecione a folha de cálculo";
+      buttons.appendChild(label)
+      sheetnames.forEach(function(s,idx) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.name = 'btn' + idx;
+        btn.text = s;
+        var txt = document.createElement('h3'); txt.innerText = s; btn.appendChild(txt);
+        btn.addEventListener('click', function() { showSheet(WorkB,idx); });
+        buttons.appendChild(btn);
+        buttons.appendChild(document.createElement('br'));
+      });
+    };
+
+    var input = document.getElementById("myFile");
+    var WorkB;
+    
+    async function handleFileAsync(e) {
+      
+      const file = e.target.files[0];
+      const data = await file.arrayBuffer();
+      /* data is an ArrayBuffer */
+      const workbook = XLSX.read(data, {cellDates: true});
+      WorkB = workbook;
+      var wsnames = workbook.SheetNames;
+      make_buttons(wsnames);
+      boot = true
+      showSheet(workbook,0)
+    }
+
+    async function handleDropAsync(e) {
+      e.stopPropagation(); e.preventDefault();
+      const f = e.dataTransfer.files[0];
+      /* f is a File */
+      const data = await f.arrayBuffer();
+      /* data is an ArrayBuffer */
+      const workbook = XLSX.read(data, {cellDates: true});
+      WorkB = workbook;
+      var wsnames = workbook.SheetNames;
+      make_buttons(wsnames);
+      boot = true
+      showSheet(workbook,0)
+    }
+
+    function callDefault(e) {
+      e.preventDefault();
+    }
+
+
+    function selection(e){
+      let rows = Object.keys(e.selectedData);
+      let text = "";
+      // para selecionar varios valores separados por ;
+      for (let j = 0; j < rows.length; j++){
+        array = ((e.selectedData)[rows[j]]);
+        for(let i=0; i<Object.values(array).length;i++){
+          value = Object.values(array)[i];
+          console.log(value)
+          if(value != undefined)text += value.toString() + ";";
+        } 
+      }
+      text = text.slice(0, -1);
+      text = text.replace(/\s/g, '');
+      document.getElementById('id_temperatura_array').value = text;
+    }
+
+    var boot = true
+    function showSheet(workbook,sheetidx){
+      document.getElementById("grid").innerHTML = "";
+      var sheet = workbook.SheetNames[sheetidx||0];
+
+      //check if empty
+      if(boot){
+        var num = 0;
+        console.log(Object.keys(workbook.Sheets[sheet]))
+        while(Object.keys(workbook.Sheets[sheet]).length<5){
+          sheet = workbook.SheetNames[num]
+          num++
+        }
+        boot = false
+      }
+
+      /* DO SOMETHING WITH workbook HERE */
+      var grid = canvasDatagrid({
+        parentNode: document.getElementById('grid'),
+        name: "datagrid",
+        style: {
+          cellWidth: '125'
+        },
+        data: []
+      });
+      grid.addEventListener('beforebeginedit', callDefault);
+      grid.addEventListener('beforesortcolumn', callDefault);
+      grid.addEventListener('selectionchanged', selection);
+
+      grid.style.height = "500px";
+      grid.style.width = "100%";
+      
+      // grid.data = XLSX.utils.sheet_to_json(ws, {header:1});
+      // console.log(workbook.Sheets[sheet])
+      // console.log(Object.keys(workbook.Sheets[sheet]).length);
+      let i = 0;
+
+      while (i < Object.keys(workbook.Sheets[sheet]).length) {
+        let name = Object.keys(workbook.Sheets[sheet])[i];
+        if (workbook.Sheets[sheet][name].t == "d" || workbook.Sheets[sheet][name].t == "n" ) {
+          workbook.Sheets[sheet][name].v = workbook.Sheets[sheet][name].w
+        }
+        i++;
+      }
+      var Arrays = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {header:1})
+      i = 0;
+      let max_length = Arrays[0].length;
+      // while (i < Arrays.length){
+      //   if (Arrays[i].length > max_length) max_length = Arrays[i].length;
+      // }
+      console.log(max_length);
+      Arrays
+      .map(a=>a.length)
+      .indexOf(Math.max(...Arrays.map(a=>a.length)));
+      const lengths = Arrays.map(a=>a.length);
+      max_length = lengths.indexOf(Math.max(...lengths));
+      if (max_length > Arrays[0].length || max_length < 15){
+        let target_length = max_length-Arrays[0].length;
+        if(target_length < 15) target_length = 15;
+        for(i = 0; i < target_length; i++){
+          Arrays[0].push("");
+        }
+      }
+      grid.data = Arrays;
+      global_grid = grid;
+    }
+    input.addEventListener("change", handleFileAsync, false);
+    function handleDragover(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+    }
+    document.addEventListener("drop", handleDropAsync, false);
+    document.addEventListener("dragover", handleDragover, false);
+    document.addEventListener("dragenter", handleDragover, false);
+
+
+
+
+
+    var to_json = function to_json(workbook) {
+    var result = {};
+    workbook.SheetNames.forEach(function(sheetName) {
+      var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header:1});
+      if(roa.length) result[sheetName] = roa;
+    });
+    return JSON.stringify(result, 2, 2);
+  }
+
+</script>
+  
+
+
 
 
 {% endblock base %}

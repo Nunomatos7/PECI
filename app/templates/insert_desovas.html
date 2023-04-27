@@ -1,31 +1,58 @@
 {% extends "base.html" %}
 {% block base %}
 
+  <div class="container" style="padding-top: 100px;">
+    {% if messages %}
+      {% for message in messages %}
 
-  <form method="POST" action="{% url 'insert_desovas' %}" style="padding-top: 150px; padding-bottom: 100px;">
-    <div class="Container">
-      {% if messages %}
-  
-          {% for message in messages %}
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{message}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-  
-          {% endfor %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+      {% endfor %}
+    
+    {% endif %}
+    <form method="POST" action="{% url 'insert_desovas' %}">
+      {% csrf_token %}
+
+      <div class="form-row">
+
+        <div class="form-group col-md-4">
+          <label for="data">Data:</label>
+          {{ data_form.data }}
+        </div>
+      
+      </div>  
+
+      <div class="form-row">
+
+        <div class="form-group col-md-4">
+          <label for="femeas">Fêmeas:</label>
+          {{ desova_form.femeas }}
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="desovados">Desovados:</label>
+          {{ desova_form.desovados }}
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="embrionados">Embrionados:</label>
+          {{ desova_form.embrionados }}
+        </div>
         
-      {% endif %}
-    </div>
+      </div>
+    
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
+      </div>
 
-    {% csrf_token %}
+    </form>
+  </div>
 
-    {{ data_form.as_p }}
-
-    {{ desova_form.as_p }}
-    <input type="submit">
-  </form>
   <style>
 
     form {
@@ -36,31 +63,14 @@
     label {
       margin-left: 20px;
       font-weight: bold;
-      margin-right: 10px;
+      margin-top: 20px;
     }
-    
-  
     input[type="text"], input[type="date"] {
-      padding: 10px;
+      padding: 5px;
       margin-bottom: 20px;
       border-radius: 10px;
       border: 1px solid gray;
     }
     
-    input[type="submit"] {
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      float: right;
-      position: relative;
-    }
-    
-    input[type="submit"]:hover {
-      background-color: #3e8e41;
-      margin-bottom: 100px;
-    }
-      </style>
+  </style>
 {% endblock base %}
