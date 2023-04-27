@@ -294,51 +294,69 @@ def dados_jaula(request):
         #try:    #if data NOT exists
         
         if data_form.is_valid():
+            print("asdasd")
             data = data_form.save()
-        
-        dadosjaula = dadosjaula_form.save(commit=False)
+
+        dadosjaula = DadosJaulaForm(request.POST)
         dadosjaula.data = data
-        data_anterior = Dados.get_previous_date(dadosjaula.data)
-        
-        
-        if (dadosjaula_form.data['num_peixes'] == None):
+        print("asdasdasd")
+        print(dadosjaula.data)
+        print("asdasdasd")
+        data_anterior = Dados.objects.filter(data__lt=dadosjaula.data).order_by('-data').first()
+
+        if (dadosjaula_form.data['num_peixes'] == ''):
             dadosjaula.num_peixes = data_anterior.num_peixes - data_anterior.num_mortos_real
         else:
             dadosjaula.num_peixes = dadosjaula_form.data['num_peixes']
-        dadosjaula.Biom = dadosjaula.PM * dadosjaula.num_peixes
+        
+        dadosjaula.PM = dadosjaula_form.data['PM']
+
+        dadosjaula.Biom = float(dadosjaula.PM) * int(dadosjaula.num_peixes)
         
         dadosjaula.percentagem_alimentacao = dadosjaula_form.data['percentagem_alimentacao']
         
-        dadosjaula.peso = data_anterior.Biom * dadosjaula.percentagem_alimentacao
+        dadosjaula.peso = float(data_anterior.Biom) * float(dadosjaula.percentagem_alimentacao)
         
-        dadosjaula.sacos_racao = dadosjaula.peso * 25
+        dadosjaula.sacos_racao = float(dadosjaula.peso) * 25
         
         dadosjaula.FC = dadosjaula_form.data['FC']
         
         # perguntar sobre isto
-        if (dadosjaula_form.data['alimentacao_real'] == None):
-            dadosjaula.alimentacao_real = dadosjaula.peso * 30
+        if (dadosjaula_form.data['alimentacao_real'] == ''):
+            dadosjaula.alimentacao_real = float(dadosjaula.peso) * 30
         else:
             dadosjaula.alimentacao_real = dadosjaula_form.data['alimentacao_real']
-        dadosjaula.PM_teorica_alim_real = (dadosjaula.alimentacao_real / dadosjaula.FC + dadosjaula.Biom) / dadosjaula.num_peixes
+        
+        dadosjaula.PM_teorica_alim_real = (float(dadosjaula.alimentacao_real) / float(dadosjaula.FC) + float(dadosjaula.Biom)) / int(dadosjaula.num_peixes)
+        
         #perguntar sobre isto
         dadosjaula.PM_teorico = None
-        if (dadosjaula_form.data['PM_real'] == None):
+        
+        if (dadosjaula_form.data['PM_real'] == ''):
             dadosjaula.PM_real = dadosjaula.PM_teorico
         else:
             dadosjaula.PM_real = dadosjaula_form.data['PM_real']
         dadosjaula.percentagem_mortalidade_teorica = dadosjaula.alimentacao_real
-        dadosjaula.num_mortos_teorico = dadosjaula.num_peixes * dadosjaula.percentagem_mortalidade_teorica
-        if (dadosjaula_form.data['num_mortos_real'] == None):
+        dadosjaula.num_mortos_teorico = int(dadosjaula.num_peixes) * float(dadosjaula.percentagem_mortalidade_teorica)
+        
+        if (dadosjaula_form.data['num_mortos_real'] == ''):
             dadosjaula.num_mortos_real = dadosjaula.num_mortos_teorico
         else:
             dadosjaula.num_mortos_real = dadosjaula_form.data['num_mortos_real']
-        if (dadosjaula_form.data[''] == None):
-            dadosjaula.percentagem_mortalidade_real = dadosjaula.num_mortos_real / dadosjaula.num_peixes * 100
+        
+        if (dadosjaula_form.data['percentagem_mortalidade_real'] == ''):
+            dadosjaula.percentagem_mortalidade_real = int(dadosjaula.num_mortos_real) / int(dadosjaula.num_peixes * 100)
         else:
             dadosjaula.percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
+        
         dadosjaula.peso_medio = None
-        dadosjaula.FC_real = dadosjaula.alimentacao_real / ( (data_anterior.num_peixes * data_anterior.PM) - (dadosjaula.num_peixes * dadosjaula.PM) )
+        dadosjaula.FC_real = int(dadosjaula.alimentacao_real) / ( (int(data_anterior.num_peixes) * int(data_anterior.PM)) - (int(dadosjaula.num_peixes) * int(dadosjaula.PM)) )
+        
+
+        dadosjaula.save()
+
+        print("Simmmmmmmmmmmmmmmmmmmm")
+
         """
         except: 
             #if data exists

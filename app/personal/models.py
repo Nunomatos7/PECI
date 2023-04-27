@@ -42,10 +42,10 @@ class Dados (models.Model):
     peso_medio = models.FloatField(default=None)
     FC_real = models.FloatField(default=None)
 
-    def get_previous_data(cls, date):
+    def get_previous_data(self, date):
         try:
-            previous_data = cls.objects.filter(data__lt=date).latest('data')
-        except cls.DoesNotExist:
+            previous_data = self.objects.filter(data__lt=date).latest('data')
+        except self.DoesNotExist:
             previous_data = None
         return previous_data
 

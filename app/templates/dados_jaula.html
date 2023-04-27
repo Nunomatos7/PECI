@@ -11,6 +11,7 @@
         </button>
       </div>
       {% endfor %}
+    {% endif %}
     <form method="POST" action="{% url 'dados_jaula' %}">
       {% csrf_token %}
       <div class="form-row">
@@ -27,6 +28,10 @@
         <div class="form-group col-md-4">
           <label for="peso_medio">Numero de peixes:</label>
           {{ dadosjaula_form.num_peixes }}
+        </div>
+        <div class="form-group col-md-4">
+          <label for="peso_medio">PM:</label>
+          {{ dadosjaula_form.PM }}
         </div>
         
         <div class="form-row">
