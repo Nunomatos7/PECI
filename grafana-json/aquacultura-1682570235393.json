@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_AQUACULTURA",
-      "label": "aquacultura",
+      "name": "DS_AQUACULTURA_SQL SERVER",
+      "label": "aquacultura SQL Server",
       "description": "",
       "type": "datasource",
       "pluginId": "mssql",
@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "9.4.3"
+      "version": "9.3.6"
     },
     {
       "type": "datasource",
@@ -81,7 +81,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -90,9 +90,7 @@
           },
           "custom": {
             "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -131,12 +129,12 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -168,7 +166,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -177,9 +175,7 @@
           },
           "custom": {
             "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -218,12 +214,12 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -255,7 +251,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -353,7 +349,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -388,7 +384,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "builder",
           "format": "table",
@@ -403,7 +399,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -445,7 +441,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -458,7 +455,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Fator de crescimento"
+              "options": "Fator de crescimento(Teórico)"
             },
             "properties": [
               {
@@ -487,7 +484,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Fator de crescimento(Teórico)"
+              "options": "Fator de crescimento"
             },
             "properties": [
               {
@@ -526,12 +523,12 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  FC as 'Fator de crescimento(Teórico)',\r\n  FC_real as 'Fator de crescimento',\r\n  data_id\r\nFROM\r\n  aquacultura.dbo.personal_dados\r\nWHERE \r\n  id_jaula_id IN ($jaula) ",
+          "rawSql": "SELECT\r\n  FC_real as 'Fator de crescimento',\r\n  FC as 'Fator de crescimento(Teórico)',\r\n  data_id\r\nFROM\r\n  aquacultura.dbo.personal_dados\r\nWHERE \r\n  id_jaula_id IN ($jaula) ",
           "refId": "A",
           "sql": {
             "columns": [
@@ -564,7 +561,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -606,7 +603,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -659,7 +657,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -697,7 +695,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -739,7 +737,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -819,7 +818,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -857,7 +856,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -899,7 +898,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -978,7 +978,7 @@
           "dataset": "aquacultura",
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -1012,7 +1012,7 @@
         {
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -1045,7 +1045,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1054,9 +1054,7 @@
           },
           "custom": {
             "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -1064,7 +1062,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1093,12 +1092,12 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -1130,7 +1129,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1139,9 +1138,7 @@
           },
           "custom": {
             "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -1149,7 +1146,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1178,12 +1176,12 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -1215,7 +1213,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1224,9 +1222,7 @@
           },
           "custom": {
             "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -1234,7 +1230,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1263,12 +1260,12 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -1300,7 +1297,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1309,9 +1306,7 @@
           },
           "custom": {
             "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -1319,7 +1314,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1348,12 +1344,12 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -1385,7 +1381,7 @@
     {
       "datasource": {
         "type": "mssql",
-        "uid": "${DS_AQUACULTURA}"
+        "uid": "${DS_AQUACULTURA_SQL SERVER}"
       },
       "description": "",
       "fieldConfig": {
@@ -1395,9 +1391,7 @@
           },
           "custom": {
             "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
@@ -1405,7 +1399,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1434,12 +1429,12 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "mssql",
-            "uid": "${DS_AQUACULTURA}"
+            "uid": "${DS_AQUACULTURA_SQL SERVER}"
           },
           "editorMode": "code",
           "format": "table",
@@ -1471,7 +1466,7 @@
   ],
   "refresh": "",
   "revision": 1,
-  "schemaVersion": 38,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1480,7 +1475,7 @@
         "current": {},
         "datasource": {
           "type": "mssql",
-          "uid": "${DS_AQUACULTURA}"
+          "uid": "${DS_AQUACULTURA_SQL SERVER}"
         },
         "definition": "SELECT * FROM aquacultura.dbo.personal_jaula",
         "description": "Jaula id 0 não é mesmo uma jaula",
@@ -1555,7 +1550,7 @@
         "current": {},
         "datasource": {
           "type": "mssql",
-          "uid": "${DS_AQUACULTURA}"
+          "uid": "${DS_AQUACULTURA_SQL SERVER}"
         },
         "definition": "SELECT name FROM sys.columns WHERE object_id = OBJECT_ID('dbo.personal_$tabelas')  ",
         "hide": 1,
@@ -1581,6 +1576,6 @@
   "timezone": "",
   "title": "aquacultura",
   "uid": "MzEOaNa4k",
-  "version": 20,
+  "version": 2,
   "weekStart": ""
 }
