@@ -14,13 +14,70 @@
     {% endif %}
     <form method="POST" action="{% url 'dados_jaula' %}">
       {% csrf_token %}
+      <div class="form-group col-md-4">
+        {{ data_form.as_p }}
+
+        <label for="num_peixes">ID Jaula:</label>
+        {{ dadosjaula_form.id_jaula }}
+
+      </div>
+      <label for="num_peixes">Num Peixes:</label>
+      <input type="number" name="num_peixes" value=""><br>
+
+      <label for="PM">PM:</label>
+      <input type="number" name="PM" value=""><br>
+
+      <label for="Biom">Biom:</label>
+      <input type="number" name="Biom" value=""><br>
+      
+      <label for="percentagem_alimentacao">Percentagem Alimentação:</label>
+      <input type="number" name="percentagem_alimentacao" value=""><br>
+
+      <label for="peso">Peso:</label>
+      <input type="number" name="peso" value=""><br>
+
+      <label for="sacos_racao">Sacos ração:</label>
+      <input type="number" name="sacos_racao" value=""><br>
+
+      <label for="FC">FC:</label>
+      <input type="number" name="FC" value=""><br>
+
+      <label for="PM_teorica_alim_real">PM teorico / alimentação real:</label>
+      <input type="number" name="PM_teorica_alim_real" value=""><br>
+
+      <label for="alimentacao_real">Alimentação Real:</label>
+      <input type="number" name="alimentacao_real" value=""><br>
+
+      <label for="PM_teorico">PM teorico:</label>
+      <input type="number" name="PM_teorico" value=""><br>
+
+      <label for="PM_real">PM real:</label>
+      <input type="number" name="PM_real" value=""><br>
+
+      <label for="percentagem_mortalidade_teorica">Percentagem mortalidade teorica:</label>
+      <input type="number" name="percentagem_mortalidade_teorica" value=""><br>
+
+      <label for="num_mortos_teorico">Nº mortos teorico:</label>
+      <input type="number" name="num_mortos_teorico" value=""><br>
+
+      <label for="percentagem_mortalidade_real">percentagem mortalidade real:</label>
+      <input type="number" name="percentagem_mortalidade_real" value=""><br>
+
+      <label for="num_mortos_real">Nº mortos real:</label>
+      <input type="number" name="num_mortos_real" value=""><br>
+
+      <label for="peso_medio">Peso medio:</label>
+      <input type="number" name="peso_medio" value=""><br>
+      <!--
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="num_peixes">ID Jaula:</label>
             {{ dadosjaula_form.id_jaula }}
         </div>
       </div>
-
+    -->
+      <!--{{ dadosjaula_form }}-->
+      <!--
       <div class="form-row">
         <div class="form-group col-md-4">
           {{ data_form.as_p }}
@@ -66,7 +123,7 @@
             {{ dadosjaula_form.percentagem_mortalidade_real }}
           </div>
         </div>
-        
+        -->
         <!--
         <div class="form-group col-md-4">
           <label for="peso_total">Peso Total (kg):</label>
