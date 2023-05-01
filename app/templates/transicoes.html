@@ -1,16 +1,20 @@
 {% extends "base.html" %}
-
 {% block base %}
+
   <div class="container" style="padding-top: 100px;">
     {% if messages %}
+
       {% for message in messages %}
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
       {% endfor %}
+
     {% endif %}
     <form method="POST" action="{% url 'transicoes' %}">
       <!--
@@ -41,19 +45,44 @@
       </div>
 
      
-    -->
+      -->
 
-    {% csrf_token %}
+      {% csrf_token %}
 
-    {{ data_form.as_p }}
+      <div class="form-row">
 
-    {{ TransicoesJaulaForm.as_p }}
+        <div class="form-group col-md-4">
+          <label for="num">Número:</label>
+          {{ TransicoesJaulaForm.num }}
+        </div>
 
+        <div class="form-group col-md-4">
+          <label for="jaula_inicial">Jaula Inicial:</label>
+          {{ TransicoesJaulaForm.jaula_inicio }}
+        </div>
+        
+        <div class="form-group col-md-4">
+          <label for="jaula_final">Jaula Final:</label>
+          {{ TransicoesJaulaForm.jaula_fim }}
+        </div>
 
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">Submeter</button>
-    </div>
+      </div>
+
+      <div class="form-row">
+
+        <div class="form-group col-md-4">
+          <label for="data">Data:</label>
+          {{ data_form.data }}
+        </div>
+
+      </div>
+
+      <div class="form-group">
+            <button type="submit" class="btn btn-primary" style = "position:relative;right: -930px;top: 10px;">Submeter Pedido</button>
+      </div>
+
     </form>
+    
   </div>
 
   <style>
@@ -65,10 +94,10 @@
     label {
       margin-left: 20px;
       font-weight: bold;
-      margin-right: 10px;
+      margin-top: 20px;
     }
-    input[type="text"] {
-      padding: 10px;
+    input[type="text"], input[type="date"] {
+      padding: 5px;
       margin-bottom: 20px;
       border-radius: 10px;
       border: 1px solid gray;
@@ -88,4 +117,5 @@
       margin-bottom: 100px;
     }
   </style>
+
 {% endblock base %}

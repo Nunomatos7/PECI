@@ -2,29 +2,65 @@
 {% block base %}
 
 
-  <form method="POST" action="{% url 'alimentacao' %}" style="padding-top: 150px; padding-bottom: 100px;">
-    <div class="Container">
-      {% if messages %}
-  
-          {% for message in messages %}
+  <div class="container" style="padding-top: 100px;">
+    {% if messages %}
+
+        {% for message in messages %}
+        
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
             {{message}}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+
+        {% endfor %}
+      
+    {% endif %}
+    <form method="POST" action="{% url 'alimentacao' %}">
+      
+      {% csrf_token %}
+
+      <div class="form-row">
+
+        <div class="form-group col-md-4">
+          <label for="valor">Valor:</label>
+          {{ form.valor }}
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="peso_inicio">Peso Inicial:</label>
+          {{ form.peso_inicio }}
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="peso_fim">Peso Final:</label>
+          {{ form.peso_fim }}
+        </div>
+      
+      </div>
+
+      <div class="form-row">
+
+        <div class="form-group col-md-4">
+          <label for="temp">Temperatura:</label>
+          {{ form.temp }}
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="id_jaula">ID Jaula:</label>
+          {{ form.id_jaula }}
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
+      </div>
+
+    </form>
+  </div>
   
-          {% endfor %}
-        
-      {% endif %}
-    </div>
-
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <input type="submit">
-  </form>
   <style>
 
     form {
@@ -35,7 +71,7 @@
     label {
       margin-left: 20px;
       font-weight: bold;
-      margin-right: 10px;
+      margin-top: 20px;
     }
     
   
@@ -45,21 +81,5 @@
       border-radius: 10px;
       border: 1px solid gray;
     }
-    
-    input[type="submit"] {
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      float: right;
-      position: relative;
-    }
-    
-    input[type="submit"]:hover {
-      background-color: #3e8e41;
-      margin-bottom: 100px;
-    }
-      </style>
+  </style>
 {% endblock base %}
