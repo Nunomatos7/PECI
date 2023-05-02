@@ -2,7 +2,7 @@
 {% block base %}
   
     
-  <div class="container" style="padding-top: 100px;">
+  <div class="container">
 
     <div id="portfolio">
 
@@ -11,8 +11,7 @@
       
       <table id="tbl-data"></table>
       <div id="grid"></div>
-      <div id="buttons" class="form-row"></div>
-    
+      <div id="buttons" class="btn-group"></div>
     </div>
   
     {% if messages %}
@@ -35,21 +34,25 @@
       <div class="form-row">
 
         <div class="form-group col-md-4">
-        {{ data_form.as_p }}
-      </div>
+          {{ data_form.as_p }}
+        </div>
 
-      <div class="form-group col-md-4">
-        {{ data_final_form.as_p }}
-      </div>
+        <div class="form-group col-md-4">
+          {{ data_final_form.as_p }}
+        </div>
 
-      <div class="form-group col-md-4">
-        {{ temp_form }}
+        <div class="form-group col-md-4" hidden>
+          {{ temp_form.as_p }}
+        </div>
+
       </div>
+      
+        <div id="temp_dados" style="align-self: center;"></div>
         
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
-      </div>
-    </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
+        </div>
+      
 
     </form>
   </div>
@@ -61,17 +64,17 @@
     var make_buttons = function(sheetnames) {
       var buttons = document.getElementById('buttons');
       buttons.innerHTML = "";
-      label = document.createElement('p'); label.innerText = "Selecione a folha de cálculo";
+      label = document.createElement('p'); label.innerText = "Selecione a folha de cálculo";  label.style.padding="3px"
       buttons.appendChild(label)
       sheetnames.forEach(function(s,idx) {
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.name = 'btn' + idx;
         btn.text = s;
+        btn.classList.add('btn');
         var txt = document.createElement('h3'); txt.innerText = s; btn.appendChild(txt);
         btn.addEventListener('click', function() { showSheet(WorkB,idx); });
         buttons.appendChild(btn);
-        buttons.appendChild(document.createElement('br'));
       });
     };
 
@@ -114,17 +117,53 @@
       let rows = Object.keys(e.selectedData);
       let text = "";
       // para selecionar varios valores separados por ;
+      let diff = 0;
       for (let j = 0; j < rows.length; j++){
         array = ((e.selectedData)[rows[j]]);
+        if(diff != j){
+          text = text.slice(0, -1);
+          text += "//";
+          diff = j;
+        }
         for(let i=0; i<Object.values(array).length;i++){
           value = Object.values(array)[i];
-          console.log(value)
           if(value != undefined)text += value.toString() + ";";
         } 
       }
       text = text.slice(0, -1);
       text = text.replace(/\s/g, '');
+      temp_display(text)
+      text = text.replaceAll("//",';')
+      console.log(text)
       document.getElementById('id_temperatura_array').value = text;
+    }
+
+    function temp_display(text){
+      var text_display = document.getElementById('temp_dados');
+      text_display.innerHTML = "";
+      var lines = text.split('//')
+      for(let j=0;j<lines.length;j++){
+        var temps = lines[j].split(';')
+        container = document.createElement('div');
+        container.classList.add("btn-group");
+        container.style.padding = "0px 0px 0px 0px";
+        container.style.display = "block"
+        container.setAttribute("align", "center");
+        for(let i=0;i<temps.length;i++){
+          if(i%15==0) container.appendChild(document.createElement('br'))
+          dado = document.createElement('btn'); dado.innerText = temps[i];
+          dado.type = 'button';
+          dado.classList.add('btn');
+          dado.classList.add('btn-info'); 
+          dado.classList.add('disabled')
+          dado.style.width = "54px";
+          dado.style.borderRadius = "1px";
+          container.appendChild(dado)
+          text_display.appendChild(container)
+
+        }
+      }
+
     }
 
     var boot = true
@@ -148,7 +187,7 @@
         parentNode: document.getElementById('grid'),
         name: "datagrid",
         style: {
-          cellWidth: '125'
+          cellWidth: '100'
         },
         data: []
       });

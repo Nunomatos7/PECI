@@ -140,46 +140,49 @@ def delete_desova(request):
     
 @login_required
 def ins_excel_temp(request):
-    temp_form = TemperaturaArrayForm()
-    data_form = DataForm(prefix="inicial")
-    data_final_form = DataForm(prefix="final")
     if request.method == 'POST':
+        temp_form = TemperaturaArrayForm(request.POST)
+        data_form = DataForm(request.POST,prefix="inicial")
+        data_final_form = DataForm(request.POST,prefix="final")
         if temp_form.is_valid():
-            try:
-                if data_form.is_valid():
-                    print("valid")
-                data_i = datetime.strptime(data_form.data["inicial-data"], "%Y-%m-%d")
-                data_f = datetime.strptime(data_form.data["final-data"], "%Y-%m-%d")
-                delta = data_f - data_i
-                num_days = delta.days + 1 # include end date in count
-                temp_array = (temp_form.data['temperatura_array']).split(';')
-                if num_days != len(temp_array):
-                    messages.success(request, 'Erro!')
-                    return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
-                else:   
-                    for t,d in zip(temp_array,range(num_days)):
-                        current_date = data_i + timedelta(days=d)
-                        date = Data(data=current_date)
-                        if not Data.objects.filter(data=current_date).exists():
-                            date.save()
-                        temp = Temperatura(temperatura=t,data=date)
-                        temp.save()
-                    messages.success(request, 'Dados Temperatura adicionado!')
-                    return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
-            except Exception as e:
-                print(e)
-                print("not Valid")
-                return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
+            data_i = datetime.strptime(data_form.data["inicial-data"], "%Y-%m-%d")
+            data_f = datetime.strptime(data_final_form.data["final-data"], "%Y-%m-%d")
+            delta = data_f - data_i
+            num_days = delta.days + 1 # include end date in count
+            temp_array = (temp_form.data['temperatura_array']).split(';')
+            if num_days != len(temp_array):
+                messages.success(request, 'Nº de dias diferente de temperaturas')
+
+            else:   
+                for t,d in zip(temp_array,range(num_days)):
+                    current_date = data_i + timedelta(days=d)
+                    date = Data(data=current_date)
+                    if not Data.objects.filter(data=current_date).exists():
+                        date.save()
+                    temp = Temperatura(temperatura=t,data=date)
+                    temp.save()
+                messages.success(request, 'Dados Temperatura adicionado!')
+            # else:        
+            #     print(data_form)
+            #     print(temp_form)
+            #     print(data_final_form)
+            #     messages.success(request, 'erro not valid')
         #         data_data = data_form.data['data']
         #         data = Data.objects.get(data=data_data)
         #         temp = temp_form.save(commit=False)
         #         temp.data = data
         #         temp.save()
         #         messages.success(request, 'Dados Temperatura adicionado!')
-        # else:
-        #     messages.success(request, 'Erro!')
-    else:
-        return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
+        else:
+            print(data_form)
+            print(temp_form)
+            print(data_final_form)
+            messages.success(request, 'not valid')
+    
+    data_form = DataForm(prefix="inicial")
+    data_final_form = DataForm(prefix="final")
+    temp_form = TemperaturaArrayForm()
+    return render(request, 'ins_excel_temp.html', {'temp_form': temp_form, 'data_form': data_form, 'data_final_form': data_final_form})
     
 @login_required
 def ins_excel_desovas(request):
@@ -207,7 +210,7 @@ def ins_excel_desovas(request):
                 desova.desovados = d[2].replace(",", "")
                 desova.embrionados = d[3].replace(",", "")
                 desova.save()
-                messages.success(request, 'Dados Desova adicionado!')
+            messages.success(request, 'Dados Desova adicionado!')
             # try:
             #     #case there is no data
             #     if data_form.is_valid():

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block base %}
 
-  <div class="container" style="padding-top: 100px;">
+  <div class="container">
 
     <div id="portfolio">
 
@@ -10,9 +10,9 @@
   
       <table id="tbl-data"></table>
       <div id="grid"></div>
-      <div id="buttons" class="form-row"></div>
-    
+      <div id="buttons" class="btn-group"></div>
     </div>
+    <br>
 
     {% if messages %}
   
@@ -31,9 +31,11 @@
     <form method="POST" action="{% url 'ins_excel_desovas' %}">
 
       {% csrf_token %}
-        
-        <div>
+        <p>Selecione dados de um ficheiro excel, têm de estar ordenados por: Data, Fêmeas, Desovados, Embrionados  </h1>
+        <div hidden>
           {{ desova_form.as_p }}
+        </div>
+        <div id="desova_dados" style="align-self: center;">
         </div>
 
         <div class="form-group">
@@ -51,17 +53,17 @@
     var make_buttons = function(sheetnames) {
       var buttons = document.getElementById('buttons');
       buttons.innerHTML = "";
-      label = document.createElement('p'); label.innerText = "Selecione a folha de cálculo";
+      label = document.createElement('p'); label.innerText = "Selecione a folha de cálculo"; label.style.padding="3px"
       buttons.appendChild(label)
       sheetnames.forEach(function(s,idx) {
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.name = 'btn' + idx;
         btn.text = s;
+        btn.classList.add('btn');
         var txt = document.createElement('h3'); txt.innerText = s; btn.appendChild(txt);
         btn.addEventListener('click', function() { showSheet(WorkB,idx); });
         buttons.appendChild(btn);
-        buttons.appendChild(document.createElement('br'));
       });
     };
 
@@ -114,7 +116,35 @@
       }
       text = text.slice(0, -1);
       text = text.replace(/\s/g, '');
+      desovas_display(text);
       document.getElementById('id_desovasLines').value = text;
+    }
+
+    function desovas_display(text){
+      var text_display = document.getElementById('desova_dados');
+      text_display.innerHTML = "";
+      var fields = text.split(';')
+      let i;
+      for(i=0;i<fields.length;i++){
+        if(i%4==0){
+          container = document.createElement('div');
+          container.classList.add("btn-group");
+          container.style.padding = "5px 0px 5px 0px";
+          container.style.display = "block"
+          container.setAttribute("align", "center");
+        }
+        dado = document.createElement('btn'); dado.innerText = fields[i];
+        dado.type = 'button';
+        dado.classList.add('btn');
+        dado.classList.add('btn-info');
+        dado.classList.add('btn-lg');
+        dado.classList.add('disabled')
+        dado.style.width = "133px";
+        container.appendChild(dado)
+        text_display.appendChild(container)
+
+      }
+
     }
 
     var boot = true
@@ -145,7 +175,7 @@
       grid.addEventListener('beforesortcolumn', callDefault);
       grid.addEventListener('selectionchanged', selection);
 
-      grid.style.height = "500px";
+      grid.style.height = "400px";
       grid.style.width = "100%";
       
       // grid.data = XLSX.utils.sheet_to_json(ws, {header:1});
