@@ -25,13 +25,22 @@
         </div>
 
         <div class="form-group col-md-4">
-          <label for="massa_volumica">Nº de Peixes:</label>
+          <label for="massa_volumica">Massa Vólumica:</label>
           {{ setupjaula_form.massa_volumica }}
         </div>
 
         <div class="form-group col-md-4">
           <label for="volume">Volume:</label>
           {{ setupjaula_form.volume }}
+        </div>
+
+        <div class="form-group col-md-4">
+          {{ data_form.as_p }}
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="volume">Numero de peixes inicial:</label>
+          {{ dadosjaula_form.num_peixes }}
         </div>
 
       </div>

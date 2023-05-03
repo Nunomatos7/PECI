@@ -237,21 +237,106 @@ def ins_excel_desovas(request):
 def setup_jaula(request):
     if request.method == 'POST':
         setupjaula_form = SetupJaulaForm(request.POST)
-         
+        data_form = DataForm(request.POST)
+        dadosjaula_form = DadosJaulaForm(request.POST)
+
         if setupjaula_form.is_valid():
+
+            try:    #if data NOT exists
+            
+                if data_form.is_valid():
+                    data = data_form.save()
+
+
+            except:     #if data exists
+
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+
+            jaula = Jaula.objects.get(id=setupjaula_form.data['id'])
+
+            num_peixes = dadosjaula_form.data['num_peixes']
+           
+            dados = Dados(
+                data = data,
+                id_jaula = jaula,
+                num_peixes = num_peixes,
+                PM = 0,
+                Biom = 0,
+                percentagem_alimentacao = 0,
+                peso = 0,
+                sacos_racao = 0,
+                FC = 0,
+                PM_teorica_alim_real = 0,
+                alimentacao_real = 0,
+                PM_teorico = 0,
+                PM_real = 0,
+                percentagem_mortalidade_teorica = 0,
+                num_mortos_teorico = 0,
+                percentagem_mortalidade_real = 0,
+                num_mortos_real = 0,
+                peso_medio = 0,
+                FC_real = 0,
+                )
+
+            dados.save()
             setupjaula_form.save()
+
             messages.success(request, 'Jaula Nova Adicionada!')
+
         elif(setupjaula_form.data['id']):
             jaula = Jaula.objects.get(id=setupjaula_form.data['id'])
             jaula.massa_volumica = setupjaula_form.data['massa_volumica']
             jaula.volume = setupjaula_form.data['volume']
+
+            try:    #if data NOT exists
+            
+                if data_form.is_valid():
+                    data = data_form.save()
+
+
+            except:     #if data exists
+
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+
+            jaula = Jaula.objects.get(id=setupjaula_form.data['id'])
+
+            num_peixes = dadosjaula_form.data['num_peixes']
+           
+            dados = Dados(
+                data = data,
+                id_jaula = jaula,
+                num_peixes = num_peixes,
+                PM = 0,
+                Biom = 0,
+                percentagem_alimentacao = 0,
+                peso = 0,
+                sacos_racao = 0,
+                FC = 0,
+                PM_teorica_alim_real = 0,
+                alimentacao_real = 0,
+                PM_teorico = 0,
+                PM_real = 0,
+                percentagem_mortalidade_teorica = 0,
+                num_mortos_teorico = 0,
+                percentagem_mortalidade_real = 0,
+                num_mortos_real = 0,
+                peso_medio = 0,
+                FC_real = 0,
+                )
+
+            dados.save()
             jaula.save()
+            
             messages.success(request, 'Jaula Atualizada!')
         else:
             messages.success(request, 'DADOS INCORRETOS!')
     else:
         setupjaula_form = SetupJaulaForm()
-    return render(request, 'setup_jaula.html', {'setupjaula_form': setupjaula_form})
+        data_form = DataForm()
+        dadosjaula_form = DadosJaulaForm()
+    return render(request, 'setup_jaula.html', {'setupjaula_form': setupjaula_form, 'data_form': data_form, 'dadosjaula_form': dadosjaula_form})
 
 @login_required
 def vacinados(request):
@@ -313,13 +398,10 @@ def dados_jaula(request):
         
         if (data_anterior != None):
             num_peixes = int(data_anterior.num_peixes) - int(data_anterior.num_mortos_real)
-        else:
-            #temporario
-            num_peixes = int(dadosjaula_form.data['num_peixes'])
 
-        PM = data_anterior.PM_real
+        PM = float(data_anterior.PM_real)
 
-        Biom = float(PM) * num_peixes
+        Biom = PM * num_peixes
         
         percentagem_alimentacao = float(dadosjaula_form.data['percentagem_alimentacao'])
         
@@ -345,14 +427,9 @@ def dados_jaula(request):
         else:
             PM_real = dadosjaula_form.data['PM_real']
         
-        percentagem_mortalidade_teorica = alimentacao_real
+        percentagem_mortalidade_teorica = float(dadosjaula_form.data['percentagem_mortalidade_teorica'])
         
         num_mortos_teorico = num_peixes * percentagem_mortalidade_teorica
-        
-        if (dadosjaula_form.data['num_mortos_real'] == ''):
-            num_mortos_real = num_mortos_teorico
-        else:
-            num_mortos_real = int(dadosjaula_form.data['num_mortos_real'])
         
         if (dadosjaula_form.data['num_mortos_real'] == ''):
             num_mortos_real = num_mortos_teorico
@@ -364,7 +441,7 @@ def dados_jaula(request):
         else:
             percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
         
-        peso_medio = 1
+        peso_medio = PM_real
         
         
         """
