@@ -82,7 +82,7 @@ class Vacina (models.Model):
     PM = models.FloatField(default=None)
 
 class Movimento(models.Model):
-    num = models.IntegerField(default=None)   
+    num = models.IntegerField(default=None) 
     data = models.ForeignKey(Data,on_delete=models.CASCADE)
     jaula_inicio = models.ForeignKey(Jaula, default=None,related_name='movimentos_inicio',on_delete=models.CASCADE)
     jaula_fim = models.ForeignKey(Jaula,default=None,related_name='movimentos_fim',on_delete=models.CASCADE)

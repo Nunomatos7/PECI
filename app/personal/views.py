@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from itertools import chain, product
 
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
@@ -9,7 +10,7 @@ from django.urls import reverse
 from django.contrib import messages
 from .forms import *
 from .models import *
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 # Create your views here.
 
@@ -120,6 +121,21 @@ def alimentacao(request):
             messages.success(request,('Erro!'))
     return render(request, 'alimentacao.html', {'form': form})
 
+from datetime import date
+from itertools import product, takewhile
+
+from datetime import date, timedelta, datetime
+
+def get_month_year_combinations(start_date, end_date):
+    start_datetime = datetime.combine(start_date, datetime.min.time())
+    end_datetime = datetime.combine(end_date, datetime.min.time())
+    months = []
+    while start_datetime <= end_datetime:
+        months.append((start_datetime.month, start_datetime.year))
+        start_datetime += timedelta(days=31)
+    return list(set(months))
+
+
 
 @login_required
 def delete_temp(request):
@@ -146,6 +162,25 @@ def delete_temp(request):
                 
             else:
                 print("not temperatura")
+        #print(data_inicial_form.data)
+        #atualizar calculos
+        month_year = get_month_year_combinations(data_i,data_f)
+        for k in month_year:
+            mes,ano = k
+            objects = Temperatura.objects.filter(data__data__month=mes,data__data__year = ano)
+            if not objects:
+                CalculosTemperatura.objects.filter(mes=mes,ano=ano).delete()
+                continue
+            temps = []
+            print('aqui')
+            print(objects)
+            for k in objects:
+                temps.append(k.temperatura)
+            if temps:
+                    calculos = CalculosTemperatura(mes=str(mes),ano = str(ano), media = sum(temps)/len(temps),
+                                                minimo = min(temps),maximo = max(temps),soma = sum(temps))
+                    CalculosTemperatura.objects.filter(mes=str(mes),ano = str(ano)).delete()
+                    calculos.save()
 
         messages.success(request,('Dados Temperatura eliminados!'))
         return render(request, 'delete_temp.html', {'data_inicial_form': data_inicial_form, 'data_final_form': data_final_form})
