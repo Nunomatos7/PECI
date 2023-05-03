@@ -24,8 +24,13 @@
       <div class="form-row">
 
         <div class="form-group col-md-4">
-          <label for="data">Data:</label>
-            {{ form.data }}
+          <label for="data">Data Inicial:</label>
+            {{ data_inicial_form.data }}
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="data">Data Final:</label>
+            {{ data_final_form.data }}
         </div>
       
       </div>
@@ -37,27 +42,9 @@
     </form>
   </div>
 
-  <style>
-
-    form {
-      padding: 20px;
-      background-color: #f2f2f2;
-      border-radius: 10px;
-    }
-
-    label {
-      margin-left: 50px;
-      font-weight: bold;
-      margin-top: 20px;
-    }
-
-    input[type="text"], input[type="date"] {
-      padding: 5px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      border: 1px solid gray;
-    }
-
-  </style>
+  <script>
+    document.getElementById("id_final-data").removeAttribute("required")
+  </script>
+  
 
 {% endblock base %}
