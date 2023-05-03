@@ -77,6 +77,21 @@ def insert_temp(request):
                 temp.data = data
                 temp.save()
                 messages.success(request, 'Dados Temperatura adicionado!')
+            ## calculos com temperatura
+            print(data.data)
+            mes = data.data.month
+            ano = data.data.year
+            objects = Temperatura.objects.filter(data__data__month=mes,data__data__year = ano)
+            temps = []
+            print('aqui')
+            print(objects)
+            for k in objects:
+                temps.append(k.temperatura)
+            if temps:
+                    calculos = CalculosTemperatura(mes=str(mes),ano = str(ano), media = sum(temps)/len(temps),
+                                                minimo = min(temps),maximo = max(temps),soma = sum(temps))
+                    CalculosTemperatura.objects.filter(mes=str(mes),ano = str(ano)).delete()
+                    calculos.save()
         else:
             messages.success(request, 'Erro!')
     else:

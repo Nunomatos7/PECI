@@ -10,6 +10,19 @@ class Temperatura (models.Model):
     temperatura = models.FloatField(default=None)
     data = models.ForeignKey(Data,primary_key=True,on_delete=models.CASCADE)
 
+class CalculosTemperatura(models.Model):
+    mes =  models.IntegerField(default=None)
+    ano =  models.IntegerField(default=None)
+    media =  models.FloatField(default=None)
+    minimo =  models.FloatField(default=None)
+    maximo =  models.FloatField(default=None)
+    soma =  models.FloatField(default=None)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['ano','mes'], name='CalculosTemperatura_pk')
+        ]
+
+
 class Desova (models.Model):
     data = models.ForeignKey(Data,primary_key=True,on_delete=models.CASCADE)
     femeas = models.IntegerField(default=None)
