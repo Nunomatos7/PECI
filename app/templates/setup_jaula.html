@@ -19,18 +19,29 @@
 
       <div class="row">
         <div class="col-md-4 mb-3">
+          {{ data_form.as_p }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 mb-3">
           <label for="id">ID Jaula:</label>
           {{ setupjaula_form.id }}
         </div>
 
         <div class="col-md-4 mb-3">
-          <label for="massa_volumica">Nº de Peixes:</label>
+          <label for="massa_volumica">Massa Volúmica:</label>
           {{ setupjaula_form.massa_volumica }}
         </div>
 
         <div class="col-md-4 mb-3">
           <label for="volume">Volume:</label>
           {{ setupjaula_form.volume }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="volume">Numero de Peixes:</label>
+          {{ dadosjaula_form.num_peixes }}
         </div>
       </div>
 
