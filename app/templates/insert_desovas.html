@@ -2,6 +2,7 @@
 {% block base %}
 
   <div class="container" style="padding-top: 100px;">
+    <h1>Desova</h1>
     {% if messages %}
       {% for message in messages %}
 
@@ -13,45 +14,152 @@
         </div>
 
       {% endfor %}
-    
+
     {% endif %}
     <form method="POST" action="{% url 'insert_desovas' %}">
       {% csrf_token %}
 
-      <div class="form-row">
+      <div class="col-md-4 mb-3">
+        {{ data_form.as_p }}
+      </div>
 
-        <div class="form-group col-md-4">
-          <label for="data">Data:</label>
-          {{ data_form.data }}
-        </div>
-      
-      </div>  
-
-      <div class="form-row">
-
-        <div class="form-group col-md-4">
+      <div class="row">
+        <div class="col-md-4 mb-3">
           <label for="femeas">Fêmeas:</label>
           {{ desova_form.femeas }}
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4 mb-3">
           <label for="desovados">Desovados:</label>
           {{ desova_form.desovados }}
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4 mb-3">
           <label for="embrionados">Embrionados:</label>
           {{ desova_form.embrionados }}
         </div>
-        
-      </div>
-    
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
       </div>
 
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4">Submeter</button>
+      </div>
     </form>
   </div>
 
+  <style>
+    form {
+      background-color: rgba(160, 210, 235, 0.9);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
   
-{% endblock base %}
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f7f7f7;
+    }
+  
+    label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  
+    input[type="text"],
+    input[type="number"] {
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      border: none;
+      padding: 0.5rem;
+      width: 100%;
+    }
+  
+    .form-group {
+      background-color: rgba(160, 210, 235, 0.9);
+      border-radius: 5px;
+      padding: 1rem;
+    }
+  
+    .btn-primary {
+      background-color: #1abc9c;
+      border-color: #1abc9c;
+      padding: 0.5rem 2.5rem;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+  
+    .btn-primary:hover {
+      background-color: #148f77;
+      border-color: #148f77;
+    }
+  
+    .alert-warning {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-color: #f5c6cb;
+      border-radius: 5px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+  
+    .close {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #721c24;
+      opacity: 1;
+      transition: all 0.2s;
+    }
+  
+    .close:hover {
+      color: #cc0000;
+    }
+  
+    /* Style for large screens */
+    @media (min-width: 992px) {
+      label {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+  
+      input[type="text"],
+      input[type="number"] {
+        padding: 0.75rem;
+      }
+  
+      .btn-primary {
+        padding: 0.75rem 2.5rem;
+      }
+  
+      .alert-warning {
+        padding: 1.25rem;
+      }
+    }
+  
+    /* Style for extra small screens */
+    @media (max-width: 576px) {
+      label {
+        font-size: 1rem;
+      }
+  
+      input[type="text"],
+      input[type="number"] {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+  
+      .btn-primary {
+        padding: 0.5rem 2rem;
+        font-size: 1rem;
+      }  
+
+      .alert-warning {
+        padding: 0.75rem;
+      }
+    }
+
+  </style>
+  {% endblock base %}    

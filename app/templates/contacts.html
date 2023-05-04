@@ -1,26 +1,23 @@
 {% extends "base.html" %}
 {% block base %}
 
-<!-- Third Parallax Image with Portfolio Text -->
-<div class="bgimg-3 w3-display-container w3-opacity-min ">
-    <div class="w3-display-middle">
-       <span class="w3-xxlarge w3-text-white w3-wide"><b>CONTACTOS</b></span>
-    </div>
-  </div>
-  
+<div class="container" style="padding-top: 100px;">
+  <br> </br>
+
+  <h1>Contactos</h1>
+
   <!-- Container (Contact Section) -->
-  <div class="w3-content w3-container w3-padding-64" id="contact">
-    
-    <!--<p class="w3-center"><em>I'd love your feedback!</em></p>-->
+  <div class="w3-content w3-container w3-padding-64" id="contact" style = "position:fixed; left:35%;top:22%;>
   
-    <div class="w3-row w3-padding-32 w3-section" style="margin: 180px; width: 100%;">
+    
       
       <div class="w3-col m8 w3-panel">
-        <div class="w3-large w3-margin-bottom">
-          <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Serra do Gerês, Braga<br>
-          <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Telemóvel: +351 999999999<br>
-          <i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: mail@mail.com<br>
+        <div class="w3-large w3-margin-bottom" style="color: white;">
+          <i class="fa fa-map-marker fa-fw w3-hover-text-white w3-xlarge w3-margin-right"></i> Serra do Gerês, Braga<br>
+          <i class="fa fa-phone fa-fw w3-hover-text-white w3-xlarge w3-margin-right"></i> Telemóvel: +351 999999999<br>
+          <i class="fa fa-envelope fa-fw w3-hover-text-white w3-xlarge w3-margin-right"></i> Email: mail@mail.com<br>
         </div>
+        
         
         <form action="/action_page.php" target="_blank">
           <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
@@ -32,12 +29,181 @@
             </div>
           </div>
           <input class="w3-input w3-border" type="text" placeholder="Messagem" required name="Message">
-          <button class="w3-button w3-black w3-right w3-section" type="submit">
-            <i class="fa fa-paper-plane"></i> ENVIAR MENSAGEM
-          </button>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary mt-4">Enviar Mensagem</button>
+          </div>  
         </form>
       </div>
     </div>
   </div>
+</div>
+
+  {% if user.is_authenticated %}
+  {% else %}
+
+  <script>
+    setInterval(() => {
+      const randomWidth = Math.floor(Math.random() * 100 + 40)
+      const randomPosition = Math.floor(Math.random() * screen.width)
+      const randomSpeed = Math.floor(Math.random() * 4000 + 2000)
+  
+      const spanEl = document.createElement('span')
+  
+      spanEl.style.width = `${randomWidth}px`
+      spanEl.style.left = `${randomPosition}px`
+      spanEl.style.animationDuration = `${randomSpeed}ms`
+  
+      document.body.append(spanEl)
+  }, 400)
+  </script>
+
+  {% endif %}
+
+  <style>
+    form {
+      background-color: rgba(160, 210, 235, 0.9);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+  
+    html, body {
+      overflow: hidden;
+    }
+  
+    body {
+      background-color: rgba(160, 210, 235, 0.9);
+      background: linear-gradient(to bottom, #a0d2eb, #005073);
+      overflow: hidden;
+    }
+  
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  
+  span {
+      width: 80px;
+      aspect-ratio: 1;
+      box-shadow: inset 3px 3px .5rem rgba(0, 0, 0, .5),
+                  inset -1px -1px .5rem rgba(255, 255, 255, .3);
+      position: absolute;
+      border-radius: 50%;
+      top: 100%;
+      animation: to_top linear;
+      z-index: -1;
+  }
+  
+  @keyframes to_top {
+      from { top: 100%; }
+      to { top: -10%; }
+  }
+    
+    
+    
+    label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    
+    input[type="text"],
+    input[type="number"] {
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      border: none;
+      padding: 0.5rem;
+      width: 100%;
+    }
+    
+    .form-group {
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      padding: 1rem;
+    }
+    
+    .btn-primary {
+      background-color: #000000;
+      border-color: #1abc9c;
+      padding: 0.5rem 2.5rem;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+    
+    .btn-primary:hover {
+      background-color: #148f77;
+      border-color: #148f77;
+    }
+    
+    .alert-warning {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-color: #f5c6cb;
+      border-radius: 5px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .close {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #721c24;
+      opacity: 1;
+      transition: all 0.2s;
+    }
+    
+    .close:hover {
+      color: #cc0000;
+    }
+    
+    /* Style for large screens */
+    @media (min-width: 992px) {
+      label {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+    
+      input[type="text"],
+      input[type="number"] {
+        padding: 0.75rem;
+      }
+    
+      .btn-primary {
+        padding: 0.75rem 2.5rem;
+      }
+    
+      .alert-warning {
+        padding: 1.25rem;
+      }
+    }
+    
+    /* Style for extra small screens */
+    @media (max-width: 576px) {
+      label {
+        font-size: 1rem;
+      }
+    
+      input[type="text"],
+      input[type="number"] {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+    
+      .btn-primary {
+        padding: 0.5rem 2rem;
+        font-size: 1rem;
+      }
+    
+      .alert-warning {
+        padding: 0.75rem;
+      }
+    }
+    
+      </style>
 
   {% endblock base %}
