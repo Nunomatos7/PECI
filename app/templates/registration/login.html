@@ -14,24 +14,20 @@
 <body>
   
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
+<div class="w3-top  " style="background-color: rgba(160, 210, 235, 0.9);">
   <div class="w3-bar w3-card w3-animate-top w3-white" id="myNavbar">
     <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" >
       <i class="fa fa-bars"></i>
     </a>
-	<a href="{% url 'home' %}" class="w3-bar-item w3-button" style="color: black">INÍCIO</a>
-	<a href="" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-user" style="color: black";></i> LOGIN</a>
-  <a href="{% url 'contacts' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-envelope" style="color: black";></i> CONTACTOS</a>
-	<a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-black" style="color: black; ";>
-      <i class="fa fa-search" ></i>
-    </a>
+    <a href="{% url 'home' %}" class="w3-bar-item w3-button" style="color: black"><i class="fa fa-home" style="color: black" ;></i>INÍCIO</a>
+	<a href="{% url 'login' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-sign-in" style="color: black";></i> ENTRAR</a>
+  <a href="{% url 'contacts_logout' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-phone" style="color: black";></i> CONTACTOS</a> 
   </div>  
 
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
     <a href="{% url 'dashboard' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">DASHBOARD</a>
-    <a href="{% url 'contacts' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACTOS</a>
-    <a href="#" class="w3-bar-item w3-button">PESQUISA</a>
+    <a href="{% url 'contacts_logout' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACTOS</a>
   </div>
 </div>
 
@@ -45,7 +41,7 @@
 
     <div class="row">
       <div class="col-md-4 mb-3">
-        <label for="username">Username</label>
+        <label for="username">Utilizador</label>
         {{ form.username }}
       </div>
     </div>
@@ -58,7 +54,7 @@
     <br><br>
     <div class="row">
         <div class="text-center">
-          <button type="submit" class="btn btn-primary mt-4">Log In</button>
+          <button type="submit" class="btn btn-primary mt-4">Entrar</button>
         </div>
       </div>
     </div>
@@ -119,6 +115,7 @@ function toggleFunction() {
     z-index: 1;
   }
   h1 {
+    font-family: 'american typewriter', serif;
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 2rem;
@@ -131,6 +128,8 @@ function toggleFunction() {
 
   html, body {
     overflow: hidden;
+    font-family: 'american typewriter', serif;
+    font-weight: bold;
   }
 
   body {
@@ -268,6 +267,21 @@ span {
       padding: 0.75rem;
     }
   }
+
+  /* increase the height of the top bar */
+.w3-top.navbar {
+  height: 5%;
+}
+
+/* increase the padding of the top bar items */
+.w3-bar-item {
+  padding: 10% 10%;
+}
+
+/* increase the font size of the top bar items */
+.w3-bar-item {
+  font-size: 16px;
+}
   
     </style>
 

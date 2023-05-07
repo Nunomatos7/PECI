@@ -1,18 +1,28 @@
 
 {% extends "base.html" %}
 {% block base %}
+
+  {% if user.is_authenticated %}
+  <style>
+    .w3-bar {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+  {% else %}
+  {% endif %}
   <!-- First Parallax Image with Logo Text -->
   <div class="bgimg-1 w3-display-container w3-opacity-min" id="home" style="z-index: -4;">
     <div class="w3-display-middle" style="white-space:nowrap;">
-      <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style= "margin-left: 110px"><b> Sistemas de Suporte à </b></span>
+      <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style= "margin-left: 110px; font-family: 'Montserrat', sans-serif;"><b> Sistemas de Suporte à </b></span>
       <p>
-      <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity"><b>Decisão Aplicados à Aquacultura</b></span>
+      <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity" style= "font-family: 'Montserrat', sans-serif;"><b>Decisão Aplicados à Aquacultura</b></span>
     </div>
   </div>
 
   <!-- Container (Portfolio Section) -->
   <div class="w3-content w3-container w3-padding-64" id="portfolio">
-    <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px">Sobre</h3>
+    <h3 class="w3-center" style="color:black; background-Color:lightblue; font-size:30px;">Sobre</h3>
     
     
     <div class="container">
@@ -36,6 +46,10 @@
       padding: 2rem;
       border-radius: 10px;
       box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h3 {
+      font-family: 'american typewriter', serif;
     }
 
 label {
@@ -139,5 +153,9 @@ input[type="number"] {
   }
 }
 
+
+
   </style> 
+
+
 {% endblock base %}
