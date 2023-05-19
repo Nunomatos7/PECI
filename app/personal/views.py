@@ -26,6 +26,31 @@ def dashboard_view(request):
 def contacts_view(request):
     return render(request, "contacts.html", {})
 
+def month_to_number(month_name):
+    month_name = month_name.lower()
+    month_names = [
+        "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ]
+    month_number = month_names.index(month_name) + 1
+    return month_number
+
+def mortalidade_mes (mes):
+    if isinstance(mes,str):
+        mes = month_to_number(mes)
+    if mes == 1 or mes == 2 or mes == 3 or mes == 11 or mes == 12 :
+        return 0.2
+    if mes == 5 or mes == 4 or mes == 10:
+        return 0.5
+    if mes == 6:
+        return 0.8
+    if mes == 7:
+        return 1
+    if mes == 8:
+        return 2
+    if mes == 9:
+        return 1.5
+
 @login_required
 def insert_desovas(request):
     if request.method == 'POST':
@@ -57,6 +82,23 @@ def insert_desovas(request):
         desova_form = DesovaForm()
         data_form = DataForm()
     return render(request, 'insert_desovas.html', {'desova_form': desova_form, 'data_form': data_form})
+
+@login_required
+def insert_venda(request):
+    if request.method == 'POST':
+        venda_form = TransicoesForm(request.POST)
+
+        if venda_form.is_valid():
+            venda = venda_form.save(commit=False)
+            venda.venda = True
+            venda.jaula_fim = Jaula.objects.get(id = 0)
+            venda.save()
+            messages.success(request, 'Dados Venda adicionado!')   
+        else:
+            messages.success(request,('Erro!'))
+    else:
+        venda_form = TransicoesForm()
+    return render(request, 'insert_venda.html', {'venda_form': venda_form})
 
 
 

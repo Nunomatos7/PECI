@@ -62,17 +62,13 @@ class Dados (models.Model):
             previous_data = None
         return previous_data
 
-class Alimentacao(models.Model):
+class AlimentacaoFc(models.Model):
+    nome = models.CharField(max_length=30)
     valor = models.FloatField(default=None)
     peso_inicio = models.FloatField()
     peso_fim = models.FloatField()
     temp = models.FloatField()
-    id_jaula = models.ForeignKey(Jaula, on_delete=models.CASCADE)
     
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['peso_inicio', 'peso_fim', 'temp', 'id_jaula'], name='alimentacao_pk')
-        ]
 
 
 class Vacina (models.Model):
@@ -83,6 +79,7 @@ class Vacina (models.Model):
 
 class Movimento(models.Model):
     num = models.IntegerField(default=None) 
+    PM = models.FloatField(default=None) 
     data = models.ForeignKey(Data,on_delete=models.CASCADE)
     jaula_inicio = models.ForeignKey(Jaula, default=None,related_name='movimentos_inicio',on_delete=models.CASCADE)
     jaula_fim = models.ForeignKey(Jaula,default=None,related_name='movimentos_fim',on_delete=models.CASCADE)
