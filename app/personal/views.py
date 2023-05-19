@@ -23,8 +23,12 @@ def home(request):
 def dashboard_view(request):
     return render(request, "dashboard.html", {})
 
-def contacts_view(request):
-    return render(request, "contacts.html", {})
+@login_required
+def contacts_login_view(request):
+    return render(request, "contacts_login.html", {})
+
+def contacts_logout_view(request):
+    return render(request, "contacts_logout.html", {})
 
 def month_to_number(month_name):
     month_name = month_name.lower()
@@ -145,14 +149,14 @@ def insert_temp(request):
     return render(request, 'insert_temp.html', {'temp_form': temp_form, 'data_form': data_form})
 
 def alimentacao(request):
-    form = AlimentacaoForm()
+    form = AlimentacaoFcForm()
     if request.method == 'POST':
         param = dict(request.POST)
         print(param)
         print(param['id_jaula'])
         jaula = Jaula.objects.get(id=int(param['id_jaula'][0]))
         print(jaula)
-        alimentacao =  Alimentacao.objects.filter(peso_inicio = int(param['peso_inicio'][0]),peso_fim=int(param['peso_fim'][0]), temp = int(param['temp'][0]), id_jaula = jaula).first()
+        alimentacao =  AlimentacaoFc.objects.filter(peso_inicio = int(param['peso_inicio'][0]),peso_fim=int(param['peso_fim'][0]), temp = int(param['temp'][0]), id_jaula = jaula).first()
         print("alimentacao")
         print(alimentacao)
         if alimentacao:

@@ -20,26 +20,27 @@
 <body>
   
 <!-- Navbar (sit on top) -->
-<div class="w3-top navbar">
+<div class="w3-top" style="background-color: rgba(160, 210, 235, 0.9);">
   <div class="w3-bar w3-card w3-animate-top w3-white" id="myNavbar">
     <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" >
       <i class="fa fa-bars"></i>
     </a>
-    <a href="{% url 'home' %}" class="w3-bar-item w3-button" style="color: black">INÍCIO</a>
+    <a href="{% url 'home' %}" class="w3-bar-item w3-button" style="color: black"><i class="fa fa-home" style="color: black" ;></i>INÍCIO</a>
     {% block content %}
     {% if user.is_authenticated %}
-    <a href="http://localhost:3000/d/MzEOaNa4k/aquacultura?orgId=1&refresh=5m&from=1009843200000&to=1672617599000" class="w3-bar-item w3-button w3-hide-small" style="color: black"><i class="fa fa-user" style="color: black" ;></i> DASHBOARD</a>
+    <a href="http://localhost:3000/d/MzEOaNa4k/aquacultura?orgId=1&refresh=5m&from=1009843200000&to=1672617599000" class="w3-bar-item w3-button w3-hide-small" style="color: black"><i class="fa fa-bar-chart" style="color: black" ;></i> DASHBOARD</a>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
     
     <div class="w3-dropdown-hover" >
-      <button class="w3-button w3-bar-item w3-button w3-hide-small"  style="color: black; ";><i class="fa fa-th" style="color: black";></i> JAULA </button>
-      <div class="w3-dropdown-content w3-bar-block w3-border" style="position: fixed; z-index: 9999;">
+      <button class="w3-button w3-hide-small"  style="color: black;";><i class="fa fa-archive" style="color: black; ";></i> JAULA </button>
+      <div class="w3-dropdown-content w3-bar-block w3-border" style="position: fixed; z-index: 9999; ">
         <a href="{% url 'setup_jaula' %}" class="w3-bar-item w3-button">SETUP JAULA</a>
-        <a href="{% url 'dados_jaula' %}" class="w3-bar-item w3-button">INSERT DADOS JAULA</a>
+        <a href="{% url 'dados_jaula' %}" class="w3-bar-item w3-button">INSERIR DADOS JAULA</a>
       </div>
     </div>
     
     <div class="w3-dropdown-hover" >
-      <button class="w3-button w3-bar-item w3-button w3-hide-small"  style="color: black; ";><i class="fa fa-th" style="color: black";></i> INSERIR/ALTERAR</button>
+      <button class="w3-button w3-hide-small"  style="color: black;";><i class="fa fa-plus" style="color: black";></i> INSERIR/ALTERAR</button>
       <div class="w3-dropdown-content w3-bar-block w3-border" style="position: fixed; z-index: 9999;">
         <a href="{% url 'insert_desovas' %}" class="w3-bar-item w3-button">DESOVAS</a>
         <a href="{% url 'insert_temp' %}" class="w3-bar-item w3-button">TEMPERATURAS</a>
@@ -49,7 +50,7 @@
     </div>
 
     <div class="w3-dropdown-hover" >
-      <button class="w3-button w3-bar-item w3-button w3-hide-small"  style="color: black; ";><i class="fa fa-th" style="color: black";></i> APAGAR</button>
+      <button class="w3-button w3-hide-small"  style="color: black;";><i class="fa fa-trash" style="color: black";></i> APAGAR</button>
       <div class="w3-dropdown-content w3-bar-block w3-border" style="position: fixed; z-index: 9999;">
         <a href="{% url 'delete_desova' %}" class="w3-bar-item w3-button">DESOVAS</a>
         <a href="{% url 'delete_temp' %}" class="w3-bar-item w3-button">TEMPERATURAS</a>
@@ -57,7 +58,7 @@
     </div>
 
     <div class="w3-dropdown-hover" >
-      <button class="w3-button w3-bar-item w3-button w3-hide-small"  style="color: black; ";><i class="fa fa-th" style="color: black";></i> INS EXCEL</button>
+      <button class="w3-button w3-hide-small"  style="color: black; ";><i class="fa fa-file-excel-o" style="color: black";></i> INSERIR EXCEL</button>
       <div class="w3-dropdown-content w3-bar-block w3-border" style="position: fixed; z-index: 9999;">
         <a href="{% url 'ins_excel_desovas' %}" class="w3-bar-item w3-button">DESOVAS</a>
         <a href="{% url 'ins_excel_temp' %}" class="w3-bar-item w3-button">TEMPERATURAS</a>
@@ -65,28 +66,29 @@
     </div>
 
     <div class="w3-dropdown-hover" >
-      <button class="w3-button w3-bar-item w3-button w3-hide-small"  style="color: black; ";><i class="fa fa-th" style="color: black";></i> MOVIMENTOS</button>
-      <div class="w3-dropdown-content w3-bar-block w3-border" style="position: fixed; z-index: 9999;">
+      <button class="w3-button w3-hide-small"  style="color: black; ";><i class="fa fa-arrows" style="color: black";></i> MOVIMENTOS</button>
+      <div class="w3-dropdown-content w3-bar-block w3-border" style="position: fixed; z-index: 9999; ">
         <a href="{% url 'transicoes' %}" class="w3-bar-item w3-button">TRANSIÇÕES</a>
-        <a href="{% url 'venda' %}" class="w3-bar-item w3-button">VENDA</a>
+        <a href="{% url 'insert_venda' %}" class="w3-bar-item w3-button">VENDA</a>
       </div>
     </div>
 
-    <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-black" style="color: black; ">Log Out</a>
+    <a href="{% url 'contacts_login' %}" class="w3-button w3-hide-small" style="color: black;"><i class="fa fa-phone" style="color: black";></i> CONTACTOS</a>
+    <a href="{% url 'logout' %}" class="w3-button w3-hide-small" style="color: black;"><i class="fa fa-sign-out" style="color: black";></i>SAIR</a>
+    
     {% else %}
-    <a href="{% url 'login' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-user" style="color: black";></i> LOGIN</a>
+    <a href="{% url 'login' %}" class="w3-button w3-hide-small" style="color: black;"><i class="fa fa-sign-in" style="color: black";></i> ENTRAR</a>
+    <a href="{% url 'contacts_logout' %}" class="w3-button w3-hide-small" style="color: black;"><i class="fa fa-phone" style="color: black";></i> CONTACTOS</a> 
     {% endif %}
     {% endblock %}
-    <a href="{% url 'contacts' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-envelope" style="color: black";></i> CONTACTOS</a>
+    
   </div>  
-
-  
 
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
     <a href="http://localhost:3000/d/MzEOaNa4k/aquacultura?orgId=1&refresh=5m&from=1009843200000&to=1672617599000" onclick="toggleFunction()"">DASHBOARD</a>
     <a href="{% url 'insert_desovas' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">INSERIR</a>
-    <a href="{% url 'contacts' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACTOS</a>
+    <a href="{% url 'contacts_login' %}" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACTOS</a>
   </div>
 </div>
 
@@ -115,4 +117,160 @@ function toggleFunction() {
 </script>
 
 </body>
+
+<style>
+  body {
+    font-family: 'american typewriter', serif;
+    font-weight: bold;
+    background-color: #f7f7f7;
+    background: linear-gradient(to bottom, #a0d2eb, #005073);
+    
+  }
+
+    form {
+      background-color: rgba(160, 210, 235, 0.9);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
+
+
+
+
+    h1 {
+      font-family: 'american typewriter', serif;
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #FFFFFF;
+      /* bold text */
+      font-weight: bold;
+    }
+
+label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="number"] {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  border: none;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.form-group {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 10rem;
+}
+
+.btn-primary {
+  background-color: #1abc9c;
+  border-color: #1abc9c;
+  padding: 0.5rem 2.5rem;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #148f77;
+  border-color: #148f77;
+}
+
+.alert-warning {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.close {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #721c24;
+  opacity: 1;
+  transition: all 0.2s;
+}
+
+.close:hover {
+  color: #cc0000;
+}
+
+/* Style for large screens */
+@media (min-width: 992px) {
+  label {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    padding: 0.75rem;
+  }
+
+  .btn-primary {
+    padding: 0.75rem 2.5rem;
+  }
+
+  .alert-warning {
+    padding: 1.25rem;
+  }
+}
+
+/* Style for extra small screens */
+@media (max-width: 576px) {
+  label {
+    font-size: 1rem;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary {
+    padding: 0.5rem 2rem;
+    font-size: 1rem;
+  }
+
+  .alert-warning {
+    padding: 0.75rem;
+  }
+}
+
+/* increase the height of the top bar */
+.w3-top.navbar {
+  height: 5%;
+}
+
+/* increase the padding of the top bar items */
+.w3-bar-item {
+  padding: 10% 10%;
+}
+
+/* increase the font size of the top bar items */
+.w3-bar-item {
+  font-size: 16px;
+}
+
+</style>
+
+<!-- 
+  background-image: url('/static/images/bubbles.png');
+  background-size: 10%;
+  background-repeat: repeat; 
+-->
+
 </html>

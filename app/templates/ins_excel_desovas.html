@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block base %}
 
-  <div class="container">
-
+  <div class="container "style="padding-top: 100px;">
+    <h1>Desovas</h1>
     <div id="portfolio">
 
-      <input type="button" id="loadFileXml" value="Escolher ficheiro Excel...." onclick="document.getElementById('myFile').click();" />
+      <p> </p>
+
+      <input type="button" id="loadFileXml" value="Escolher ficheiro Excel...." class="excel-button" onclick="document.getElementById('myFile').click();" />
       <input type="file" style="display:none;" id="myFile" name="myFile"/>
   
       <table id="tbl-data"></table>
@@ -38,9 +40,9 @@
         <div id="desova_dados" style="align-self: center;">
         </div>
 
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary" style = "position:relative;right: -930px;top: 20px;">Submeter Pedido</button>
-        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary mt-4">Submeter</button>
+        </div>  
 
     </form>
 
@@ -236,6 +238,8 @@
   }
 
 </script>
-      
+
+
+ 
   
   {% endblock base %}

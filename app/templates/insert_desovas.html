@@ -2,6 +2,7 @@
 {% block base %}
 
   <div class="container" style="padding-top: 100px;">
+    <h1>Desova</h1>
     {% if messages %}
       {% for message in messages %}
 
@@ -13,45 +14,37 @@
         </div>
 
       {% endfor %}
-    
+
     {% endif %}
     <form method="POST" action="{% url 'insert_desovas' %}">
       {% csrf_token %}
 
-      <div class="form-row">
+      <div class="col-md-4 mb-3">
+        {{ data_form.as_p }}
+      </div>
 
-        <div class="form-group col-md-4">
-          <label for="data">Data:</label>
-          {{ data_form.data }}
-        </div>
-      
-      </div>  
-
-      <div class="form-row">
-
-        <div class="form-group col-md-4">
+      <div class="row">
+        <div class="col-md-4 mb-3">
           <label for="femeas">Fêmeas:</label>
           {{ desova_form.femeas }}
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4 mb-3">
           <label for="desovados">Desovados:</label>
           {{ desova_form.desovados }}
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4 mb-3">
           <label for="embrionados">Embrionados:</label>
           {{ desova_form.embrionados }}
         </div>
-        
-      </div>
-    
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
       </div>
 
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4">Submeter</button>
+      </div>
     </form>
   </div>
 
-  
-{% endblock base %}
+  {% endblock base %}    

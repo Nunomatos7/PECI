@@ -2,6 +2,7 @@
 {% block base %}
 
   <div class="container" style="padding-top: 100px;">
+    <h1>Temperatura</h1>
     {% if messages %}
 
       {% for message in messages %}
@@ -18,16 +19,22 @@
     {% endif %}
     <form method="POST" action="{% url 'insert_temp' %}">
     {% csrf_token %}
-    
-    {{ data_form.as_p }}
-
-    {{ temp_form.as_p }}
-    
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
+    <div class="row">
+      <div class="col-md-4 mb-3 ">
+        {{ data_form.as_p }}
+      </div>
     </div>
-
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        {{ temp_form.as_p }}
+      </div>
+    </div>
+    
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary mt-4">Submeter</button>
+    </div>  
     </form>
   </div>
+
 
 {% endblock base %}

@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block base %}
+
+
   
     
-  <div class="container">
-
+  <div class="container" style="padding-top: 100px;">
+    <h1>Temperaturas</h1>
     <div id="portfolio">
 
       <input type="button" id="loadFileXml" value="Escolher ficheiro Excel...." onclick="document.getElementById('myFile').click();" />
@@ -31,19 +33,19 @@
     <form method="POST" action="{% url 'ins_excel_temp' %}">
       
       {% csrf_token %}
-      <div class="form-row">
+      <div class="form-row justify-content-center">
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4 mb-3">
           <label for="Data">Data Inicial:</label>
           {{ data_form.data }}
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4 mb-3">
           <label for="Data">Data Final:</label>
           {{ data_final_form.data }}
         </div>
 
-        <div class="form-group col-md-4" hidden>
+        <div class="col-md-4 mb-3" hidden>
           {{ temp_form.as_p }}
         </div>
 
@@ -51,9 +53,9 @@
       
         <div id="temp_dados" style="align-self: center;"></div>
         
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
-        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary mt-4">Submeter</button>
+        </div>  
       
 
     </form>
@@ -258,7 +260,6 @@
 
 </script>
   
-
 
 
 
