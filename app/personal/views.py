@@ -11,6 +11,8 @@ from django.contrib import messages
 from .forms import *
 from .models import *
 from datetime import date, datetime, timedelta
+from django.db.models import Q,F, functions
+
 
 # Create your views here.
 
@@ -508,6 +510,20 @@ def dados_jaula(request):
         dadosjaula_form = DadosJaulaForm(request.POST)
         data_form = DataForm(request.POST)
 
+        valor = 0
+
+        """
+        queryset = Alimentacao.objects.filter(
+        Q(peso_inicio__lte=x) & Q(peso_fim__gte=x) & Q(id_jaula=0)
+        ).annotate(
+        temp_diff=functions.Abs(F('temp') - y)
+        ).order_by('temp_diff').first()
+        if queryset:
+            valor = queryset.valor
+
+        print(valor)
+        """
+        
         try:    #if data NOT exists
             
             if data_form.is_valid():
@@ -535,20 +551,31 @@ def dados_jaula(request):
 
         Biom = PM * num_peixes
         
-        percentagem_alimentacao = float(dadosjaula_form.data['percentagem_alimentacao'])
+        temp = 5
+        #temp = float(Temperatura.objects.get(data = data))
+
+        queryset = Alimentacao.objects.filter(
+        Q(peso_inicio__lte=(PM * 1000)) & Q(peso_fim__gte=(PM * 1000)) & Q(id_jaula=0)
+        ).annotate(
+        temp_diff=functions.Abs(F('temp') - temp)
+        ).order_by('temp_diff').first()
+        if queryset:
+            valor = queryset.valor
+
+        percentagem_alimentacao = valor
         
         peso = float(data_anterior.Biom) * percentagem_alimentacao
         
         sacos_racao = peso * 25
-        
-        FC_real = float(dadosjaula_form.data['FC'])
-        
+
         if (dadosjaula_form.data['alimentacao_real'] == ''):
             alimentacao_real = peso * 30
         else:
             alimentacao_real = float(dadosjaula_form.data['alimentacao_real'])
         
         FC = int(alimentacao_real) / ( (int(data_anterior.num_peixes) * float(data_anterior.PM)) - (int(num_peixes) * float(PM)) )
+
+        FC_real = float(dadosjaula_form.data['FC'])
 
         PM_teorica_alim_real = (alimentacao_real / FC + Biom) / num_peixes
         
@@ -617,6 +644,7 @@ def dados_jaula(request):
             )
         
         dados.save()
+        
         messages.success(request, 'Dados da Jaula Atualizado!')
 
     else:
@@ -782,3 +810,4 @@ def comida(request):
         temp_form = TemperaturaForm()
         data_form = DataForm()
     return render(request, 'comida.html', {'temp_form': temp_form, 'data_form': data_form})
+
