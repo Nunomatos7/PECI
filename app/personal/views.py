@@ -23,8 +23,12 @@ def home(request):
 def dashboard_view(request):
     return render(request, "dashboard.html", {})
 
-def contacts_view(request):
-    return render(request, "contacts.html", {})
+@login_required
+def contacts_login_view(request):
+    return render(request, "contacts_login.html", {})
+
+def contacts_logout_view(request):
+    return render(request, "contacts_logout.html", {})
 
 def month_to_number(month_name):
     month_name = month_name.lower()

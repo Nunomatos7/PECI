@@ -2,6 +2,7 @@
 {% block base %}
 
   <div class="container" style="padding-top: 100px;">
+    <h1>Transições</h1>
     {% if messages %}
 
       {% for message in messages %}
@@ -50,40 +51,38 @@
       {% csrf_token %}
 
       <div class="form-row">
-
-        <div class="form-group col-md-4">
-          <label for="num">Número:</label>
-          {{ TransicoesJaulaForm.num }}
-        </div>
-
-        <div class="form-group col-md-4">
-          <label for="jaula_inicial">Jaula Inicial:</label>
-          {{ TransicoesJaulaForm.jaula_inicio }}
-        </div>
-        
-        <div class="form-group col-md-4">
-          <label for="jaula_final">Jaula Final:</label>
-          {{ TransicoesJaulaForm.jaula_fim }}
-        </div>
-
-      </div>
-
-      <div class="form-row">
-
-        <div class="form-group col-md-4">
+        <div class="col-md-4 mb-3">
           <label for="data">Data:</label>
           {{ data_form.data }}
         </div>
-
+        <div class="col-md-4 mb-3">
+          <label for="jaula_inicial">Jaula Inicial:</label>
+          {{ TransicoesJaulaForm.jaula_inicio }}
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="jaula_final">Jaula Final:</label>
+          {{ TransicoesJaulaForm.jaula_fim }}
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="col-md-4 mb-3">
+          <label for="num">Número:</label>
+          {{ TransicoesJaulaForm.num }}
+        </div>
       </div>
 
-      <div class="form-group">
-            <button type="submit" class="btn btn-primary" style = "position:relative;right: -930px;top: 10px;">Submeter Pedido</button>
-      </div>
+      
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4">Submeter</button>
+      </div>  
 
     </form>
     
   </div>
+
+
 
   
 

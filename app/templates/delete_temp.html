@@ -4,6 +4,7 @@
 
       
   <div class="container" style="padding-top: 100px;">
+    <h1>Temperaturas</h1>
     {% if messages %}
 
         {% for message in messages %}
@@ -21,22 +22,22 @@
     <form method="POST">
       {% csrf_token %}
 
-      <div class="form-row">
+      <div class="form-row justify-content-center">
 
-        <div class="form-group col-md-4">
-          <label for="data">Data Inicial:</label>
+        <div class="col-md-4 mb-3">
+            <label for="data">Data Inicial:</label>
             {{ data_inicial_form.data }}
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4 mb-3">
           <label for="data">Data Final:</label>
-            {{ data_final_form.data }}
-        </div>
+          {{ data_final_form.data }}
+      </div>
       
       </div>
 
-      <div class="form-group">
-        <button type="submit" class="btn btn-danger" style = "position:relative;right: -980px;top: 10px;">Eliminar</button>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4" style="background-color: crimson">Eliminar</button>  
       </div>
 
     </form>

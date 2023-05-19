@@ -2,6 +2,7 @@
 {% block base %}
 
   <div class="container" style="padding-top: 100px;">
+    <h1>Vacinação</h1>
     {% if messages %}
 
       {% for message in messages %}
@@ -20,40 +21,36 @@
       
       {% csrf_token %}
 
-      <div class="form-row">
-
-        <div class="form-group col-md-4">
-          <label for="id">ID Jaula:</label>
-            {{ vacinados_form.id_jaula }}
-        </div>
-
-        <div class="form-group col-md-4">
-          <label for="pm">PM:</label>
-          {{ vacinados_form.PM }}
-        </div>
-        
-        <div class="form-group col-md-4">
-          <label for="n_vacinados">Nº de Vacinados:</label>
-          {{ vacinados_form.num }}
-        </div>
-
-      </div>
-
-      <div class="form-row">
-
-        <div class="form-group col-md-4">
+      <div class="row">
+        <div class="col-md-4 mb-3">
           <label for="data">Data:</label>
           {{ data_form.data }}
         </div>
-
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary" style = "position:relative;right: -570px;top: 50px;">Submeter Pedido</button>
+        <div class="col-md-4 mb-3">
+          <label for="id">ID Jaula:</label>
+          {{ vacinados_form.id_jaula }}
         </div>
+      </div>
 
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="pm">PM:</label>
+          {{ vacinados_form.PM }}
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="n_vacinados">Nº de Vacinados:</label>
+          {{ vacinados_form.num }}
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4">Submeter</button>
       </div>
 
     </form>
     
   </div>
+
+
 
 {% endblock base %}
