@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from itertools import chain, product
 
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
@@ -9,7 +10,7 @@ from django.urls import reverse
 from django.contrib import messages
 from .forms import *
 from .models import *
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 # Create your views here.
 
@@ -26,6 +27,31 @@ def contacts_login_view(request):
 
 def contacts_logout_view(request):
     return render(request, "contacts_logout.html", {})
+
+def month_to_number(month_name):
+    month_name = month_name.lower()
+    month_names = [
+        "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ]
+    month_number = month_names.index(month_name) + 1
+    return month_number
+
+def mortalidade_mes (mes):
+    if isinstance(mes,str):
+        mes = month_to_number(mes)
+    if mes == 1 or mes == 2 or mes == 3 or mes == 11 or mes == 12 :
+        return 0.2
+    if mes == 5 or mes == 4 or mes == 10:
+        return 0.5
+    if mes == 6:
+        return 0.8
+    if mes == 7:
+        return 1
+    if mes == 8:
+        return 2
+    if mes == 9:
+        return 1.5
 
 @login_required
 def insert_desovas(request):
@@ -59,6 +85,23 @@ def insert_desovas(request):
         data_form = DataForm()
     return render(request, 'insert_desovas.html', {'desova_form': desova_form, 'data_form': data_form})
 
+@login_required
+def insert_venda(request):
+    if request.method == 'POST':
+        venda_form = TransicoesForm(request.POST)
+
+        if venda_form.is_valid():
+            venda = venda_form.save(commit=False)
+            venda.venda = True
+            venda.jaula_fim = Jaula.objects.get(id = 0)
+            venda.save()
+            messages.success(request, 'Dados Venda adicionado!')   
+        else:
+            messages.success(request,('Erro!'))
+    else:
+        venda_form = TransicoesForm()
+    return render(request, 'insert_venda.html', {'venda_form': venda_form})
+
 
 
 @login_required
@@ -81,6 +124,21 @@ def insert_temp(request):
                 temp.data = data
                 temp.save()
                 messages.success(request, 'Dados Temperatura adicionado!')
+            ## calculos com temperatura
+            print(data.data)
+            mes = data.data.month
+            ano = data.data.year
+            objects = Temperatura.objects.filter(data__data__month=mes,data__data__year = ano)
+            temps = []
+            print('aqui')
+            print(objects)
+            for k in objects:
+                temps.append(k.temperatura)
+            if temps:
+                    calculos = CalculosTemperatura(mes=str(mes),ano = str(ano), media = sum(temps)/len(temps),
+                                                minimo = min(temps),maximo = max(temps),soma = sum(temps))
+                    CalculosTemperatura.objects.filter(mes=str(mes),ano = str(ano)).delete()
+                    calculos.save()
         else:
             messages.success(request, 'Erro!')
     else:
@@ -89,14 +147,14 @@ def insert_temp(request):
     return render(request, 'insert_temp.html', {'temp_form': temp_form, 'data_form': data_form})
 
 def alimentacao(request):
-    form = AlimentacaoForm()
+    form = AlimentacaoFcForm()
     if request.method == 'POST':
         param = dict(request.POST)
         print(param)
         print(param['id_jaula'])
         jaula = Jaula.objects.get(id=int(param['id_jaula'][0]))
         print(jaula)
-        alimentacao =  Alimentacao.objects.filter(peso_inicio = int(param['peso_inicio'][0]),peso_fim=int(param['peso_fim'][0]), temp = int(param['temp'][0]), id_jaula = jaula).first()
+        alimentacao =  AlimentacaoFc.objects.filter(peso_inicio = int(param['peso_inicio'][0]),peso_fim=int(param['peso_fim'][0]), temp = int(param['temp'][0]), id_jaula = jaula).first()
         print("alimentacao")
         print(alimentacao)
         if alimentacao:
@@ -108,6 +166,21 @@ def alimentacao(request):
         else:
             messages.success(request,('Erro!'))
     return render(request, 'alimentacao.html', {'form': form})
+
+from datetime import date
+from itertools import product, takewhile
+
+from datetime import date, timedelta, datetime
+
+def get_month_year_combinations(start_date, end_date):
+    start_datetime = datetime.combine(start_date, datetime.min.time())
+    end_datetime = datetime.combine(end_date, datetime.min.time())
+    months = []
+    while start_datetime <= end_datetime:
+        months.append((start_datetime.month, start_datetime.year))
+        start_datetime += timedelta(days=31)
+    return list(set(months))
+
 
 
 @login_required
@@ -135,6 +208,25 @@ def delete_temp(request):
                 
             else:
                 print("not temperatura")
+        #print(data_inicial_form.data)
+        #atualizar calculos
+        month_year = get_month_year_combinations(data_i,data_f)
+        for k in month_year:
+            mes,ano = k
+            objects = Temperatura.objects.filter(data__data__month=mes,data__data__year = ano)
+            if not objects:
+                CalculosTemperatura.objects.filter(mes=mes,ano=ano).delete()
+                continue
+            temps = []
+            print('aqui')
+            print(objects)
+            for k in objects:
+                temps.append(k.temperatura)
+            if temps:
+                    calculos = CalculosTemperatura(mes=str(mes),ano = str(ano), media = sum(temps)/len(temps),
+                                                minimo = min(temps),maximo = max(temps),soma = sum(temps))
+                    CalculosTemperatura.objects.filter(mes=str(mes),ano = str(ano)).delete()
+                    calculos.save()
 
         messages.success(request,('Dados Temperatura eliminados!'))
         return render(request, 'delete_temp.html', {'data_inicial_form': data_inicial_form, 'data_final_form': data_final_form})
@@ -277,21 +369,106 @@ def ins_excel_desovas(request):
 def setup_jaula(request):
     if request.method == 'POST':
         setupjaula_form = SetupJaulaForm(request.POST)
-         
+        data_form = DataForm(request.POST)
+        dadosjaula_form = DadosJaulaForm(request.POST)
+
         if setupjaula_form.is_valid():
+
+            try:    #if data NOT exists
+            
+                if data_form.is_valid():
+                    data = data_form.save()
+
+
+            except:     #if data exists
+
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+
+            jaula = Jaula.objects.get(id=setupjaula_form.data['id'])
+
+            num_peixes = dadosjaula_form.data['num_peixes']
+           
+            dados = Dados(
+                data = data,
+                id_jaula = jaula,
+                num_peixes = num_peixes,
+                PM = 0,
+                Biom = 0,
+                percentagem_alimentacao = 0,
+                peso = 0,
+                sacos_racao = 0,
+                FC = 0,
+                PM_teorica_alim_real = 0,
+                alimentacao_real = 0,
+                PM_teorico = 0,
+                PM_real = 0,
+                percentagem_mortalidade_teorica = 0,
+                num_mortos_teorico = 0,
+                percentagem_mortalidade_real = 0,
+                num_mortos_real = 0,
+                peso_medio = 0,
+                FC_real = 0,
+                )
+
+            dados.save()
             setupjaula_form.save()
+
             messages.success(request, 'Jaula Nova Adicionada!')
+
         elif(setupjaula_form.data['id']):
             jaula = Jaula.objects.get(id=setupjaula_form.data['id'])
             jaula.massa_volumica = setupjaula_form.data['massa_volumica']
             jaula.volume = setupjaula_form.data['volume']
+
+            try:    #if data NOT exists
+            
+                if data_form.is_valid():
+                    data = data_form.save()
+
+
+            except:     #if data exists
+
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
+
+            jaula = Jaula.objects.get(id=setupjaula_form.data['id'])
+
+            num_peixes = dadosjaula_form.data['num_peixes']
+           
+            dados = Dados(
+                data = data,
+                id_jaula = jaula,
+                num_peixes = num_peixes,
+                PM = 0,
+                Biom = 0,
+                percentagem_alimentacao = 0,
+                peso = 0,
+                sacos_racao = 0,
+                FC = 0,
+                PM_teorica_alim_real = 0,
+                alimentacao_real = 0,
+                PM_teorico = 0,
+                PM_real = 0,
+                percentagem_mortalidade_teorica = 0,
+                num_mortos_teorico = 0,
+                percentagem_mortalidade_real = 0,
+                num_mortos_real = 0,
+                peso_medio = 0,
+                FC_real = 0,
+                )
+
+            dados.save()
             jaula.save()
+            
             messages.success(request, 'Jaula Atualizada!')
         else:
             messages.success(request, 'DADOS INCORRETOS!')
     else:
         setupjaula_form = SetupJaulaForm()
-    return render(request, 'setup_jaula.html', {'setupjaula_form': setupjaula_form})
+        data_form = DataForm()
+        dadosjaula_form = DadosJaulaForm()
+    return render(request, 'setup_jaula.html', {'setupjaula_form': setupjaula_form, 'data_form': data_form, 'dadosjaula_form': dadosjaula_form})
 
 @login_required
 def vacinados(request):
@@ -353,13 +530,10 @@ def dados_jaula(request):
         
         if (data_anterior != None):
             num_peixes = int(data_anterior.num_peixes) - int(data_anterior.num_mortos_real)
-        else:
-            #temporario
-            num_peixes = int(dadosjaula_form.data['num_peixes'])
 
-        PM = data_anterior.PM_real
+        PM = float(data_anterior.PM_real)
 
-        Biom = float(PM) * num_peixes
+        Biom = PM * num_peixes
         
         percentagem_alimentacao = float(dadosjaula_form.data['percentagem_alimentacao'])
         
@@ -385,14 +559,9 @@ def dados_jaula(request):
         else:
             PM_real = dadosjaula_form.data['PM_real']
         
-        percentagem_mortalidade_teorica = alimentacao_real
+        percentagem_mortalidade_teorica = float(dadosjaula_form.data['percentagem_mortalidade_teorica'])
         
         num_mortos_teorico = num_peixes * percentagem_mortalidade_teorica
-        
-        if (dadosjaula_form.data['num_mortos_real'] == ''):
-            num_mortos_real = num_mortos_teorico
-        else:
-            num_mortos_real = int(dadosjaula_form.data['num_mortos_real'])
         
         if (dadosjaula_form.data['num_mortos_real'] == ''):
             num_mortos_real = num_mortos_teorico
@@ -404,7 +573,7 @@ def dados_jaula(request):
         else:
             percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
         
-        peso_medio = 1
+        peso_medio = PM_real
         
         
         """

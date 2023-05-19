@@ -45,10 +45,17 @@ class VacinadosForm(forms.ModelForm):
         fields = ['id_jaula','num','PM']
     
 
-class AlimentacaoForm(forms.ModelForm):
+class AlimentacaoFcForm(forms.ModelForm):
     class Meta:
-        model = Alimentacao
-        fields = ['valor','peso_inicio','peso_fim','temp','id_jaula']
+        model = AlimentacaoFc
+        fields = ['valor','peso_inicio','peso_fim','temp',]
+
+
+
+class TransicoesForm(forms.ModelForm):
+    class Meta:
+        model = Movimento
+        fields = ['num','data','jaula_inicio','jaula_fim','PM']
 
 class DadosJaulaForm(forms.ModelForm):
     class Meta:

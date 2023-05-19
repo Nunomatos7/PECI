@@ -19,7 +19,7 @@ class Command(BaseCommand):
             if file.endswith("xls") or file.endswith("xlsx"):
                 df = pd.read_excel("Ficheiros PECI/"+file)
                 df2 = df.fillna(0)
-            """             
+                                    
             if file.startswith("Desovas"):
                 flag = False
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -71,29 +71,76 @@ class Command(BaseCommand):
                             data_models.save()
                         models1 = Temperatura(data = data_models,temperatura=row[index].value )
                         models1.save()
-            """            
-                    ### jaula e dados
+            
+                       
+                        ### jaula e dados
             if file.startswith("Tabela"):
                 print(file)
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
-                ## Eventrualmente generalizer com base no nome do ficheiro
-                id_jaula = [k for k in range(20)]
-                for j_id in id_jaula:    
-                    worksheet = wb.sheet_by_index(0)
-                    temp = {1:6,2:8,3:10,4:12,5:14,6:16,7:18,8:20,9:22}
-                    peso = {5:(0,10),6:(10,15),7:(15,45),8:(45,250),9:(250,500),10:(500,2000)}
-                    for row in [5,6,7,8,9,10]:
-                        for col in temp:
-                            cell = worksheet.cell(row,col)
-                            try:
-                                jaula_models = Jaula.objects.get(id=j_id)    
-                            except Jaula.DoesNotExist:
-                                jaula_models = Jaula(id=j_id,volume = 0, massa_volumica = 0)
-                                jaula_models.save()
-                            models = Alimentacao(valor =cell.value,temp=temp[col],peso_inicio=peso[row][0],peso_fim=peso[row][1],id_jaula=jaula_models )
-                            models.save()
+                ## Eventrualmente generalizer com base no nome do ficheiro   
+                worksheet = wb.sheet_by_index(0)
+                temp = {1:6,2:8,3:10,4:12,5:14,6:16,7:18,8:20,9:22}
+                peso = {5:(0,10),6:(10,15),7:(15,45),8:(45,250),9:(250,500),10:(500,2000)}
+                for row in [5,6,7,8,9,10]:
+                    for col in temp:
+                        cell = worksheet.cell(row,col)
+                        models = AlimentacaoFc(valor =cell.value,temp=temp[col],peso_inicio=peso[row][0],peso_fim=peso[row][1],nome="Alimentacao")
+                        models.save()
+            if file.startswith("FC"):
+                print(file)
+                wb = xlrd.open_workbook("Ficheiros PECI/"+file)
+                ## Eventrualmente generalizer com base no nome do ficheiro   
+                worksheet = wb.sheet_by_index(0)
+                temp = {1:6,2:8,3:10,4:12,5:14,6:16,7:18,8:20,9:22}
+                peso = {5:(0,2),6:(2,5),7:(5,10),8:(10,15),9:(15,20)
+                        ,10:(20,45),11:(45,100),12:(100,250)
+                        ,13:(250,350),14:(350,500),15:(500,2000)}
+                for row in [5,6,7,8,9,10,11,12,13,14,15]:
+                    for col in temp:
+                        cell = worksheet.cell(row,col)
+                        models = AlimentacaoFc(valor =cell.value,temp=temp[col],peso_inicio=peso[row][0],peso_fim=peso[row][1],nome="FC")
+                        models.save()
+
+            
+        #Alimentaçao calculos
+            if file.startswith("Temperaturas"):
+                print(file) 
+                mes_temp = dict()
+                wb = xlrd.open_workbook("Ficheiros PECI/"+file)
+                ## por agora não há médias
+                ano = file[13:17]
+                ws = wb.sheet_by_name(str(ano))
+                mes =1
+                for row_index in range(ws.nrows):
+                    row = ws.row(row_index)
+                    if mes == 12:
+                        break
+                    if not isMonth(row[0].value) :
+                        continue
+                    mes = month_to_number(row[0].value)
+                    temps = []
+                    for index in range(1,31):
+                        dia =str(index)
+                        if len(str(mes)) != 2:
+                            mes = "0"+str(mes)
+                        if len(str(dia)) != 2:
+                            dia = "0"+str(dia)
+                        if len (str(row[index].value)) ==0 or (str(mes) == "02" and (dia =="30" or dia =="31")):
+                            continue
+                        #print(str(ano)+"-"+str(mes)+"-"+str(dia))
+                     
+                        temps.append(row[index].value)
+                    if temps:
+                        
+                        calculos = CalculosTemperatura(mes=str(mes),ano = str(ano), media = sum(temps)/len(temps),
+                                                    minimo = min(temps),maximo = max(temps),soma = sum(temps))
+                        print(str(mes)+"-"+str(ano))
+                        calculos.save()
+                    
+                    
         
-        """                      
+
+                              
             if file.startswith("Cópia de Dados"):
                 print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -197,10 +244,12 @@ class Command(BaseCommand):
                         except Jaula.DoesNotExist:
                             jaula_fim = Jaula(id= j_id ,volume = 0, massa_volumica = 0)
                             jaula_fim.save()
-                        mov = Movimento(data = data_models,num = worksheet.cell(row_index+1,3).value,jaula_inicio=jaula_inicio,jaula_fim=jaula_fim)
+                        mov = Movimento(data = data_models,num = worksheet.cell(row_index+1,3).value,jaula_inicio=jaula_inicio,jaula_fim=jaula_fim,PM = 0)
                         mov.save()
                         print("oi")
-        """               
+            
+        
+                       
           
                         
      
