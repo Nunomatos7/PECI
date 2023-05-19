@@ -145,14 +145,14 @@ def insert_temp(request):
     return render(request, 'insert_temp.html', {'temp_form': temp_form, 'data_form': data_form})
 
 def alimentacao(request):
-    form = AlimentacaoForm()
+    form = AlimentacaoFcForm()
     if request.method == 'POST':
         param = dict(request.POST)
         print(param)
         print(param['id_jaula'])
         jaula = Jaula.objects.get(id=int(param['id_jaula'][0]))
         print(jaula)
-        alimentacao =  Alimentacao.objects.filter(peso_inicio = int(param['peso_inicio'][0]),peso_fim=int(param['peso_fim'][0]), temp = int(param['temp'][0]), id_jaula = jaula).first()
+        alimentacao =  AlimentacaoFc.objects.filter(peso_inicio = int(param['peso_inicio'][0]),peso_fim=int(param['peso_fim'][0]), temp = int(param['temp'][0]), id_jaula = jaula).first()
         print("alimentacao")
         print(alimentacao)
         if alimentacao:
@@ -550,7 +550,7 @@ def dados_jaula(request):
         temp = 5
         #temp = float(Temperatura.objects.get(data = data))
 
-        queryset = Alimentacao.objects.filter(
+        queryset = AlimentacaoFc.objects.filter(
         Q(peso_inicio__lte=(PM * 1000)) & Q(peso_fim__gte=(PM * 1000)) & Q(id_jaula=0)
         ).annotate(
         temp_diff=functions.Abs(F('temp') - temp)
