@@ -539,109 +539,10 @@ def dados_jaula(request):
 
             data_anterior = Dados.objects.filter(data__lt=data, id_jaula=dadosjaula_form.data['id_jaula']).order_by('-data').first()
 
-        jaula = Jaula.objects.get(id=dadosjaula_form.data['id_jaula'])
+        data_month = data.data.month
+        print(data_month)
 
-        print(data_anterior.num_peixes)
-        print(data_anterior.PM)
-        
-        if (data_anterior != None):
-            num_peixes = int(data_anterior.num_peixes) - int(data_anterior.num_mortos_real)
-
-        PM = float(data_anterior.PM_real)
-
-        Biom = PM * num_peixes
-        
-        temp = 5
-        #temp = float(Temperatura.objects.get(data = data))
-
-        queryset = AlimentacaoFc.objects.filter(
-        Q(peso_inicio__lte=(PM * 1000)) & Q(peso_fim__gte=(PM * 1000)) & Q(id_jaula=0)
-        ).annotate(
-        temp_diff=functions.Abs(F('temp') - temp)
-        ).order_by('temp_diff').first()
-        if queryset:
-            valor = queryset.valor
-
-        percentagem_alimentacao = valor
-        
-        peso = float(data_anterior.Biom) * percentagem_alimentacao
-        
-        sacos_racao = peso * 25
-
-        if (dadosjaula_form.data['alimentacao_real'] == ''):
-            alimentacao_real = peso * 30
-        else:
-            alimentacao_real = float(dadosjaula_form.data['alimentacao_real'])
-        
-        FC = int(alimentacao_real) / ( (int(data_anterior.num_peixes) * float(data_anterior.PM)) - (int(num_peixes) * float(PM)) )
-
-        FC_real = float(dadosjaula_form.data['FC'])
-
-        PM_teorica_alim_real = (alimentacao_real / FC + Biom) / num_peixes
-        
-        PM_teorico = PM_teorica_alim_real
-        
-        if (dadosjaula_form.data['PM_real'] == ''):
-            PM_real = PM_teorico
-        else:
-            PM_real = dadosjaula_form.data['PM_real']
-        
-        percentagem_mortalidade_teorica = float(dadosjaula_form.data['percentagem_mortalidade_teorica'])
-        
-        num_mortos_teorico = num_peixes * percentagem_mortalidade_teorica
-        
-        if (dadosjaula_form.data['num_mortos_real'] == ''):
-            num_mortos_real = num_mortos_teorico
-        else:
-            num_mortos_real = int(dadosjaula_form.data['num_mortos_real'])
-        
-        if (dadosjaula_form.data['percentagem_mortalidade_real'] == ''):
-            percentagem_mortalidade_real = float(num_mortos_real / num_peixes * 100)
-        else:
-            percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
-        
-        peso_medio = PM_real
-        
-        
-        """
-        num_peixes = dadosjaula_form.data['num_peixes']
-        PM = dadosjaula_form.data['PM']
-        Biom = dadosjaula_form.data['Biom']
-        percentagem_alimentacao = dadosjaula_form.data['percentagem_alimentacao']
-        peso = dadosjaula_form.data['peso']
-        sacos_racao = dadosjaula_form.data['sacos_racao']
-        FC = dadosjaula_form.data['FC']
-        PM_teorica_alim_real = dadosjaula_form.data['PM_teorica_alim_real']
-        alimentacao_real = dadosjaula_form.data['alimentacao_real']
-        PM_teorico = dadosjaula_form.data['PM_teorico']
-        PM_real = dadosjaula_form.data['PM_real']
-        percentagem_mortalidade_teorica = dadosjaula_form.data['percentagem_mortalidade_teorica']
-        num_mortos_teorico = dadosjaula_form.data['num_mortos_teorico']
-        percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
-        num_mortos_real = dadosjaula_form.data['num_mortos_real']
-        peso_medio = dadosjaula_form.data['peso_medio']
-        """
-        dados = Dados(
-            data = data,
-            id_jaula = jaula,
-            num_peixes = num_peixes,
-            PM = PM,
-            Biom = Biom,
-            percentagem_alimentacao = percentagem_alimentacao,
-            peso = peso,
-            sacos_racao = sacos_racao,
-            FC = FC,
-            PM_teorica_alim_real = PM_teorica_alim_real,
-            alimentacao_real = alimentacao_real,
-            PM_teorico = PM_teorico,
-            PM_real = PM_real,
-            percentagem_mortalidade_teorica = percentagem_mortalidade_teorica,
-            num_mortos_teorico = num_mortos_teorico,
-            percentagem_mortalidade_real = percentagem_mortalidade_real,
-            num_mortos_real = num_mortos_real,
-            peso_medio = peso_medio,
-            FC_real = FC_real,
-            )
+        dados = calc_dados(data, data_anterior, dadosjaula_form, data_month)
         
         dados.save()
         
@@ -811,3 +712,123 @@ def comida(request):
         data_form = DataForm()
     return render(request, 'comida.html', {'temp_form': temp_form, 'data_form': data_form})
 
+def calc_dados(data, data_anterior, dadosjaula_form, data_month):
+
+    if (data_anterior != None):
+        num_peixes = int(data_anterior.num_peixes) - int(data_anterior.num_mortos_real)
+
+    jaula = Jaula.objects.get(id=dadosjaula_form.data['id_jaula'])
+
+    if (data_anterior != None):
+        PM = float(data_anterior.PM_real)
+    else:
+        PM = dadosjaula_form.data['PM']
+
+    Biom = PM * num_peixes
+
+    temp = 5
+        #temp = float(Temperatura.objects.get(data = data))
+
+    valor = 1
+
+    queryset = AlimentacaoFc.objects.filter(
+    Q(peso_inicio__lte=(PM * 1000)) & Q(peso_fim__gte=(PM * 1000)) & Q(id=0)
+    ).annotate(
+    temp_diff=functions.Abs(F('temp') - temp)
+    ).order_by('temp_diff').first()
+    if queryset:
+        valor = queryset.valor
+    
+    print(valor)
+    percentagem_alimentacao = float(valor)
+    
+    if data_anterior == None:
+        peso = float(Biom) * percentagem_alimentacao
+    else:
+        peso = float(data_anterior.Biom) * percentagem_alimentacao
+
+    sacos_racao = float(peso) * 25
+    
+    if (dadosjaula_form.data['alimentacao_real'] == ""):
+        alimentacao_real = peso * 30
+    else:
+        alimentacao_real = float(dadosjaula_form.data['alimentacao_real'])
+    
+    #FC teorico
+    FC = 1.2
+    
+    if dadosjaula_form.data['FC_real'] == "":
+        FC_real = int(alimentacao_real) / ( (int(data_anterior.num_peixes) * float(data_anterior.PM)) - (int(num_peixes) * float(PM)))
+    else:
+        FC_real = float(dadosjaula_form.data['FC_real'])
+
+    if dadosjaula_form.data['PM_teorica_alim_real'] == "":
+        PM_teorica_alim_real = (alimentacao_real / FC + Biom) / num_peixes
+    else:
+        PM_teorica_alim_real = float(dadosjaula_form.data['PM_teorica_alim_real'])
+    
+    aum_biom_teorico = (peso * 30) / FC
+    biom_total = aum_biom_teorico + Biom
+    PM_teorico = biom_total / num_peixes
+    
+    if (dadosjaula_form.data['PM_real'] == ""):
+        PM_real = PM_teorico
+    else:
+        PM_real = dadosjaula_form.data['PM_real']
+    
+    percentagem_mortalidade_teorica = mortalidade_mes(data_month)
+    
+    num_mortos_teorico = num_peixes * percentagem_mortalidade_teorica
+    
+    if (dadosjaula_form.data['num_mortos_real'] == ""):
+        num_mortos_real = num_mortos_teorico
+    else:
+        num_mortos_real = int(dadosjaula_form.data['num_mortos_real'])
+    
+    if (dadosjaula_form.data['percentagem_mortalidade_real'] == ""):
+        percentagem_mortalidade_real = float(num_mortos_real / num_peixes * 100)
+    else:
+        percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
+    
+    peso_medio = PM_real
+    
+    
+    """
+    num_peixes = dadosjaula_form.data['num_peixes']
+    PM = dadosjaula_form.data['PM']
+    Biom = dadosjaula_form.data['Biom']
+    percentagem_alimentacao = dadosjaula_form.data['percentagem_alimentacao']
+    peso = dadosjaula_form.data['peso']
+    sacos_racao = dadosjaula_form.data['sacos_racao']
+    FC = dadosjaula_form.data['FC']
+    PM_teorica_alim_real = dadosjaula_form.data['PM_teorica_alim_real']
+    alimentacao_real = dadosjaula_form.data['alimentacao_real']
+    PM_teorico = dadosjaula_form.data['PM_teorico']
+    PM_real = dadosjaula_form.data['PM_real']
+    percentagem_mortalidade_teorica = dadosjaula_form.data['percentagem_mortalidade_teorica']
+    num_mortos_teorico = dadosjaula_form.data['num_mortos_teorico']
+    percentagem_mortalidade_real = dadosjaula_form.data['percentagem_mortalidade_real']
+    num_mortos_real = dadosjaula_form.data['num_mortos_real']
+    peso_medio = dadosjaula_form.data['peso_medio']
+    """
+    return Dados(
+        data = data,
+        id_jaula = jaula,
+        num_peixes = num_peixes,
+        PM = PM,
+        Biom = Biom,
+        percentagem_alimentacao = percentagem_alimentacao,
+        peso = peso,
+        sacos_racao = sacos_racao,
+        FC = FC,
+        PM_teorica_alim_real = PM_teorica_alim_real,
+        alimentacao_real = alimentacao_real,
+        PM_teorico = PM_teorico,
+        PM_real = PM_real,
+        percentagem_mortalidade_teorica = percentagem_mortalidade_teorica,
+        num_mortos_teorico = num_mortos_teorico,
+        percentagem_mortalidade_real = percentagem_mortalidade_real,
+        num_mortos_real = num_mortos_real,
+        peso_medio = peso_medio,
+        FC_real = FC_real,
+        )
