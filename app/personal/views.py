@@ -732,7 +732,7 @@ def calc_dados(data, data_anterior, dadosjaula_form, data_month):
     valor = 1
 
     queryset = AlimentacaoFc.objects.filter(
-    Q(peso_inicio__lte=(PM * 1000)) & Q(peso_fim__gte=(PM * 1000)) & Q(id=0)
+    Q(peso_inicio__lte=(PM * 1000)) & Q(peso_fim__gte=(PM * 1000)) & Q(id=0) & Q(nome='Alimentacao')
     ).annotate(
     temp_diff=functions.Abs(F('temp') - temp)
     ).order_by('temp_diff').first()
@@ -755,7 +755,15 @@ def calc_dados(data, data_anterior, dadosjaula_form, data_month):
         alimentacao_real = float(dadosjaula_form.data['alimentacao_real'])
     
     #FC teorico
-    FC = 1.2
+    queryset = AlimentacaoFc.objects.filter(
+    Q(peso_inicio__lte=(PM * 1000)) & Q(peso_fim__gte=(PM * 1000)) & Q(id=0) & Q(nome='Alimentacao')
+    ).annotate(
+    temp_diff=functions.Abs(F('temp') - temp)
+    ).order_by('temp_diff').first()
+    if queryset:
+        valor = queryset.valor
+    
+    FC = valor
     
     if dadosjaula_form.data['FC_real'] == "":
         FC_real = int(alimentacao_real) / ( (int(data_anterior.num_peixes) * float(data_anterior.PM)) - (int(num_peixes) * float(PM)))
