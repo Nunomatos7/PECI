@@ -51,12 +51,6 @@ class AlimentacaoFcForm(forms.ModelForm):
         fields = ['id_jaula','percentagem_alimentacao']
 
 
-
-class TransicoesForm(forms.ModelForm):
-    class Meta:
-        model = Movimento
-        fields = ['num','data','jaula_inicio','jaula_fim','PM']
-
 class DadosJaulaForm(forms.ModelForm):
     class Meta:
         model = Dados
@@ -68,4 +62,4 @@ class DadosJaulaForm(forms.ModelForm):
 class TransicoesJaulaForm(forms.ModelForm):
     class Meta:
         model = Movimento
-        fields = ['num','jaula_inicio','jaula_fim']
+        fields = ['num','jaula_inicio','jaula_fim','PM']
