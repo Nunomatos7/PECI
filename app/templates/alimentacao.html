@@ -1,69 +1,44 @@
 {% extends "base.html" %}
+
 {% block base %}
-
-
   <div class="container" style="padding-top: 100px;">
-    <h1>Alimentação</h1>
+    <h1>Alterar % de alimentação</h1>
     {% if messages %}
-
-        {% for message in messages %}
-        
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{message}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-        {% endfor %}
-      
+      {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
     {% endif %}
     <form method="POST" action="{% url 'alimentacao' %}">
-      
       {% csrf_token %}
 
       <div class="form-row">
-        <div class="col-md-4 mb-3y">
+        <div class="col-md-4 mb-3">
+          {{ data_form.as_p }}
+
           <label for="id_jaula">ID Jaula:</label>
           {{ form.id_jaula }}
-        </div>
+      </div>
       </div>
 
-      <p></p>
+      <label for="percentagem_alimentacao">Percentagem de alimentação</label>
+      {{ form.percentagem_alimentacao }}
+
       
-      <div class="form-row">
-
-        <div class="col-md-4 mb-3y">
-          <label for="valor">Valor:</label>
-          {{ form.valor }}
-        </div>
-
-        <div class="col-md-4 mb-3y">
-          <label for="peso_inicio">Peso Inicial:</label>
-          {{ form.peso_inicio }}
-        </div>
-
-        <div class="col-md-4 mb-3y">
-          <label for="peso_fim">Peso Final:</label>
-          {{ form.peso_fim }}
-        </div>
-      
-      </div>
-
-      <p></p>
-      <div class="form-row">
-
-        <div class="col-md-4 mb-3y">
-          <label for="temp">Temperatura:</label>
-          {{ form.temp }}
-        </div>
-
-      </div>
-
       <div class="text-center">
         <button type="submit" class="btn btn-primary mt-4">Submeter</button>
-      </div>
-
+      </div>  
     </form>
+    <p></p>
+    <p></p>
+    <p></p>
+    
   </div>
+
+  
+
 {% endblock base %}

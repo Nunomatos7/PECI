@@ -47,8 +47,8 @@ class VacinadosForm(forms.ModelForm):
 
 class AlimentacaoFcForm(forms.ModelForm):
     class Meta:
-        model = AlimentacaoFc
-        fields = ['valor','peso_inicio','peso_fim','temp',]
+        model = Dados
+        fields = ['id_jaula','percentagem_alimentacao']
 
 
 
@@ -64,7 +64,7 @@ class DadosJaulaForm(forms.ModelForm):
                   'sacos_racao','FC','PM_teorica_alim_real','alimentacao_real','PM_teorico',
                   'PM_real','percentagem_mortalidade_teorica','num_mortos_teorico',
                   'percentagem_mortalidade_real','num_mortos_real','peso_medio','FC_real']
-
+        
 class TransicoesJaulaForm(forms.ModelForm):
     class Meta:
         model = Movimento
