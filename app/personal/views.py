@@ -91,19 +91,86 @@ def insert_desovas(request):
 @login_required
 def insert_venda(request):
     if request.method == 'POST':
-        venda_form = TransicoesForm(request.POST)
+        transicoesJaula_form = TransicoesJaulaForm(request.POST)
+        data_form = DataForm(request.POST)
+        param = dict(request.POST)
+        data = None
+        if transicoesJaula_form.is_valid():
+        
+            try:
+                #case there is no data
+                print('aqui1')
+                if data_form.is_valid():
+                    print('aqui2')
+                    data = data_form.save()
+            except:
+                #case already exists data
+                print("aqui")
+                data_data = data_form.data['data']
+                data = Data.objects.get(data=data_data)
 
-        if venda_form.is_valid():
-            venda = venda_form.save(commit=False)
-            venda.venda = True
-            venda.jaula_fim = Jaula.objects.get(id = 0)
-            venda.save()
-            messages.success(request, 'Dados Venda adicionado!')   
+                transicao = transicoesJaula_form.save(commit=False)
+                transicao.data = data
+                transicao.save()
+            print("param"+param['jaula_inicio'][0])
+            if int(param['jaula_inicio'][0]) == 0:
+                print('if')
+                print(data.data)
+                ultimo_tuplo_fim = get_latest_tuple_below_date(data.data,param['jaula_fim'][0])
+                dadosjaula_form = {'id_jaula' : [ultimo_tuplo_fim.id_jaula],
+                                        'PM' : [ultimo_tuplo_fim.PM],
+                                        'alimentacao_real' : [ultimo_tuplo_fim.alimentacao_real],
+                                        'FC_real' : [ultimo_tuplo_fim.FC_real],
+                                        'PM_teorica_alim_real' : [ultimo_tuplo_fim.PM_teorica_alim_real],
+                                        'num_mortos_real' : [ultimo_tuplo_fim.num_mortos_real],
+                                        'PM_real' : [ultimo_tuplo_fim.PM_real],
+                                        'percentagem_mortalidade_real' : [ultimo_tuplo_fim.percentagem_mortalidade_real]}
+                tuplo_fim = calc_dados(data,ultimo_tuplo_fim,dadosjaula_form,data.data.month,peixes=param['num'][0],pm_in=param['PM'][0])
+                print(tuplo_fim)
+                tuplo_fim.save()
+            
+            elif int(param['jaula_inicio'][0]) != 0:
+                ultimo_tuplo_inicio = get_latest_tuple_below_date(data.data,param['jaula_inicio'][0])
+                if ultimo_tuplo_inicio != None:
+                    dadosjaula_form1 = {'id_jaula' : [ultimo_tuplo_inicio.id_jaula],
+                                        'PM' : [ultimo_tuplo_inicio.PM],
+                                        'alimentacao_real' : [ultimo_tuplo_inicio.alimentacao_real],
+                                        'FC_real' : [ultimo_tuplo_inicio.FC_real],
+                                        'PM_teorica_alim_real' : [ultimo_tuplo_inicio.PM_teorica_alim_real],
+                                        'num_mortos_real' : [ultimo_tuplo_inicio.num_mortos_real],
+                                        'PM_real' : [ultimo_tuplo_inicio.PM_real],
+                                        'percentagem_mortalidade_real' : [ultimo_tuplo_inicio.percentagem_mortalidade_real]}
+                    tuplo_inicio = calc_dados(data,ultimo_tuplo_inicio,dadosjaula_form1,data.data.month,peixes=param['num'][0],pm_in=param['PM'][0],jaula_jaula=True)
+                    print(tuplo_inicio)
+                    tuplo_inicio.save()
+
+                    ultimo_tuplo_fim = get_latest_tuple_below_date(data.data,param['jaula_fim'][0])
+                    print("\nUltimo_tuplo_fim:",ultimo_tuplo_fim)
+                    dadosjaula_form2 = {'id_jaula' : [ultimo_tuplo_fim.id_jaula],
+                                            'PM' : [ultimo_tuplo_fim.PM],
+                                            'alimentacao_real' : [ultimo_tuplo_fim.alimentacao_real],
+                                            'FC_real' : [ultimo_tuplo_fim.FC_real],
+                                            'PM_teorica_alim_real' : [ultimo_tuplo_fim.PM_teorica_alim_real],
+                                            'num_mortos_real' : [ultimo_tuplo_fim.num_mortos_real],
+                                            'PM_real' : [ultimo_tuplo_fim.PM_real],
+                                            'percentagem_mortalidade_real' : [ultimo_tuplo_fim.percentagem_mortalidade_real]}
+                    tuplo_fim = calc_dados(data,ultimo_tuplo_fim,dadosjaula_form2,data.data.month,peixes=param['num'][0],pm_in=param['PM'][0])
+                    print(tuplo_fim)
+                    tuplo_fim.save()
+                else:
+                    messages.success(request,('Erro!'))
+            else:
+                messages.success(request,('Erro!'))
+
+            messages.success(request, 'Movimento Registado com Sucesso!')
+
         else:
+            print(transicoesJaula_form.errors)
             messages.success(request,('Erro!'))
     else:
-        venda_form = TransicoesForm()
-    return render(request, 'insert_venda.html', {'venda_form': venda_form})
+        transicoesJaula_form = TransicoesJaulaForm(initial={'jaula_fim': 0})
+        data_form = DataForm()
+    return render(request, 'insert_venda.html', {'TransicoesJaulaForm': transicoesJaula_form, 'data_form': data_form})
 
 
 
@@ -164,6 +231,7 @@ def transicoes(request):
     if request.method == 'POST':
         transicoesJaula_form = TransicoesJaulaForm(request.POST)
         data_form = DataForm(request.POST)
+        print("DataForm:",data_form)
         param = dict(request.POST)
         data = data_form.save()
         if transicoesJaula_form.is_valid():
@@ -803,6 +871,7 @@ def calc_dados(data, data_anterior, dadosjaula_form, data_month,alimentacao=-1,p
     if (data_anterior != None):
         num_peixes = int(data_anterior.num_peixes) - int(data_anterior.num_mortos_real) + num_peixes
     
+    print("teste3:",dadosjaula_form['id_jaula'][0])
 
     jaula = Jaula.objects.get(id=dadosjaula_form['id_jaula'][0].id)
     if pm_in !=-1:
@@ -832,7 +901,7 @@ def calc_dados(data, data_anterior, dadosjaula_form, data_month,alimentacao=-1,p
             valor = queryset.valor
 
         print(valor)
-        percentagem_alimentacao = float(valor)
+        percentagem_alimentacao = float(valor) / 100
 
         """
         queryset = AlimentacaoFc.objects.filter(
@@ -848,14 +917,14 @@ def calc_dados(data, data_anterior, dadosjaula_form, data_month,alimentacao=-1,p
         percentagem_alimentacao = float(valor)
         """
     else:
-        percentagem_alimentacao = float(alimentacao[0])
+        percentagem_alimentacao = float(alimentacao[0])/100
     
     if data_anterior == None:
         peso = float(Biom) * percentagem_alimentacao
     else:
         peso = float(data_anterior.Biom) * percentagem_alimentacao
 
-    sacos_racao = float(peso) * 25
+    sacos_racao = float(peso) / 25
     
     if (dadosjaula_form['alimentacao_real'][0] == ""):
         alimentacao_real = peso * 30
@@ -877,9 +946,10 @@ def calc_dados(data, data_anterior, dadosjaula_form, data_month,alimentacao=-1,p
     else:
         FC_real = float(dadosjaula_form['FC_real'][0])
 
-    if dadosjaula_form['PM_teorica_alim_real'] == "":
+    if dadosjaula_form['PM_teorica_alim_real'][0] == "":
         PM_teorica_alim_real = (alimentacao_real / FC + Biom) / num_peixes
     else:
+        print("teste:",dadosjaula_form['PM_teorica_alim_real'][0])
         PM_teorica_alim_real = float(dadosjaula_form['PM_teorica_alim_real'][0])
     
     aum_biom_teorico = (peso * 30) / FC
@@ -891,7 +961,7 @@ def calc_dados(data, data_anterior, dadosjaula_form, data_month,alimentacao=-1,p
     else:
         PM_real = dadosjaula_form['PM_real'][0]
     
-    percentagem_mortalidade_teorica = mortalidade_mes(data_month)
+    percentagem_mortalidade_teorica = mortalidade_mes(data_month)/100
     
     num_mortos_teorico = num_peixes * percentagem_mortalidade_teorica
     if (dadosjaula_form['num_mortos_real'][0] == ""):

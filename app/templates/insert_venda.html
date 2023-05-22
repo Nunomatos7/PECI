@@ -19,37 +19,34 @@
     <form method="POST" action="{% url 'insert_venda' %}">
       
       {% csrf_token %}
+
       <div class="form-row">
-
         <div class="col-md-4 mb-3">
-          <label for="valor">Numero:</label>
-          {{ form.num }}
+          <label for="data">Data:</label>
+          {{ data_form.data }}
         </div>
-
         <div class="col-md-4 mb-3">
-          <label for="peso_inicio">Jaula:</label>
-          {{ form.jaula_inicio }}
+          <label for="jaula_inicial">Jaula Inicial:</label>
+          {{ TransicoesJaulaForm.jaula_inicio }}
         </div>
+        <div class="col-md-4 mb-3" hidden>
+          <label for="jaula_final">Jaula Final:</label>
+          {{ TransicoesJaulaForm.jaula_fim }}
+        </div>
+      </div>
+        
+        <label for="num">Número de Peixes</label>
+        {{ TransicoesJaulaForm.num}}
+      
+        <label for="PM">PM</label>
+        {{ TransicoesJaulaForm.PM }}
 
       
       </div>
 
-      <div class="form-row">
 
-        <div class="col-md-4 mb-3">
-          <label for="temp">PM:</label>
-          {{ form.PM }}
-        </div>
-
-        <div class="col-md-4 mb-3">
-          <label for="id_jaula">Data:</label>
-          {{ form.data }}
-        </div>
-
-      </div>
-
-      <div>
-        <button type="submit" class="btn btn-primary" style = "position:relative;right: -920px;top: 10px;">Submeter Pedido</button>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-4">Submeter</button>
       </div>
 
     </form>
