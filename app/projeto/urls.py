@@ -40,6 +40,7 @@ urlpatterns = [
     path('dados_jaula/', dados_jaula, name='dados_jaula'),
     path('vacinados/', vacinados, name='vacinados'),
     path('alimentacao/', alimentacao, name='alimentacao'),
+    path('delete_dados',delete_dados,name='delete_dados')
 ]
 """
 re_path(r'^admin/', admin.site.urls),

@@ -421,7 +421,40 @@ def delete_temp(request):
         data_inicial_form = DataForm(prefix="inicial")
         data_final_form = DataForm(prefix="final")
         return render(request, 'delete_temp.html', {'data_inicial_form': data_inicial_form, 'data_final_form': data_final_form})
-    
+
+@login_required
+def delete_dados(request):
+    if request.method == 'POST':
+        data_inicial_form = DataForm(request.POST,prefix="inicial")
+        data_final_form = DataForm(request.POST,prefix="final")
+
+        data_i = datetime.strptime(data_inicial_form.data["inicial-data"], "%Y-%m-%d")
+        try:
+            data_f = datetime.strptime(data_final_form.data["final-data"], "%Y-%m-%d")
+        except:
+            # only one date
+            data_f=data_i
+
+        delta = data_f - data_i
+        num_days = delta.days + 1 
+
+        for day in range(num_days):
+            current_date = data_i + timedelta(days=day)
+            desova = Dados.objects.filter(data=current_date).first()
+            if desova:
+                desova.delete()
+                
+            else:
+                print("not desova")
+
+        messages.success(request,('Dados Desovas eliminados!'))
+        return render(request, 'delete_desova.html', {'data_inicial_form': data_inicial_form, 'data_final_form': data_final_form})
+    else:
+        data_inicial_form = DataForm(prefix="inicial")
+        data_final_form = DataForm(prefix="final")
+        return render(request, 'delete_dados.html', {'data_inicial_form': data_inicial_form, 'data_final_form': data_final_form})
+
+
 @login_required
 def delete_desova(request):
     if request.method == 'POST':

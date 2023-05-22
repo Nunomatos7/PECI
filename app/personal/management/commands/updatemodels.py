@@ -185,6 +185,13 @@ class Command(BaseCommand):
                         num_mortos_teorico = worksheet.cell(row_index,19).value, percentagem_mortalidade_real = worksheet.cell(row_index,20).value,
                         num_mortos_real = worksheet.cell(row_index,21).value, FC_real = toNone(worksheet.cell(row_index,25).value))
                         models2.save()
+                        try:
+                            models = Jaula.objects.get(id = 5)
+                        except Jaula.DoesNotExist:
+                            models = Jaula(id = 5,volume = 0, massa_volumica = 0)
+                            models.save()
+                        models2.id_jaula = models
+                        models2.save()
                 ##vacina e movimentos
                 #falta inserir data
                 flag = False
