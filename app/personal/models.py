@@ -35,7 +35,7 @@ class Jaula (models.Model):
     volume = models.FloatField(default=None)
 
 class Dados (models.Model):
-    data = models.ForeignKey(Data,primary_key=True,on_delete=models.CASCADE)
+    data = models.ForeignKey(Data,on_delete=models.CASCADE)
     id_jaula = models.ForeignKey(Jaula,on_delete=models.CASCADE)
     num_peixes = models.PositiveIntegerField(default=None)
     PM = models.FloatField(default=None)
@@ -84,7 +84,3 @@ class Movimento(models.Model):
     jaula_inicio = models.ForeignKey(Jaula, default=None,related_name='movimentos_inicio',on_delete=models.CASCADE)
     jaula_fim = models.ForeignKey(Jaula,default=None,related_name='movimentos_fim',on_delete=models.CASCADE)
     venda = models.BooleanField(default=False)
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['data', 'jaula_inicio', 'jaula_fim'], name='my_model_pk')
-        ]

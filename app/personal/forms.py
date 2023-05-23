@@ -63,3 +63,8 @@ class TransicoesJaulaForm(forms.ModelForm):
     class Meta:
         model = Movimento
         fields = ['num','jaula_inicio','jaula_fim','PM']
+        
+class VendasJaulaForm(forms.ModelForm):
+    class Meta:
+        model = Movimento
+        fields = ['num','jaula_inicio','PM']
