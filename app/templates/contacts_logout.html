@@ -7,11 +7,11 @@
   <h1>Contactos</h1>
 
   <!-- Container (Contact Section) -->
-  <div class="w3-content w3-container w3-padding-64" id="contact" style = "position:fixed; left:35%;top:22%;">
+  <div class="w3-content w3-container w3-padding-64" id="contact" style = "position:fixed; left:31%;top:22%; width:100%; overflow:hidden; height:100%">
   
     
       
-      <div class="w3-col m8 w3-panel">
+      <div class="w3-col m8 w3-panel" style= "color: white; overflow:hidden; height:100%">
         <div class="w3-large w3-margin-bottom" style="color: white;">
           <i class="fa fa-map-marker fa-fw w3-hover-text-white w3-xlarge w3-margin-right"></i> Serra do Gerês, Braga<br>
           <i class="fa fa-phone fa-fw w3-hover-text-white w3-xlarge w3-margin-right"></i> Telemóvel: +351 999999999<br>
@@ -42,6 +42,25 @@
   {% else %}
 
   <script>
+    // Modal Image Gallery
+    function onClick(element) {
+      document.getElementById("img01").src = element.src;
+      document.getElementById("modal01").style.display = "block";
+      var captionText = document.getElementById("caption");
+      captionText.innerHTML = element.alt;
+    }
+    
+    
+    
+    // Used to toggle the menu on small screens when clicking on the menu button
+    function toggleFunction() {
+        var x = document.getElementById("navDemo");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
     setInterval(() => {
       const randomWidth = Math.floor(Math.random() * 100 + 40)
       const randomPosition = Math.floor(Math.random() * screen.width)
@@ -58,6 +77,34 @@
   </script>
 
   {% endif %}
+
+  <style>
+    .center-container {
+      max-width: 10%; /* Adjust the max-width as per your requirements */
+      align-items: center;
+      position: fixed;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    span {
+      width: 80px;
+      aspect-ratio: 1;
+      box-shadow: inset 3px 3px .5rem rgba(0, 0, 0, .5),
+                  inset -1px -1px .5rem rgba(255, 255, 255, .3);
+      position: absolute;
+      border-radius: 50%;
+      top: 100%;
+      animation: to_top linear;
+      z-index: -1;
+      overflow: hidden;
+  }
+  
+  @keyframes to_top {
+      from { top: 100%; }
+      to { top: -10%; }
+  }
+  </style>
 
 
   {% endblock base %}

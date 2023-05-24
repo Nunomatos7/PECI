@@ -20,8 +20,8 @@
       <i class="fa fa-bars"></i>
     </a>
     <a href="{% url 'home' %}" class="w3-bar-item w3-button" style="color: black"><i class="fa fa-home" style="color: black" ;></i>INÍCIO</a>
-	<a href="{% url 'login' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-sign-in" style="color: black";></i> ENTRAR</a>
-  <a href="{% url 'contacts_logout' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-phone" style="color: black";></i> CONTACTOS</a> 
+    <a href="{% url 'login' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-sign-in" style="color: black";></i> ENTRAR</a>
+    <a href="{% url 'contacts_logout' %}" class="w3-bar-item w3-button w3-hide-small" style="color: black;"><i class="fa fa-phone" style="color: black";></i> CONTACTOS</a> 
   </div>  
 
   <!-- Navbar on small screens -->
@@ -126,6 +126,8 @@ function toggleFunction() {
     font-weight: bold;
   }
 
+  
+
   html, body {
     overflow: hidden;
     font-family: 'american typewriter', serif;
@@ -166,6 +168,7 @@ span {
   label {
     font-weight: bold;
     margin-bottom: 0.5rem;
+    color: #000000;
   }
   
   input[type="text"],
@@ -195,11 +198,13 @@ span {
     letter-spacing: 2px;
     font-weight: 600;
     background: linear-gradient(to bottom, #a0d2eb, #005073);
+    border-color: #005073;
   }
   
   .btn-primary:hover {
-    background-color: #148f77;
-    border-color: #148f77;
+    background-color: linear-gradient(to top, #a0d2eb, #005073);
+    border-color: #005073;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
   }
   
   .alert-warning {

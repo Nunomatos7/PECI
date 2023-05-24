@@ -49,7 +49,6 @@ body, html {
 @media only screen and (max-device-width: 1600px) {
   .bgimg-1 {
     background-attachment: scroll;
-    min-height: 400px;
   }
 }
 
