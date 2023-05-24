@@ -19,8 +19,6 @@ class Command(BaseCommand):
             if file.endswith("xls") or file.endswith("xlsx"):
                 df = pd.read_excel("Ficheiros PECI/"+file)
                 df2 = df.fillna(0)
-            
-            """ 
                                     
             if file.startswith("Desovas"):
                 flag = False
@@ -43,8 +41,6 @@ class Command(BaseCommand):
                         models1 = Desova(data=models,femeas = toNone(worksheet.cell(row_index,1).value),desovados = toNone(worksheet.cell(row_index,2).value),embrionados = toNone(worksheet.cell(row_index,3).value))
                         models1.save()
     
-            
-            
             if file.startswith("Temperaturas"):
                 print(file) 
                 wb = xlrd.open_workbook("Ficheiros PECI/"+file)
@@ -105,7 +101,7 @@ class Command(BaseCommand):
                         models = AlimentacaoFc(valor =cell.value,temp=temp[col],peso_inicio=peso[row][0],peso_fim=peso[row][1],nome="FC")
                         models.save()
 
-        
+            
         #Alimentaçao calculos
             if file.startswith("Temperaturas"):
                 print(file) 
@@ -143,7 +139,7 @@ class Command(BaseCommand):
                     
                     
         
-            """
+
                               
             if file.startswith("Cópia de Dados"):
                 print(file) 
@@ -153,9 +149,9 @@ class Command(BaseCommand):
                 table_start = False
                 ano = 0
                 try:
-                    models = Jaula.objects.get(id = 7)
+                    models = Jaula.objects.get(id = int(worksheet.name.split(" ")[1]))
                 except Jaula.DoesNotExist:
-                    models = Jaula(id = 7,volume = 0, massa_volumica = 0)
+                    models = Jaula(id = int(worksheet.name.split(" ")[1]),volume = 0, massa_volumica = 0)
                     models.save()
                 for row_index in range(worksheet.nrows):
                     cell = worksheet.cell(row_index, 1)
@@ -190,8 +186,6 @@ class Command(BaseCommand):
                         num_mortos_real = worksheet.cell(row_index,21).value, FC_real = toNone(worksheet.cell(row_index,25).value))
                         models2.save()
                         
-                
-                """
                 ##vacina e movimentos
                 #falta inserir data
                 flag = False
@@ -254,8 +248,12 @@ class Command(BaseCommand):
                         mov = Movimento(data = data_models,num = worksheet.cell(row_index+1,3).value,jaula_inicio=jaula_inicio,jaula_fim=jaula_fim,PM = 0)
                         mov.save()
                         print("oi")
-                
-                """
+            
+        
+                       
+          
+                        
+     
 
 
 
